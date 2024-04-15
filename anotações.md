@@ -82,3 +82,15 @@ TipoQueaFuncaoVaiRetornar NomeDaFuncao(TipoDoParametro parametro){
     return Valor;
 }
 ```
+
+# Frameworks para estudar depois:
+- Electron 
+- NW.js (Node-webkit)
+- Proton Native
+- Java FX
+- Avalonia
+
+# Linguagens para estudar depois: 
+- Java 
+- Python (PyInstaller/cx_Freeze)
+- Javascript (Electron/NW.js)
