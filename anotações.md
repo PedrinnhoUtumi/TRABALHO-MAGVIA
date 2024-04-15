@@ -55,5 +55,30 @@ while (condicao){
     //Enquanto a condição for verdade
 }
 
-for (inicio; condicao; atualizacao)
+for (inicio; condicao; atualizacao){
+    //Enquanto a condição for verdade
+}
+```
+
+### Switch 
+```c++
+switch (variavel){
+    case valor1:
+        //Executará se a variavel for igual ao valor1
+        break;
+    case valor2:
+        //Executará se a variavel for igual ao valor2
+        break;
+    default: 
+        //Se a variável não for igual à nenhum valor
+} 
+```
+
+### Função 
+São blocos de comando reusáveis, ou seja, podemos criar a função e usar ela pelo resto do código
+```c++
+TipoQueaFuncaoVaiRetornar NomeDaFuncao(TipoDoParametro parametro){
+    //Código
+    return Valor;
+}
 ```
