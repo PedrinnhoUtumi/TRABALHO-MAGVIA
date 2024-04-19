@@ -6,12 +6,9 @@ lista = [{'nome': 'Cumbuca', 'categoria': 'Italiana', 'ativo': True},
 
 def nome():
     print("""
-╭━━━╮╱╱╱╱╭╮
-┃╭━╮┃╱╱╱╱┃┃
-┃╰━╯┣━━┳━╯┣━┳━━╮
-┃╭━━┫┃━┫╭╮┃╭┫╭╮┃
-┃┃╱╱┃┃━┫╰╯┃┃┃╰╯┃
-╰╯╱╱╰━━┻━━┻╯╰━━╯
+
+█▀█ █▀▀ █▀ ▀█▀ ▄▀█ █░█ █▀█ ▄▀█ █▄░█ ▀█▀ █▀▀
+█▀▄ ██▄ ▄█ ░█░ █▀█ █▄█ █▀▄ █▀█ █░▀█ ░█░ ██▄
 """)
 
 def opcoes():
@@ -35,7 +32,7 @@ def cadastro():
     exibir_subtitulo("Cadastro")
     nome_restaurante = input("digite o nome do restaurante que deseja cadastrar: ")
     categoria = input(f"Digite o nome da categoria do restaurante {nome_restaurante}: ")
-    dados = [{'nome': nome_restaurante, 'categoria': categoria, 'ativo': False}]
+    dados = {'nome': nome_restaurante, 'categoria': categoria, 'ativo': False}
     lista.append(dados)
     print(f"Restaurante {nome_restaurante} foi cadastrado com sucesso!")
     voltar()
@@ -47,6 +44,9 @@ def listar():
         categoria = lis['categoria']
         ativo = lis['ativo']
         print(f'{nome} | {categoria} | {ativo}')
+    voltar()
+    
+def ativar_desativar():
     voltar()
     
 def finalizar():
@@ -64,7 +64,7 @@ def opcao_escolha():
         elif a == 2:
             listar()
         elif a == 3:
-            print("3. Ativar Restaurante")
+            ativar_desativar()
         elif a == 4:
             finalizar()
         else: 
