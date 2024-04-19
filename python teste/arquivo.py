@@ -15,7 +15,7 @@ def opcoes():
     print ("""
        1. Cadastrar Restaurante 
        2. Listar Restaurante
-       3. Ativar Restaurante
+       3. Ativar/desativar Restaurante
        4. Sair
 """)
     
@@ -25,7 +25,10 @@ def voltar():
     
 def exibir_subtitulo(txt = ''):
     os.system("cls")
+    linha = '*' * (len(txt))
+    print(linha)
     print(txt)
+    print(linha)
     print()
     
 def cadastro():
@@ -38,17 +41,27 @@ def cadastro():
     voltar()
 
 def listar():
-    exibir_subtitulo("Listar")
+    exibir_subtitulo(f'{"Nome do Restaurante".ljust(20)}  | {"Categoria".ljust(20)} | Atividade')
     for lis in lista:
         nome = lis['nome']
         categoria = lis['categoria']
-        ativo = lis['ativo']
-        print(f'{nome} | {categoria} | {ativo}')
+        ativo = "Ativado" if lis['ativo'] else "Desativado"
+        print(f'{nome.ljust(20)}  | {categoria.ljust(20)} | {ativo}')
     voltar()
     
 def ativar_desativar():
+    exibir_subtitulo("Alterando estado")
+    nome = input("Nome do restaurante que será alterado: ")
+    encontrado = False
+    for lis in lista:
+        if nome == lis["nome"]:
+            encontrado = True
+            lis["ativo"] = not lis["ativo"]
+            print(f"Restaurante {nome} foi ativado" if lis['ativo'] else f"Restaurante {nome} desativado com sucesso")
+    if not encontrado:
+        print("Restaurante não foi encontrado")
     voltar()
-    
+    2
 def finalizar():
     exibir_subtitulo("4. sair\n")
         
