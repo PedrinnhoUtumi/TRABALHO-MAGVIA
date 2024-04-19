@@ -42,10 +42,10 @@ def cadastro():
 
 def listar():
     exibir_subtitulo("Listar")
-    for l in lista:
-        nome = l['nome']
-        categoria = l['categoria']
-        ativo = l['ativo']
+    for lis in lista:
+        nome = lis['nome']
+        categoria = lis['categoria']
+        ativo = lis['ativo']
         print(f'{nome} | {categoria} | {ativo}')
     voltar()
     
