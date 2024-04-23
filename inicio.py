@@ -39,12 +39,36 @@ class Interface():
         self.frameVisitante = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Arial", 48, "bold"), textvariable = self.placarVisitante,  cursor = "hand1")
         self.frameVisitante.place(relx = 0.70, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar time visitante
         self.frameVisitante.bind("<Button-1>", lambda event: self.plus(2))
-        self.frame2 = Frame(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        
+        self.frame2 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
         self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
         
     def botao(self):
-        self.bt_game = Button(text = "Esportes")
-        self.bt_game.place(relx = 0.05, rely = 0.05, relwidth = 0.1, relheight = 0.03)
+        self.bt_game = Button(self.frame2, text = "Esportes")
+        self.bt_game.place(relx = 0.42, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        
+        self.bt_zero = Button(self.frame2, text = "Zerar")
+        self.bt_zero.place(relx = 0.42, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        
+        self.bt_plus2 = Button(self.frame2, text = "+2", command = lambda: self.plus2(1))
+        self.bt_plus2.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        self.bt_minus2 = Button(self.frame2, text = "-2", command = lambda: self.minus2(1))
+        self.bt_minus2.place(relx = 0.05, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        
+        self.bt_plus3 = Button(self.frame2, text = "+3", command = lambda: self.plus3(1))
+        self.bt_plus3.place(relx = 0.05, rely = 0.45, relwidth = 0.15, relheight = 0.15)
+        self.bt_minus3 = Button(self.frame2, text = "-3", command = lambda: self.minus3(1))
+        self.bt_minus3.place(relx = 0.05, rely = 0.65, relwidth = 0.15, relheight = 0.15)
+        
+        self.bt_plus2_visitante = Button(self.frame2, text = "+2", command = lambda: self.plus2(2))
+        self.bt_plus2_visitante.place(relx = 0.8, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        self.bt_minus2_visitante = Button(self.frame2, text = "-2", command = lambda: self.minus2(2))
+        self.bt_minus2_visitante.place(relx = 0.8, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        
+        self.bt_plus3_visitante = Button(self.frame2, text = "+3", command = lambda: self.plus3(2))
+        self.bt_plus3_visitante.place(relx = 0.8, rely = 0.45, relwidth = 0.15, relheight = 0.15)
+        self.bt_minus3_visitante = Button(self.frame2, text = "-3", command = lambda: self.minus3(2))
+        self.bt_minus3_visitante.place(relx = 0.8, rely = 0.65, relwidth = 0.15, relheight = 0.15)
         
     def plus(self, team):
         if team == 1: 
@@ -52,11 +76,35 @@ class Interface():
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 1)
             
+    def plus2(self, team):
+        if team == 1: 
+            self.placarLocal.set(self.placarLocal.get() + 2)
+        elif team == 2:
+            self.placarVisitante.set(self.placarVisitante.get() + 2)
+    
+    def plus3(self, team):
+        if team == 1: 
+            self.placarLocal.set(self.placarLocal.get() + 3)
+        elif team == 2:
+            self.placarVisitante.set(self.placarVisitante.get() + 3)
+    
     def minus(self, team):
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() - 1)
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() - 1)
+    
+    def minus2(self, team):
+        if team == 1: 
+            self.placarLocal.set(self.placarLocal.get() - 2)
+        elif team == 2:
+            self.placarVisitante.set(self.placarVisitante.get() - 2)
+            
+    def minus3(self, team):
+        if team == 1: 
+            self.placarLocal.set(self.placarLocal.get() - 3)
+        elif team == 2:
+            self.placarVisitante.set(self.placarVisitante.get() - 3)
     
     def update(self):
         if self.contador:
