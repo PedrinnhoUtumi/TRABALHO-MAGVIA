@@ -20,10 +20,19 @@ class Application():
         
     def frames(self):
         self.frame1 = Frame(self.root, bd = 4, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
-        self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.3)
+        self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
+        
+        self.frameLocal = Frame(self.root, bd = 2, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frameLocal.place(relx = 0.15, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar time da casa
+        
+        self.frameTime = Frame(self.root, bd = 2, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frameTime.place(relx = 0.425, rely = 0.35, relwidth = 0.2, relheight = 0.2)
+        
+        self.frameVisitante = Frame(self.root, bd = 2, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frameVisitante.place(relx = 0.70, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar time visitante
         
         self.frame2 = Frame(self.root, bd = 4, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
-        self.frame2.place(relx = 0.05, rely = 0.6, relwidth = 0.9, relheight = 0.3)
+        self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
         
     def botao(self):
         self.bt_game = Button(text = "Esportes")
