@@ -133,9 +133,8 @@ class Interface():
             self.contador_pause = datetime.now() - self.contador
             self.contador = None
         elif opcao == 2:
-            self.contador = datetime.now() - self.contador_pause
+            self.contador = datetime.now()
             self.update()
-
     
     def validate(self, opcao):
         if opcao == 1:
