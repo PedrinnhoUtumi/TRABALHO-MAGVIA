@@ -58,7 +58,7 @@ class Interface():
         self.bt_reniciar = Button(self.frame2, text = "Reiniciar", command = lambda: self.pause(2), cursor = "hand1")
         self.bt_reniciar.place(relx = 0.42, rely = 0.65, relwidth = 0.15, relheight = 0.15)
         
-        self.bt_continue = Button(self.frame2, text = "Continuar", cursor = "hand1")
+        self.bt_continue = Button(self.frame2, text = "Continuar", cursor = "hand1", command = self.continuar)
         self.bt_continue.place(relx = 0.61, rely = 0.05, relwidth = 0.15, relheight = 0.15)
         
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
@@ -130,11 +130,12 @@ class Interface():
         
     def pause(self, opcao):
         if opcao == 1:
-            self.contador_pause = datetime.now()
+            self.contador_pause = datetime.now() - self.contador
             self.contador = None
         elif opcao == 2:
-            self.contador = datetime.now()
+            self.contador = datetime.now() - self.contador_pause
             self.update()
+
     
     def validate(self, opcao):
         if opcao == 1:
@@ -147,6 +148,12 @@ class Interface():
                 return False
         return True
             
+    def continuar(self):
+        if self.contador_pause:
+            self.contador = datetime.now() - self.contador_pause
+            self.update()
+            self.contador_pause = None
+                
 if __name__ == "__main__": 
     root = Tk()
     app = Interface(root)
