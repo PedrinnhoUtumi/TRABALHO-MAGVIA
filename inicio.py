@@ -188,9 +188,3 @@ if __name__ == "__main__":
     root = Tk()
     app = Interface(root)
     root.mainloop()
-    
-def tecla_pressionada(event):
-    print("Você pressionou a tecla '{}'".format(event.keysym))
-root.bind("<Control-q>", lambda event: root.destroy())
-root.bind("<Key>", tecla_pressionada)
-root.mainloop()
