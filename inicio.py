@@ -11,6 +11,12 @@ class Interface():
         self.placarTempo.set(1)
         self.localFools = IntVar()
         self.localFools.set(0)
+        self.awayFools = IntVar()
+        self.awayFools.set(0)
+        self.set1 = IntVar()
+        self.set1.set(0)
+        self.set2 = IntVar()
+        self.set2.set(0)
         self.placarVisitante = IntVar()
         self.placarVisitante.set(0)
         self.tempo_correndo = False
@@ -34,12 +40,19 @@ class Interface():
         self.frame1 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
         
-        self.entry_texto = Entry(self.root, textvariable=self.texto_entry, font=("Courier New", 12), bg = "purple", fg = "white")
+        self.entry_texto = Entry(self.root, textvariable=self.texto_entry, font=("Courier New", 12, "bold"), bg = "purple", fg = "white")
         self.entry_texto.place(relx=0.15, rely=0.3, relwidth=0.2, relheight=0.05)
         
         self.frameLocalLabel = Label(self.root, textvariable = self.placarLocal, bg = "aqua", font = ("Courier New", 48, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
         self.frameLocalLabel.place(relx = 0.15, rely = 0.35, relwidth = 0.2, relheight = 0.2)
         self.frameLocalLabel.bind("<Button-1>", lambda event: self.plus(1))
+        
+        self.frameLocalFools = Label(self.root, textvariable = self.localFools, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameLocalFools.place(relx = 0.15, rely = 0.57, relwidth = 0.2, relheight = 0.05)
+        self.frameLocalFools.bind("<Button-1>", lambda event: self.plus(4))
+        
+        self.localFoolsText = Label(self.root, text="Faltas", bg="purple", font=("Courier New", 14, "bold"), fg = "white")
+        self.localFoolsText.place(relx=0.15, rely=0.63, relwidth=0.2, relheight=0.02)
         
         self.time = Label(self.root, text="Tempo", bg="purple", font=("Courier New", 24, "bold"), fg = "white")
         self.time.place(relx=0.425, rely=0.3, relwidth=0.2, relheight=0.05)
@@ -48,12 +61,26 @@ class Interface():
         self.frameTime.place(relx = 0.425, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Tempo
         self.frameTime.bind("<Button-1>", lambda event: self.plus(3))
         
-        self.entry_texto = Entry(self.root, textvariable=self.texto_entry2, font=("Courier New", 12), bg = "purple", fg = "white")
+        self.frameSet1 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set1, cursor = "hand1") 
+        self.frameSet1.place(relx = 0.425, rely = 0.57, relwidth = 0.07, relheight = 0.05)
+        self.frameSet1.bind("<Button-1>", lambda event: self.plus(6))
+        
+        self.frameSet2 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set2, cursor = "hand1") 
+        self.frameSet2.place(relx = 0.555, rely = 0.57, relwidth = 0.07, relheight = 0.05)
+        
+        self.entry_texto = Entry(self.root, textvariable=self.texto_entry2, font=("Courier New", 12, "bold"), bg = "purple", fg = "white")
         self.entry_texto.place(relx=0.70, rely=0.3, relwidth=0.2, relheight=0.05)
         
         self.frameVisitante = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarVisitante, cursor = "hand1")
         self.frameVisitante.place(relx = 0.70, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar time visitante
         self.frameVisitante.bind("<Button-1>", lambda event: self.plus(2))
+        
+        self.frameAwayFools = Label(self.root, textvariable = self.awayFools, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameAwayFools.place(relx = 0.70, rely = 0.57, relwidth = 0.2, relheight = 0.05)
+        self.frameAwayFools.bind("<Button-1>", lambda event: self.plus(5))
+        
+        self.localAwayText = Label(self.root, text="Faltas", bg="purple", font=("Courier New", 14, "bold"), fg = "white")
+        self.localAwayText.place(relx=0.70, rely=0.63, relwidth=0.2, relheight=0.02)
         
         self.frame2 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
         self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
@@ -108,7 +135,13 @@ class Interface():
             self.placarVisitante.set(self.placarVisitante.get() + 1)
         elif team == 3:
             self.placarTempo.set(self.placarTempo.get() + 1)
-
+        elif team == 4:
+            self.localFools.set(self.localFools.get() + 1)
+        elif team == 5:
+            self.awayFools.set(self.awayFools.get() + 1)
+        elif team == 6:
+            self.set1.set(self.set1.get() + 1)
+            
     def plus2(self, team):
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 2)
