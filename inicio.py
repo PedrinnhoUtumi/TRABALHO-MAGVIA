@@ -10,11 +10,13 @@ class Interface():
         self.placarLocal.set(0)
         self.placarTempo = IntVar()
         self.placarTempo.set(1)
+        self.localFools = IntVar()
+        self.localFools.set(0)
         self.placarVisitante = IntVar()
         self.placarVisitante.set(0)
         self.tempo_correndo = False
         self.cronometro = StringVar()
-        self.cronometro.set("00:00:00")
+        self.cronometro.set("0:00:00")
         self.contador = None
         self.config_tela()
         self.frames()
@@ -25,20 +27,20 @@ class Interface():
         self.root.configure(background = "purple")
         self.root.geometry("900x900")
         self.root.resizable(True, True)
-        self.root.minsize(width = 500, height = 500)
+        self.root.minsize(width = 750, height = 750)
         
     def frames(self):
-        self.frame1 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, textvariable = self.cronometro, font = ("Arial", 48, "bold"))
+        self.frame1 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
         
-        self.frameLocalLabel = Label(self.root, textvariable = self.placarLocal, bg = "aqua", font = ("Arial", 48, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameLocalLabel = Label(self.root, textvariable = self.placarLocal, bg = "aqua", font = ("Courier New", 48, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
         self.frameLocalLabel.place(relx = 0.15, rely = 0.35, relwidth = 0.2, relheight = 0.2)
         self.frameLocalLabel.bind("<Button-1>", lambda event: self.plus(1))
         
-        self.frameTime = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Arial", 48, "bold"), textvariable = self.placarTempo)
+        self.frameTime = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarTempo)
         self.frameTime.place(relx = 0.425, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Tempo
         
-        self.frameVisitante = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Arial", 48, "bold"), textvariable = self.placarVisitante, cursor = "hand1")
+        self.frameVisitante = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarVisitante, cursor = "hand1")
         self.frameVisitante.place(relx = 0.70, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar time visitante
         self.frameVisitante.bind("<Button-1>", lambda event: self.plus(2))
         
@@ -46,8 +48,8 @@ class Interface():
         self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
         
     def botao(self):
-        self.bt_game = Button(self.frame2, text = "Esportes", cursor = "hand1")
-        self.bt_game.place(relx = 0.42, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        self.bt_start = Button(self.frame2, text = "Iniciar", cursor = "hand1", command = self.start_timer)
+        self.bt_start.place(relx = 0.42, rely = 0.05, relwidth = 0.15, relheight = 0.15)
         
         self.bt_zero = Button(self.frame2, text = "Zerar", command = self.zero, cursor = "hand1")
         self.bt_zero.place(relx = 0.42, rely = 0.25, relwidth = 0.15, relheight = 0.15)
@@ -60,6 +62,9 @@ class Interface():
         
         self.bt_continue = Button(self.frame2, text = "Continuar", cursor = "hand1", command = self.continuar)
         self.bt_continue.place(relx = 0.61, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        
+        self.bt_alternar_modo = Button(self.frame2, text="Alternar Modo", cursor="hand1", command = self.alternar_modo)
+        self.bt_alternar_modo.place(relx = 0.61, rely = 0.25, relwidth = 0.15, relheight = 0.15)
         
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
         self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15)
@@ -90,7 +95,7 @@ class Interface():
             self.placarLocal.set(self.placarLocal.get() + 1)
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 1)
-            
+
     def plus2(self, team):
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 2)
@@ -115,11 +120,7 @@ class Interface():
         if self.contador:
             tempo = datetime.now() - self.contador
             self.cronometro.set(str(tempo).split('.')[0])
-        self.root.after(1000, self.update)
-
-    def start(self):
-        self.contador = datetime.now()
-        self.update()
+        self.root.after(10, self.update)
         
     def zero(self):
         self.placarLocal.set(0)
@@ -153,8 +154,24 @@ class Interface():
             self.update()
             self.contador_pause = None
                 
+    def alternar_modo(self):
+        if self.tempo_correndo:  
+            self.pause(1)
+
+        if self.cronometro.get() == "0:00:00":  
+            self.tempo_correndo = False
+            self.cronometro.set(str(self.tempo_inicial))
+        else:  
+            self.tempo_correndo = True
+            self.contador = datetime.now()
+            self.update()
+        
+    def start_timer(self):
+        if not self.contador:  # Apenas inicie se o contador não estiver ativado
+            self.contador = datetime.now()
+            self.update()
+        
 if __name__ == "__main__": 
     root = Tk()
     app = Interface(root)
-    app.start()
     root.mainloop()
