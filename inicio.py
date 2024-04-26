@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
 from datetime import datetime
-import os
 
 class Interface():
     def __init__(self, root):
@@ -17,6 +16,8 @@ class Interface():
         self.tempo_correndo = False
         self.cronometro = StringVar()
         self.cronometro.set("0:00:00")
+        self.texto_entry = StringVar()
+        self.texto_entry2 = StringVar()
         self.contador = None
         self.config_tela()
         self.frames()
@@ -33,12 +34,22 @@ class Interface():
         self.frame1 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
         
+        self.entry_texto = Entry(self.root, textvariable=self.texto_entry, font=("Courier New", 12), bg = "purple", fg = "white")
+        self.entry_texto.place(relx=0.15, rely=0.3, relwidth=0.2, relheight=0.05)
+        
         self.frameLocalLabel = Label(self.root, textvariable = self.placarLocal, bg = "aqua", font = ("Courier New", 48, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
         self.frameLocalLabel.place(relx = 0.15, rely = 0.35, relwidth = 0.2, relheight = 0.2)
         self.frameLocalLabel.bind("<Button-1>", lambda event: self.plus(1))
         
-        self.frameTime = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarTempo)
+        self.time = Label(self.root, text="Tempo", bg="purple", font=("Courier New", 24, "bold"), fg = "white")
+        self.time.place(relx=0.425, rely=0.3, relwidth=0.2, relheight=0.05)
+        
+        self.frameTime = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarTempo, cursor = "hand1")
         self.frameTime.place(relx = 0.425, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Tempo
+        self.frameTime.bind("<Button-1>", lambda event: self.plus(3))
+        
+        self.entry_texto = Entry(self.root, textvariable=self.texto_entry2, font=("Courier New", 12), bg = "purple", fg = "white")
+        self.entry_texto.place(relx=0.70, rely=0.3, relwidth=0.2, relheight=0.05)
         
         self.frameVisitante = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarVisitante, cursor = "hand1")
         self.frameVisitante.place(relx = 0.70, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar time visitante
@@ -95,6 +106,8 @@ class Interface():
             self.placarLocal.set(self.placarLocal.get() + 1)
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 1)
+        elif team == 3:
+            self.placarTempo.set(self.placarTempo.get() + 1)
 
     def plus2(self, team):
         if team == 1: 
@@ -120,7 +133,7 @@ class Interface():
         if self.contador:
             tempo = datetime.now() - self.contador
             self.cronometro.set(str(tempo).split('.')[0])
-        self.root.after(10, self.update)
+        self.root.after(1000, self.update)
         
     def zero(self):
         self.placarLocal.set(0)
