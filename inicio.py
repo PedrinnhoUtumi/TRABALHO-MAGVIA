@@ -67,6 +67,7 @@ class Interface():
         
         self.frameSet2 = Label(self.root, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set2, cursor = "hand1") 
         self.frameSet2.place(relx = 0.555, rely = 0.57, relwidth = 0.07, relheight = 0.05)
+        self.frameSet2.bind("<Button-1>", lambda event: self.plus(7))
         
         self.entry_texto = Entry(self.root, textvariable=self.texto_entry2, font=("Courier New", 12, "bold"), bg = "purple", fg = "white")
         self.entry_texto.place(relx=0.70, rely=0.3, relwidth=0.2, relheight=0.05)
@@ -86,7 +87,7 @@ class Interface():
         self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
         
     def botao(self):
-        self.bt_start = Button(self.frame2, text = "Iniciar", cursor = "hand1", command = self.start_timer)
+        self.bt_start = Button(self.frame2, text = "Iniciar", cursor = "clock", command = self.start_timer)
         self.bt_start.place(relx = 0.42, rely = 0.05, relwidth = 0.15, relheight = 0.15)
         
         self.bt_zero = Button(self.frame2, text = "Zerar", command = self.zero, cursor = "hand1")
@@ -101,7 +102,7 @@ class Interface():
         self.bt_continue = Button(self.frame2, text = "Continuar", cursor = "hand1", command = self.continuar)
         self.bt_continue.place(relx = 0.61, rely = 0.05, relwidth = 0.15, relheight = 0.15)
         
-        self.bt_alternar_modo = Button(self.frame2, text="Alternar Modo", cursor="hand1", command = self.alternar_modo)
+        self.bt_alternar_modo = Button(self.frame2, text="Alternar Modo", cursor="exchange", command = self.alternar_modo)
         self.bt_alternar_modo.place(relx = 0.61, rely = 0.25, relwidth = 0.15, relheight = 0.15)
         
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
@@ -141,6 +142,8 @@ class Interface():
             self.awayFools.set(self.awayFools.get() + 1)
         elif team == 6:
             self.set1.set(self.set1.get() + 1)
+        elif team == 7:
+            self.set2.set(self.set2.get() + 1)
             
     def plus2(self, team):
         if team == 1: 
@@ -172,6 +175,10 @@ class Interface():
         self.placarLocal.set(0)
         self.placarTempo.set(1)
         self.placarVisitante.set(0)
+        self.set1.set(0)
+        self.set2.set(0)
+        self.localFools.set(0)
+        self.awayFools.set(0)
         self.contador = datetime.now()
         self.update()
         
