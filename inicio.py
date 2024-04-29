@@ -153,6 +153,9 @@ class Interface():
         self.bt_continue = Button(self.frame2, text = "Continuar", cursor = "hand1", command = self.continuar)
         self.bt_continue.place(relx = 0.61, rely = 0.05, relwidth = 0.15, relheight = 0.15)
         
+        self.bt_theme = Button(self.frame2, text = "Alterar Tema", command = self.change_theme, cursor = "hand1")
+        self.bt_theme.place(relx=0.61, rely=0.25, relwidth=0.15, relheight=0.15)
+
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
         self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15)
 
@@ -306,6 +309,9 @@ class Interface():
             self.contador = datetime.now()
             self.update()
     
+    def change_theme(self):
+        inverted_colors = {"background": "yellow", "foreground": "Black", "highlightbackground": "red"}
+        self.root.configure(background = inverted_colors)
 if __name__ == "__main__": 
     root = Tk()
     app = Interface(root)
