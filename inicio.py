@@ -85,8 +85,8 @@ class Interface():
         self.frame1 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
         
-        self.entry_texto = Entry(self.frame1wid, textvariable=self.texto_entry, font=("Courier New", 12, "bold"), bg = "purple", fg = "white")
-        self.entry_texto.place(relx=0.15, rely=0.3, relwidth=0.2, relheight=0.05)
+        self.entry_texto1 = Entry(self.frame1wid, textvariable=self.texto_entry, font=("Courier New", 12, "bold"), bg = "purple", fg = "white")
+        self.entry_texto1.place(relx=0.15, rely=0.3, relwidth=0.2, relheight=0.05)
         
         self.frameLocalLabel = Label(self.frame1wid, textvariable = self.placarLocal, bg = "aqua", font = ("Courier New", 48, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
         self.frameLocalLabel.place(relx = 0.15, rely = 0.35, relwidth = 0.2, relheight = 0.2)
@@ -310,8 +310,20 @@ class Interface():
             self.update()
     
     def change_theme(self):
-        inverted_colors = {"background": "yellow", "foreground": "Black", "highlightbackground": "red"}
-        self.root.configure(background = inverted_colors)
+        self.frame1wid.config(bg = "yellow")
+        self.frame1.config(bg = "orange")
+        self.frame2.config(bg = "orange")
+        self.frameTime.config(bg = "orange")
+        self.frameVisitante.config(bg = "orange")
+        self.frameLocalLabel.config(bg = "orange")
+        self.frameLocalFools.config(bg = "orange")
+        self.frameSet1.config(bg = "orange")
+        self.frameSet2.config(bg = "orange")
+        self.frameAwayFools.config(bg = "orange")
+        self.entry_texto.config(bg = "yellow")
+        self.entry_texto1.config(bg = "yellow")
+        
+        
 if __name__ == "__main__": 
     root = Tk()
     app = Interface(root)
