@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from datetime import datetime
-
+from serialApp import *
 
 class Interface():
     def __init__(self, root):
@@ -323,8 +323,8 @@ class Interface():
             self.frameSet1.config(bg = "orange", highlightbackground = "yellow")
             self.frameSet2.config(bg = "orange", highlightbackground = "yellow")
             self.frameAwayFools.config(bg = "orange", highlightbackground = "yellow")
-            self.entry_texto.config(bg = "yellow")
-            self.entry_texto1.config(bg = "yellow")
+            self.entry_texto.config(bg = "yellow", fg = "Black")
+            self.entry_texto1.config(bg = "yellow", fg = "Black")
             self.time.config(bg = "yellow", fg = "black")
             self.set1Label.config(bg = "yellow", fg = "black")
             self.set2Label.config(bg = "yellow", fg = "black")
@@ -341,8 +341,8 @@ class Interface():
             self.frameSet1.config(bg = "aqua", highlightbackground = "Blue")
             self.frameSet2.config(bg = "aqua", highlightbackground = "Blue")
             self.frameAwayFools.config(bg = "aqua", highlightbackground = "Blue")
-            self.entry_texto.config(bg = "purple")
-            self.entry_texto1.config(bg = "purple")
+            self.entry_texto.config(bg = "purple", fg = "white")
+            self.entry_texto1.config(bg = "purple", fg = "white")
             self.time.config(bg = "purple", fg = "white")
             self.set1Label.config(bg = "purple", fg = "white")
             self.set2Label.config(bg = "purple", fg = "white")
@@ -354,3 +354,4 @@ if __name__ == "__main__":
     root = Tk()
     app = Interface(root)
     root.mainloop()
+    ser = SerialApp()
