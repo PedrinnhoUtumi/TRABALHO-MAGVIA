@@ -160,6 +160,9 @@ class Interface():
         self.bt_theme2 = Button(self.frame3wid2, text = "Tema roxo", command = lambda: self.change_theme(2), cursor = "hand1")
         self.bt_theme2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
 
+        self.bt_theme3 = Button(self.frame3wid2, text = "Tema cinza", command = lambda: self.change_theme(3), cursor = "hand1")
+        self.bt_theme3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
+
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
         self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15)
 
@@ -348,8 +351,25 @@ class Interface():
             self.set2Label.config(bg = "purple", fg = "white")
             self.AwayFoolsText.config(bg = "purple", fg = "white")
             self.localFoolsText.config(bg = "purple", fg = "white")
+        elif opcao == 3:
+            self.frame1wid.config(bg = "lightgray", highlightbackground = "white")
+            self.frame1.config(bg = "white", highlightbackground = "white")
+            self.frame2.config(bg = "white", highlightbackground = "white")
+            self.frameTime.config(bg = "white", highlightbackground = "white")
+            self.frameVisitante.config(bg = "white", highlightbackground = "white")
+            self.frameLocalLabel.config(bg = "white", highlightbackground = "white")
+            self.frameLocalFools.config(bg = "white", highlightbackground = "white")
+            self.frameSet1.config(bg = "white", highlightbackground = "white")
+            self.frameSet2.config(bg = "white", highlightbackground = "white")
+            self.frameAwayFools.config(bg = "white", highlightbackground = "white")
+            self.entry_texto.config(bg = "lightgray", fg = "red")
+            self.entry_texto1.config(bg = "lightgray", fg = "red")
+            self.time.config(bg = "lightgray", fg = "red")
+            self.set1Label.config(bg = "lightgray", fg = "red")
+            self.set2Label.config(bg = "lightgray", fg = "red")
+            self.AwayFoolsText.config(bg = "lightgray", fg = "red")
+            self.localFoolsText.config(bg = "lightgray", fg = "red")
               
-        
 if __name__ == "__main__": 
     root = Tk()
     app = Interface(root)

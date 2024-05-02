@@ -4,7 +4,7 @@ import serial.tools.list_ports
 class SerialApp():
     def __init__(self):
         self.serialPort = serial.Serial()
-        self.baudrate = [9600, 115200]
+        self.baudrate = [115200]
         self.portList = []
         
     def update_Port(self):
@@ -29,3 +29,4 @@ class SerialApp():
             
     def close_Serial(self):
         self.serialPort.close()
+    
