@@ -9,5 +9,6 @@ while (1):
     ser.read_Serial
     if contador >= 10:
         break
+    ser.serialPort.write(contador)
     contador += 1
 ser.close_Serial()

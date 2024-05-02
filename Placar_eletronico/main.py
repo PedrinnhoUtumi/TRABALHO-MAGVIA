@@ -97,7 +97,7 @@ class Interface():
         self.frameLocalFools.place(relx = 0.15, rely = 0.57, relwidth = 0.2, relheight = 0.05)
         self.frameLocalFools.bind("<Button-1>", lambda event: self.plus(4))
         
-        self.localFoolsText = Label(self.frame1wid, text="Faltas", bg="purple", font=("Courier New", 14, "bold"), fg = "white")
+        self.localFoolsText = Label(self.frame1wid, text="Faltas", bg="purple", font=("Courier New", 12, "bold"), fg = "white")
         self.localFoolsText.place(relx=0.15, rely=0.63, relwidth=0.2, relheight=0.02)
         
         self.time = Label(self.frame1wid, text="Tempo", bg="purple", font=("Courier New", 24, "bold"), fg = "white")
@@ -132,7 +132,7 @@ class Interface():
         self.frameAwayFools.place(relx = 0.70, rely = 0.57, relwidth = 0.2, relheight = 0.05)
         self.frameAwayFools.bind("<Button-1>", lambda event: self.plus(5))
         
-        self.AwayFoolsText = Label(self.frame1wid, text="Faltas", bg="purple", font=("Courier New", 14, "bold"), fg = "white")
+        self.AwayFoolsText = Label(self.frame1wid, text="Faltas", bg="purple", font=("Courier New", 12, "bold"), fg = "white")
         self.AwayFoolsText.place(relx=0.70, rely=0.63, relwidth=0.2, relheight=0.02)
         
         self.frame2 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
