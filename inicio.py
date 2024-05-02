@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from datetime import datetime
 
+
 class Interface():
     def __init__(self, root):
         self.root = root
@@ -131,8 +132,8 @@ class Interface():
         self.frameAwayFools.place(relx = 0.70, rely = 0.57, relwidth = 0.2, relheight = 0.05)
         self.frameAwayFools.bind("<Button-1>", lambda event: self.plus(5))
         
-        self.localAwayText = Label(self.frame1wid, text="Faltas", bg="purple", font=("Courier New", 14, "bold"), fg = "white")
-        self.localAwayText.place(relx=0.70, rely=0.63, relwidth=0.2, relheight=0.02)
+        self.AwayFoolsText = Label(self.frame1wid, text="Faltas", bg="purple", font=("Courier New", 14, "bold"), fg = "white")
+        self.AwayFoolsText.place(relx=0.70, rely=0.63, relwidth=0.2, relheight=0.02)
         
         self.frame2 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
         self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
@@ -153,8 +154,11 @@ class Interface():
         self.bt_continue = Button(self.frame2, text = "Continuar", cursor = "hand1", command = self.continuar)
         self.bt_continue.place(relx = 0.61, rely = 0.05, relwidth = 0.15, relheight = 0.15)
         
-        self.bt_theme = Button(self.frame2, text = "Alterar Tema", command = self.change_theme, cursor = "hand1")
-        self.bt_theme.place(relx=0.61, rely=0.25, relwidth=0.15, relheight=0.15)
+        self.bt_theme = Button(self.frame3wid2, text = "Tema amarelo", command = lambda: self.change_theme(1), cursor = "hand1")
+        self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
+        
+        self.bt_theme2 = Button(self.frame3wid2, text = "Tema roxo", command = lambda: self.change_theme(2), cursor = "hand1")
+        self.bt_theme2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
 
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
         self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15)
@@ -197,8 +201,6 @@ class Interface():
         
         self.bt_plus3_visitante = Button(self.frame2, text = "+3", command = lambda: self.plus3(2), cursor = "hand1")
         self.bt_plus3_visitante.place(relx = 0.8, rely = 0.65, relwidth = 0.15, relheight = 0.15)
-        
-        #self.which_score = Button(self.frame2wid2, text = "Qual esporte será jogado?")
         
     def plus(self, team):
         if team == 1: 
@@ -309,20 +311,44 @@ class Interface():
             self.contador = datetime.now()
             self.update()
     
-    def change_theme(self):
-        self.frame1wid.config(bg = "yellow")
-        self.frame1.config(bg = "orange")
-        self.frame2.config(bg = "orange")
-        self.frameTime.config(bg = "orange")
-        self.frameVisitante.config(bg = "orange")
-        self.frameLocalLabel.config(bg = "orange")
-        self.frameLocalFools.config(bg = "orange")
-        self.frameSet1.config(bg = "orange")
-        self.frameSet2.config(bg = "orange")
-        self.frameAwayFools.config(bg = "orange")
-        self.entry_texto.config(bg = "yellow")
-        self.entry_texto1.config(bg = "yellow")
-        
+    def change_theme(self, opcao):
+        if opcao == 1:
+            self.frame1wid.config(bg = "yellow", highlightbackground = "yellow")
+            self.frame1.config(bg = "orange", highlightbackground = "yellow")
+            self.frame2.config(bg = "orange", highlightbackground = "yellow")
+            self.frameTime.config(bg = "orange", highlightbackground = "yellow")
+            self.frameVisitante.config(bg = "orange", highlightbackground = "yellow")
+            self.frameLocalLabel.config(bg = "orange", highlightbackground = "yellow")
+            self.frameLocalFools.config(bg = "orange", highlightbackground = "yellow")
+            self.frameSet1.config(bg = "orange", highlightbackground = "yellow")
+            self.frameSet2.config(bg = "orange", highlightbackground = "yellow")
+            self.frameAwayFools.config(bg = "orange", highlightbackground = "yellow")
+            self.entry_texto.config(bg = "yellow")
+            self.entry_texto1.config(bg = "yellow")
+            self.time.config(bg = "yellow", fg = "black")
+            self.set1Label.config(bg = "yellow", fg = "black")
+            self.set2Label.config(bg = "yellow", fg = "black")
+            self.AwayFoolsText.config(bg = "yellow", fg = "black")
+            self.localFoolsText.config(bg = "yellow", fg = "black")
+        elif opcao == 2:
+            self.frame1wid.config(bg = "purple", highlightbackground = "Blue")
+            self.frame1.config(bg = "aqua", highlightbackground = "Blue")
+            self.frame2.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameTime.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameVisitante.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameLocalLabel.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameLocalFools.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameSet1.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameSet2.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameAwayFools.config(bg = "aqua", highlightbackground = "Blue")
+            self.entry_texto.config(bg = "purple")
+            self.entry_texto1.config(bg = "purple")
+            self.time.config(bg = "purple", fg = "white")
+            self.set1Label.config(bg = "purple", fg = "white")
+            self.set2Label.config(bg = "purple", fg = "white")
+            self.AwayFoolsText.config(bg = "purple", fg = "white")
+            self.localFoolsText.config(bg = "purple", fg = "white")
+              
         
 if __name__ == "__main__": 
     root = Tk()
