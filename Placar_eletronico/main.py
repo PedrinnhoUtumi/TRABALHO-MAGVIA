@@ -3,6 +3,8 @@ from tkinter import ttk
 from datetime import datetime
 from serialApp import *
 
+ser = serial.Serial("COM3", 115200, 8, "N", 1, 0.5)
+
 class Interface():
     def __init__(self, root):
         self.root = root
@@ -208,6 +210,7 @@ class Interface():
     def plus(self, team):
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
+            ser.write(b'\x00')
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 1)
         elif team == 3:
@@ -374,4 +377,4 @@ if __name__ == "__main__":
     root = Tk()
     app = Interface(root)
     root.mainloop()
-    ser = SerialApp()
+    #ser = SerialApp()
