@@ -213,6 +213,7 @@ class Interface():
             self.serial_Port()
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 1)
+            self.serial_Port()
         elif team == 3:
             self.placarTempo.set(self.placarTempo.get() + 1)
         elif team == 4:
@@ -229,22 +230,28 @@ class Interface():
     def plus2(self, team):
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 2)
+            self.serial_Port()
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 2)
-    
+            self.serial_Port()
+            
     def plus3(self, team):
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 3)
+            self.serial_Port()
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 3)
+            self.serial_Port()
     
     def minus(self, team):
         if team == 1: 
             if self.validate(1):
                 self.placarLocal.set(self.placarLocal.get() - 1)
+                self.serial_Port()
         elif team == 2:
             if self.validate(2):
                 self.placarVisitante.set(self.placarVisitante.get() - 1)
+                self.serial_Port()
         elif team == 3:
             if self.validate(3):
                 self.set1.set(self.set1.get() - 1)
@@ -379,6 +386,7 @@ class Interface():
             i += 1
         bytes_enviar = str(i).encode()
         ser.write(bytes_enviar)
+        
 if __name__ == "__main__": 
     root = Tk()
     app = Interface(root)
