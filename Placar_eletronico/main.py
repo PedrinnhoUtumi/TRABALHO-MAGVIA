@@ -210,7 +210,7 @@ class Interface():
     def plus(self, team):
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
-            ser.write(b'\x00')
+            self.serial_Port()
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 1)
         elif team == 3:
@@ -372,9 +372,14 @@ class Interface():
             self.set2Label.config(bg = "lightgray", fg = "red")
             self.AwayFoolsText.config(bg = "lightgray", fg = "red")
             self.localFoolsText.config(bg = "lightgray", fg = "red")
-              
+    
+    def serial_Port(self):
+        i = 0
+        while i <= 99:
+            i += 1
+        bytes_enviar = str(i).encode()
+        ser.write(bytes_enviar)
 if __name__ == "__main__": 
     root = Tk()
     app = Interface(root)
     root.mainloop()
-    #ser = SerialApp()
