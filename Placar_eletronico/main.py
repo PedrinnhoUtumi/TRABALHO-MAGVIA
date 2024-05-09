@@ -3,17 +3,21 @@ from tkinter import ttk
 from datetime import datetime
 from serialApp import *
 
-##ser = serial.Serial("COM3", 115200, 8, "N", 1, 0.5)
+
 
 class Interface():
     def __init__(self, root): #Aqui é onde eu conecto/crio tudo na minha função construtora
         self.root = root
         self.placarLocal = IntVar()
         self.placarLocal.set(0)
+        self.placarLocalSubs = IntVar()
+        self.placarLocalSubs.set(0)
         self.placarTempo = IntVar()
         self.placarTempo.set(1)
         self.localFools = IntVar()
         self.localFools.set(0)
+        self.placarVisitanteSubs = IntVar()
+        self.placarVisitanteSubs.set(0)
         self.awayFools = IntVar()
         self.awayFools.set(0)
         self.set1 = IntVar()
@@ -48,6 +52,12 @@ class Interface():
         
         self.frame2wid = Frame(self.notebook, bg="purple") #Configura aba 2
         self.notebook.add(self.frame2wid, text='Configurações')
+        
+        self.frame3wid = Frame(self.notebook, bg="purple") #Configura aba 3
+        self.notebook.add(self.frame3wid, text='Escalação')
+        
+        self.frame4wid = Frame(self.notebook, bg="purple") #Configura aba 4
+        self.notebook.add(self.frame4wid, text='Jornal')
         
         #Configura os frames na aba 2
         self.frame1wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Esporte")
@@ -97,6 +107,13 @@ class Interface():
         self.frameLocalLabel.place(relx = 0.15, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar do time da casa
         self.frameLocalLabel.bind("<Button-1>", lambda event: self.plus(1)) #Função do placar
         
+        self.frameLocalSubs = Label(self.frame1wid, textvariable = self.placarLocalSubs, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameLocalSubs.place(relx = 0.363, rely = 0.35, relwidth = 0.05, relheight = 0.05) #Placar das substituições do time da casa
+        self.frameLocalSubs.bind("<Button-1>", lambda event: self.plus(9)) #Função do placar das substituições
+        
+        self.localSubsText = Label(self.frame1wid, text="Subs", bg="purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.localSubsText.place(relx=0.363, rely=0.4, relwidth=0.05, relheight=0.02) #Texto escrito "Subs"
+        
         self.frameLocalFools = Label(self.frame1wid, textvariable = self.localFools, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
         self.frameLocalFools.place(relx = 0.15, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time da casa
         self.frameLocalFools.bind("<Button-1>", lambda event: self.plus(4)) #Função do placar das faltas
@@ -131,6 +148,14 @@ class Interface():
         self.frameVisitante = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarVisitante, cursor = "hand1")
         self.frameVisitante.place(relx = 0.70, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar time visitante
         self.frameVisitante.bind("<Button-1>", lambda event: self.plus(2)) #Função do placar do time visitante
+        
+        self.frameAwaySubs = Label(self.frame1wid, textvariable = self.placarVisitanteSubs, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameAwaySubs.place(relx = 0.637, rely = 0.35, relwidth = 0.05, relheight = 0.05) #Placar das substituições do time visitante
+        self.frameAwaySubs.bind("<Button-1>", lambda event: self.plus(10)) #Função do placar das substituições
+        
+        self.awaySubsText = Label(self.frame1wid, text="Subs", bg="purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.awaySubsText.place(relx=0.637, rely=0.4, relwidth=0.05, relheight=0.02) #Texto escrito "Subs"
+
         
         self.frameAwayFools = Label(self.frame1wid, textvariable = self.awayFools, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
         self.frameAwayFools.place(relx = 0.70, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time visitante
@@ -176,6 +201,12 @@ class Interface():
         self.minus_fool1 = Button(self.frame2, text = "-1 Falta time 1", cursor = "hand1", command = lambda: self.minus(6))
         self.minus_fool1.place(relx = 0.235, rely = 0.25, relwidth = 0.15, relheight = 0.15)
 
+        self.plus_subs1 = Button(self.frame2, text = "+1 Sub time 1", cursor = "hand1", command = lambda: self.plus(9))
+        self.plus_subs1.place(relx = 0.05, rely = 0.85, relwidth = 0.15, relheight = 0.15)
+
+        self.minus_subs1 = Button(self.frame2, text = "-1 Sub time 1", cursor = "hand1", command = lambda: self.minus(8))
+        self.minus_subs1.place(relx = 0.235, rely = 0.85, relwidth = 0.15, relheight = 0.15)
+
         self.plus_time = Button(self.frame2, text = "+1 Periodo", cursor = "hand1", command = lambda: self.plus(8))
         self.plus_time.place(relx = 0.42, rely = 0.25, relwidth = 0.15, relheight = 0.15)
         
@@ -187,6 +218,12 @@ class Interface():
 
         self.minus_fool2 = Button(self.frame2, text = "-1 Falta time 2", cursor = "hand1", command = lambda: self.minus(7))
         self.minus_fool2.place(relx = 0.61, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        
+        self.plus_subs2 = Button(self.frame2, text = "+1 Sub time 2", cursor = "hand1", command = lambda: self.plus(10))
+        self.plus_subs2.place(relx = 0.61, rely = 0.85, relwidth = 0.15, relheight = 0.15)
+        
+        self.minus_subs2 = Button(self.frame2, text = "-1 Sub time 2", cursor = "hand1", command = lambda: self.minus(9))
+        self.minus_subs2.place(relx = 0.8, rely = 0.85, relwidth = 0.15, relheight = 0.15)
 
         self.plus_set1 = Button(self.frame2, text = "+1 set time 1", cursor = "hand1", command = lambda: self.plus(6))
         self.plus_set1.place(relx = 0.235, rely = 0.45, relwidth = 0.15, relheight = 0.15)
@@ -240,6 +277,10 @@ class Interface():
             self.set2.set(self.set2.get() + 1)
         elif team == 8:
             self.placarTempo.set(self.placarTempo.get() + 1)
+        elif team == 9:
+            self.placarLocalSubs.set(self.placarLocalSubs.get() + 1)
+        elif team == 10:
+            self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() + 1)
             
     def plus2(self, team):
         if team == 1: 
@@ -281,6 +322,12 @@ class Interface():
         elif team == 7:
             if self.validate(7):
                 self.awayFools.set(self.awayFools.get() - 1)
+        elif team == 8:
+            if self.validate(8):
+                self.placarLocalSubs.set(self.placarLocalSubs.get() - 1)
+        elif team == 9:
+            if self.validate(9):
+                self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() - 1)
     
     def update(self):
         if self.contador:
@@ -299,6 +346,8 @@ class Interface():
         self.texto_entry2.set("")
         self.localFools.set(0)
         self.awayFools.set(0)
+        self.placarVisitanteSubs.set(0)
+        self.placarLocalSubs.set(0)
         self.contador = datetime.now()
         self.update()
         
@@ -339,6 +388,14 @@ class Interface():
             if self.awayFools.get() <= 0:
                 self.awayFools.set(0)
                 return False 
+        elif opcao == 8:
+            if self.placarLocalSubs.get() <= 0:
+                self.placarLocalSubs.set(0)
+                return False 
+        elif opcao == 9:
+            if self.placarVisitanteSubs.get() <= 0:
+                self.placarVisitanteSubs.set(0)
+                return False 
         return True
             
     def continuar(self):
@@ -364,6 +421,8 @@ class Interface():
             self.frameSet1.config(bg = "orange", highlightbackground = "yellow")
             self.frameSet2.config(bg = "orange", highlightbackground = "yellow")
             self.frameAwayFools.config(bg = "orange", highlightbackground = "yellow")
+            self.frameLocalSubs.config(bg = "orange", highlightbackground = "yellow")
+            self.frameAwaySubs.config(bg = "orange", highlightbackground = "yellow")
             self.entry_texto.config(bg = "yellow", fg = "Black")
             self.entry_texto1.config(bg = "yellow", fg = "Black")
             self.time.config(bg = "yellow", fg = "black")
@@ -371,6 +430,8 @@ class Interface():
             self.set2Label.config(bg = "yellow", fg = "black")
             self.AwayFoolsText.config(bg = "yellow", fg = "black")
             self.localFoolsText.config(bg = "yellow", fg = "black")
+            self.localSubsText.config(bg = "yellow", fg = "black")
+            self.awaySubsText.config(bg = "yellow", fg = "black")
         elif opcao == 2:
             self.frame1wid.config(bg = "purple", highlightbackground = "Blue")
             self.frame1.config(bg = "aqua", highlightbackground = "Blue")
@@ -382,6 +443,8 @@ class Interface():
             self.frameSet1.config(bg = "aqua", highlightbackground = "Blue")
             self.frameSet2.config(bg = "aqua", highlightbackground = "Blue")
             self.frameAwayFools.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameLocalSubs.config(bg = "aqua", highlightbackground = "Blue")
+            self.frameAwaySubs.config(bg = "aqua", highlightbackground = "Blue")
             self.entry_texto.config(bg = "purple", fg = "white")
             self.entry_texto1.config(bg = "purple", fg = "white")
             self.time.config(bg = "purple", fg = "white")
@@ -389,6 +452,8 @@ class Interface():
             self.set2Label.config(bg = "purple", fg = "white")
             self.AwayFoolsText.config(bg = "purple", fg = "white")
             self.localFoolsText.config(bg = "purple", fg = "white")
+            self.localSubsText.config(bg = "purple", fg = "white")
+            self.awaySubsText.config(bg = "purple", fg = "white")
         elif opcao == 3:
             self.frame1wid.config(bg = "lightgray", highlightbackground = "white")
             self.frame1.config(bg = "white", highlightbackground = "white")
@@ -400,6 +465,8 @@ class Interface():
             self.frameSet1.config(bg = "white", highlightbackground = "white")
             self.frameSet2.config(bg = "white", highlightbackground = "white")
             self.frameAwayFools.config(bg = "white", highlightbackground = "white")
+            self.frameLocalSubs.config(bg = "white", highlightbackground = "white")
+            self.frameAwaySubs.config(bg = "white", highlightbackground = "white")
             self.entry_texto.config(bg = "lightgray", fg = "red")
             self.entry_texto1.config(bg = "lightgray", fg = "red")
             self.time.config(bg = "lightgray", fg = "red")
@@ -407,15 +474,18 @@ class Interface():
             self.set2Label.config(bg = "lightgray", fg = "red")
             self.AwayFoolsText.config(bg = "lightgray", fg = "red")
             self.localFoolsText.config(bg = "lightgray", fg = "red")
-"""   
-    def serial_Port(self):
+            self.localSubsText.config(bg = "lightgray", fg = "red")
+            self.awaySubsText.config(bg = "lightgray", fg = "red")
+            
+"""    def serial_Port(self):
         i = 0
         while i <= 99:
             i += 1
         bytes_enviar = str(i).encode()
         ser.write(bytes_enviar)
-"""    
+    """
 if __name__ == "__main__": 
     root = Tk()
     app = Interface(root)
+    #ser = serial.Serial("COM3", 115200, 8, "N", 1, 0.05)
     root.mainloop()
