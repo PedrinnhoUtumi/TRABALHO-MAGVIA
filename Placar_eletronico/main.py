@@ -31,6 +31,8 @@ class Interface():
         self.cronometro.set("0:00:00")
         self.texto_entry = StringVar()
         self.texto_entry2 = StringVar()
+        self.columnsEntrys = 7
+        self.linhasEntrys = 15
         self.contador = None
         self.config_tela()
         self.frames()
@@ -58,43 +60,9 @@ class Interface():
         
         self.frame4wid = Frame(self.notebook, bg="purple") #Configura aba 4
         self.notebook.add(self.frame4wid, text='Jornal')
-        
-        #Configura os frames na aba 2
-        self.frame1wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Esporte")
-        self.frame1wid2Label.place(relx = 0.15, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame2wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Cronômetro")
-        self.frame2wid2Label.place(relx = 0.15, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame3wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Mudar tema")
-        self.frame3wid2Label.place(relx = 0.425, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame4wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
-        self.frame4wid2Label.place(relx = 0.425, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame5wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
-        self.frame5wid2Label.place(relx = 0.7, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame6wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
-        self.frame6wid2Label.place(relx = 0.7, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame1wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
-        self.frame1wid2.place(relx = 0.15, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame2wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
-        self.frame2wid2.place(relx = 0.15, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame3wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
-        self.frame3wid2.place(relx = 0.425, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame4wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
-        self.frame4wid2.place(relx = 0.425, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame5wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
-        self.frame5wid2.place(relx = 0.7, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
-        
-        self.frame6wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
-        self.frame6wid2.place(relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
+
+        self.frame5wid = Frame(self.notebook, bg="purple") #Configura aba 4
+        self.notebook.add(self.frame5wid, text='24 Segundos')
         
         #Configura os frames na aba 1
         self.frame1 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
@@ -167,98 +135,149 @@ class Interface():
         self.frame2 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
         self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
         
+        #Configura os frames na aba 2
+        self.frame1wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Esporte")
+        self.frame1wid2Label.place(relx = 0.15, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame2wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Cronômetro")
+        self.frame2wid2Label.place(relx = 0.15, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame3wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Mudar tema")
+        self.frame3wid2Label.place(relx = 0.425, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame4wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
+        self.frame4wid2Label.place(relx = 0.425, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame5wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
+        self.frame5wid2Label.place(relx = 0.7, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame6wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
+        self.frame6wid2Label.place(relx = 0.7, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame1wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
+        self.frame1wid2.place(relx = 0.15, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame2wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame2wid2.place(relx = 0.15, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame3wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
+        self.frame3wid2.place(relx = 0.425, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame4wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame4wid2.place(relx = 0.425, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame5wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
+        self.frame5wid2.place(relx = 0.7, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
+        
+        self.frame6wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame6wid2.place(relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
+        
+        
+        #Configura os frames da aba 3
+        self.frame1wid3Label = Label(self.frame3wid, bg = "purple", fg = "white", text = "Time Local Esquerda")
+        self.frame1wid3Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
+        
+        self.frame1wid3 = Label(self.frame3wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame1wid3.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.75)
+        
+        self.frame2wid3Label = Label(self.frame3wid, bg = "purple", fg = "white", text = "Time Visitante Direita")
+        self.frame2wid3Label.place(relx = 0.5, rely = 0.01, relwidth = 0.15, relheight = 0.05)
+        
+        self.frame2wid3 = Label(self.frame3wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
+        
     def botao(self):
-        self.bt_start = Button(self.frame2wid2, text = "Iniciar", cursor = "clock", command = self.start_timer)
-        self.bt_start.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
+        self.bt_start = Button(self.frame2, text = "Iniciar", cursor = "clock", command = self.start_timer)
+        self.bt_start.place(relx = 0.42, rely = 0.05, relwidth = 0.15, relheight = 0.15) #Iniciar cronômetro
         
         self.bt_zero = Button(self.frame2wid2, text = "Zerar", command = self.zero, cursor = "hand1")
-        self.bt_zero.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
+        self.bt_zero.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Zerar toda a página
         
         self.bt_pause = Button(self.frame2wid2, text = "Pausar", command = lambda: self.pause(1), cursor = "hand1")
-        self.bt_pause.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
+        self.bt_pause.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Pausar cronômetro
         
         self.bt_reniciar = Button(self.frame2wid2, text = "Reiniciar", command = lambda: self.pause(2), cursor = "hand1")
-        self.bt_reniciar.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
+        self.bt_reniciar.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15) #Reinciar cronômetro
         
         self.bt_continue = Button(self.frame2wid2, text = "Continuar", cursor = "hand1", command = self.continuar)
-        self.bt_continue.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
+        self.bt_continue.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Continuar cronômetro após pausa
         
         self.bt_theme = Button(self.frame3wid2, text = "Tema amarelo", command = lambda: self.change_theme(1), cursor = "hand1")
-        self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
+        self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Mudar tema para amarelo
         
         self.bt_theme2 = Button(self.frame3wid2, text = "Tema roxo", command = lambda: self.change_theme(2), cursor = "hand1")
-        self.bt_theme2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
+        self.bt_theme2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Mudar tema para roxo
 
         self.bt_theme3 = Button(self.frame3wid2, text = "Tema cinza", command = lambda: self.change_theme(3), cursor = "hand1")
-        self.bt_theme3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
+        self.bt_theme3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Mudar tema para cinza
 
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
-        self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15) #-1 ponto do time de casa
 
         self.plus_fool1 = Button(self.frame2, text = "+1 Falta time 1", cursor = "hand1", command = lambda: self.plus(4))
-        self.plus_fool1.place(relx = 0.235, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        self.plus_fool1.place(relx = 0.235, rely = 0.05, relwidth = 0.15, relheight = 0.15) #+1 falta do time de casa
 
         self.minus_fool1 = Button(self.frame2, text = "-1 Falta time 1", cursor = "hand1", command = lambda: self.minus(6))
-        self.minus_fool1.place(relx = 0.235, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        self.minus_fool1.place(relx = 0.235, rely = 0.25, relwidth = 0.15, relheight = 0.15) #-1 falta do time de casa
 
         self.plus_subs1 = Button(self.frame2, text = "+1 Sub time 1", cursor = "hand1", command = lambda: self.plus(9))
-        self.plus_subs1.place(relx = 0.05, rely = 0.85, relwidth = 0.15, relheight = 0.15)
+        self.plus_subs1.place(relx = 0.05, rely = 0.85, relwidth = 0.15, relheight = 0.15) #+1 substituição do time de casa
 
         self.minus_subs1 = Button(self.frame2, text = "-1 Sub time 1", cursor = "hand1", command = lambda: self.minus(8))
-        self.minus_subs1.place(relx = 0.235, rely = 0.85, relwidth = 0.15, relheight = 0.15)
+        self.minus_subs1.place(relx = 0.235, rely = 0.85, relwidth = 0.15, relheight = 0.15) #-1 substituição do time de casa
 
         self.plus_time = Button(self.frame2, text = "+1 Periodo", cursor = "hand1", command = lambda: self.plus(8))
-        self.plus_time.place(relx = 0.42, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        self.plus_time.place(relx = 0.42, rely = 0.25, relwidth = 0.15, relheight = 0.15) #+1 periodo
         
         self.minus_time = Button(self.frame2, text = "-1 Periodo", cursor = "hand1", command = lambda: self.minus(5))
-        self.minus_time.place(relx = 0.42, rely = 0.45, relwidth = 0.15, relheight = 0.15)
+        self.minus_time.place(relx = 0.42, rely = 0.45, relwidth = 0.15, relheight = 0.15) #-1 periodo
 
         self.plus_fool2 = Button(self.frame2, text = "+1 Falta time 2", cursor = "hand1", command = lambda: self.plus(5))
-        self.plus_fool2.place(relx = 0.61, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        self.plus_fool2.place(relx = 0.61, rely = 0.05, relwidth = 0.15, relheight = 0.15) #+1 falta do time visitante
 
         self.minus_fool2 = Button(self.frame2, text = "-1 Falta time 2", cursor = "hand1", command = lambda: self.minus(7))
-        self.minus_fool2.place(relx = 0.61, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        self.minus_fool2.place(relx = 0.61, rely = 0.25, relwidth = 0.15, relheight = 0.15) #+1 falta do time visitante
         
         self.plus_subs2 = Button(self.frame2, text = "+1 Sub time 2", cursor = "hand1", command = lambda: self.plus(10))
-        self.plus_subs2.place(relx = 0.61, rely = 0.85, relwidth = 0.15, relheight = 0.15)
+        self.plus_subs2.place(relx = 0.61, rely = 0.85, relwidth = 0.15, relheight = 0.15) #+1 substituição do time visitante
         
         self.minus_subs2 = Button(self.frame2, text = "-1 Sub time 2", cursor = "hand1", command = lambda: self.minus(9))
-        self.minus_subs2.place(relx = 0.8, rely = 0.85, relwidth = 0.15, relheight = 0.15)
+        self.minus_subs2.place(relx = 0.8, rely = 0.85, relwidth = 0.15, relheight = 0.15) #-1 substituição do time visitante
 
         self.plus_set1 = Button(self.frame2, text = "+1 set time 1", cursor = "hand1", command = lambda: self.plus(6))
-        self.plus_set1.place(relx = 0.235, rely = 0.45, relwidth = 0.15, relheight = 0.15)
+        self.plus_set1.place(relx = 0.235, rely = 0.45, relwidth = 0.15, relheight = 0.15) #+1 set do time da casa
         
         self.plus_set2 = Button(self.frame2, text = "+1 set time 2", cursor = "hand1", command = lambda: self.plus(7))
-        self.plus_set2.place(relx = 0.61, rely = 0.45, relwidth = 0.15, relheight = 0.15)
+        self.plus_set2.place(relx = 0.61, rely = 0.45, relwidth = 0.15, relheight = 0.15) #+1 set do time visitante
         
         self.minus_set1 = Button(self.frame2, text = "-1 set time 1", cursor = "hand1", command = lambda: self.minus(3))
-        self.minus_set1.place(relx = 0.235, rely = 0.65, relwidth = 0.15, relheight = 0.15)
+        self.minus_set1.place(relx = 0.235, rely = 0.65, relwidth = 0.15, relheight = 0.15) #-1 set do time da casa
         
         self.minus_set2 = Button(self.frame2, text = "-1 set time 2", cursor = "hand1", command = lambda: self.minus(4))
-        self.minus_set2.place(relx = 0.61, rely = 0.65, relwidth = 0.15, relheight = 0.15)
+        self.minus_set2.place(relx = 0.61, rely = 0.65, relwidth = 0.15, relheight = 0.15) #-1 set do time visitante
         
         self.plus1 = Button(self.frame2, text = "+1", command = lambda: self.plus(1), cursor = "hand1")
-        self.plus1.place(relx = 0.05, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        self.plus1.place(relx = 0.05, rely = 0.25, relwidth = 0.15, relheight = 0.15) #+1 ponto do time de casa
         
         self.bt_plus2 = Button(self.frame2, text = "+2", command = lambda: self.plus2(1), cursor = "hand1")
-        self.bt_plus2.place(relx = 0.05, rely = 0.45, relwidth = 0.15, relheight = 0.15)
+        self.bt_plus2.place(relx = 0.05, rely = 0.45, relwidth = 0.15, relheight = 0.15) #+2 pontos do time de casa 
         
         self.bt_plus3 = Button(self.frame2, text = "+3", command = lambda: self.plus3(1), cursor = "hand1")
-        self.bt_plus3.place(relx = 0.05, rely = 0.65, relwidth = 0.15, relheight = 0.15)
+        self.bt_plus3.place(relx = 0.05, rely = 0.65, relwidth = 0.15, relheight = 0.15) #+3 pontos do time de casa
         
         self.bt_minus_visitante = Button(self.frame2, text = "-1", command = lambda: self.minus(2), cursor = "hand1")
-        self.bt_minus_visitante.place(relx = 0.8, rely = 0.05, relwidth = 0.15, relheight = 0.15)
+        self.bt_minus_visitante.place(relx = 0.8, rely = 0.05, relwidth = 0.15, relheight = 0.15) #-1 ponto do time visitante
         
         self.plus_visitante = Button(self.frame2, text = "+1", command = lambda: self.plus(2), cursor = "hand1")
-        self.plus_visitante.place(relx = 0.8, rely = 0.25, relwidth = 0.15, relheight = 0.15)
+        self.plus_visitante.place(relx = 0.8, rely = 0.25, relwidth = 0.15, relheight = 0.15) #+1 ponto do time visitante
          
         self.bt_plus2_visitante = Button(self.frame2, text = "+2", command = lambda: self.plus2(2), cursor = "hand1")
-        self.bt_plus2_visitante.place(relx = 0.8, rely = 0.45, relwidth = 0.15, relheight = 0.15)
+        self.bt_plus2_visitante.place(relx = 0.8, rely = 0.45, relwidth = 0.15, relheight = 0.15) #+2 pontos do time visitante
         
         self.bt_plus3_visitante = Button(self.frame2, text = "+3", command = lambda: self.plus3(2), cursor = "hand1")
-        self.bt_plus3_visitante.place(relx = 0.8, rely = 0.65, relwidth = 0.15, relheight = 0.15)
+        self.bt_plus3_visitante.place(relx = 0.8, rely = 0.65, relwidth = 0.15, relheight = 0.15) #+3 pontos do time visitante
         
-    def plus(self, team):
+    def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
             self.serial_Port()
@@ -282,7 +301,7 @@ class Interface():
         elif team == 10:
             self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() + 1)
             
-    def plus2(self, team):
+    def plus2(self, team): #Defiinindo a função que vai adicionar 2 pontos
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 2)
             self.serial_Port()
@@ -290,7 +309,7 @@ class Interface():
             self.placarVisitante.set(self.placarVisitante.get() + 2)
             self.serial_Port()
             
-    def plus3(self, team):
+    def plus3(self, team): #Defiinindo a função que vai adicionar 3 pontos
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 3)
             self.serial_Port()
@@ -298,7 +317,7 @@ class Interface():
             self.placarVisitante.set(self.placarVisitante.get() + 3)
             self.serial_Port()
     
-    def minus(self, team):
+    def minus(self, team): #Defiinindo a função que vai tirar pontos, sets etc
         if team == 1: 
             if self.validate(1):
                 self.placarLocal.set(self.placarLocal.get() - 1)
@@ -329,13 +348,13 @@ class Interface():
             if self.validate(9):
                 self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() - 1)
     
-    def update(self):
+    def update(self): #Para que nosso cronômetro comece a rodar
         if self.contador:
             tempo = datetime.now() - self.contador
             self.cronometro.set(str(tempo).split('.')[0])
         self.root.after(1000, self.update)
         
-    def zero(self):
+    def zero(self): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
         self.placarTempo.set(1)
         self.placarVisitante.set(0)
@@ -352,14 +371,14 @@ class Interface():
         self.update()
         
     def pause(self, opcao):
-        if opcao == 1:
+        if opcao == 1: #Aqui vai pausar
             self.contador_pause = datetime.now() - self.contador
             self.contador = None
-        elif opcao == 2:
+        elif opcao == 2: #Aqui vai reiniciar o cronômetro
             self.contador = datetime.now()
             self.update()
     
-    def validate(self, opcao):
+    def validate(self, opcao): #Serve para que os números não passem de seu mínimo permitido
         if opcao == 1:
             if self.placarLocal.get() <= 0:
                 self.placarLocal.set(0)
@@ -398,19 +417,19 @@ class Interface():
                 return False 
         return True
             
-    def continuar(self):
+    def continuar(self): #Continua o cronômetro se estiver pausado
         if self.contador_pause:
             self.contador = datetime.now() - self.contador_pause
             self.update()
             self.contador_pause = None
         
-    def start_timer(self):
+    def start_timer(self): #Inicia o cronômetro
         if not self.contador:  #Apenas inicie se o contador não estiver ativado
             self.contador = datetime.now()
             self.update()
     
-    def change_theme(self, opcao):
-        if opcao == 1:
+    def change_theme(self, opcao): #Muda os temas
+        if opcao == 1: #Tema amarelo
             self.frame1wid.config(bg = "yellow", highlightbackground = "yellow")
             self.frame1.config(bg = "orange", highlightbackground = "yellow")
             self.frame2.config(bg = "orange", highlightbackground = "yellow")
@@ -432,7 +451,7 @@ class Interface():
             self.localFoolsText.config(bg = "yellow", fg = "black")
             self.localSubsText.config(bg = "yellow", fg = "black")
             self.awaySubsText.config(bg = "yellow", fg = "black")
-        elif opcao == 2:
+        elif opcao == 2: #Tema roxo
             self.frame1wid.config(bg = "purple", highlightbackground = "Blue")
             self.frame1.config(bg = "aqua", highlightbackground = "Blue")
             self.frame2.config(bg = "aqua", highlightbackground = "Blue")
@@ -454,7 +473,7 @@ class Interface():
             self.localFoolsText.config(bg = "purple", fg = "white")
             self.localSubsText.config(bg = "purple", fg = "white")
             self.awaySubsText.config(bg = "purple", fg = "white")
-        elif opcao == 3:
+        elif opcao == 3: #Tema cinza
             self.frame1wid.config(bg = "lightgray", highlightbackground = "white")
             self.frame1.config(bg = "white", highlightbackground = "white")
             self.frame2.config(bg = "white", highlightbackground = "white")
@@ -477,15 +496,15 @@ class Interface():
             self.localSubsText.config(bg = "lightgray", fg = "red")
             self.awaySubsText.config(bg = "lightgray", fg = "red")
             
-    def serial_Port(self):
+    def serial_Port(self): #Faz a comunicação com a porta serial
         i = 0
         while i <= 99:
             i += 1
         bytes_enviar = str(i).encode()
         ser.write(bytes_enviar)
-
-if __name__ == "__main__": 
+        
+if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
-    ser = serial.Serial("COM3", 115200, 8, "N", 1, 0.05)
+    ser = serial.Serial("COM4", 115200, 8, "N", 1, 0.05)
     root.mainloop()
