@@ -1,9 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from datetime import datetime
-from serialApp import *
-
-
+import serial
 
 class Interface():
     def __init__(self, root): #Aqui é onde eu conecto/crio tudo na minha função construtora
@@ -151,7 +149,7 @@ class Interface():
         self.frame3wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Mudar tema")
         self.frame3wid2Label.place(relx = 0.425, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame4wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
+        self.frame4wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Comunicação Serial")
         self.frame4wid2Label.place(relx = 0.425, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
         
         self.frame5wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
@@ -205,17 +203,18 @@ class Interface():
         self.bt_reniciar = Button(self.frameLado, text = "Reiniciar", command = lambda: self.pause(2), cursor = "hand1")
         self.bt_reniciar.place(relx = 0.15, rely = 0.3, relwidth = 0.7, relheight = 0.03) #Reinciar cronômetro
         
-        self.bt_continue = Button(self.frameLado, text = "Continuar", cursor = "hand1", command = self.continuar)
+        self.bt_continue = Button(self.frameLado, text = "Continuar", cursor = "hand1", command = lambda: self.pause(3))
         self.bt_continue.place(relx = 0.15, rely = 0.35, relwidth = 0.7, relheight = 0.03) #Continuar cronômetro após pausa
         
-        self.bt_theme = Button(self.frame3wid2, text = "Tema amarelo", command = lambda: self.change_theme(1), cursor = "hand1")
-        self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Mudar tema para amarelo
-        
-        self.bt_theme2 = Button(self.frame3wid2, text = "Tema roxo", command = lambda: self.change_theme(2), cursor = "hand1")
-        self.bt_theme2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Mudar tema para roxo
+        self.bt_add1min = Button(self.frameLado, text = "+1 minuto", cursor = "hand1")
+        self.bt_add1min.place(relx = 0.15, rely = 0.4, relwidth = 0.7, relheight = 0.03) #Adiciona 1 minuto ao cronômetro
 
-        self.bt_theme3 = Button(self.frame3wid2, text = "Tema cinza", command = lambda: self.change_theme(3), cursor = "hand1")
-        self.bt_theme3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Mudar tema para cinza
+        self.bt_add1min = Button(self.frameLado, text = "-1 minuto", cursor = "hand1")
+        self.bt_add1min.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.03) #Remove 1 minuto ao cronômetro
+
+        self.entry_time = Entry (self.frameLado, cursor = "hand1")
+        self.entry_time.place(relx = 0.15, rely = 0.5, relwidth = 0.7, relheight = 0.03)
+        
 
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
         self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15) #-1 ponto do time de casa
@@ -282,6 +281,15 @@ class Interface():
         
         self.bt_plus3_visitante = Button(self.frame2, text = "+3", command = lambda: self.plus3(2), cursor = "hand1")
         self.bt_plus3_visitante.place(relx = 0.8, rely = 0.65, relwidth = 0.15, relheight = 0.15) #+3 pontos do time visitante
+        
+        self.bt_theme = Button(self.frame3wid2, text = "Tema amarelo", command = lambda: self.change_theme(1), cursor = "hand1")
+        self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Mudar tema para amarelo
+        
+        self.bt_theme2 = Button(self.frame3wid2, text = "Tema roxo", command = lambda: self.change_theme(2), cursor = "hand1")
+        self.bt_theme2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Mudar tema para roxo
+
+        self.bt_theme3 = Button(self.frame3wid2, text = "Tema cinza", command = lambda: self.change_theme(3), cursor = "hand1")
+        self.bt_theme3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Mudar tema para cinza
         
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
@@ -373,17 +381,22 @@ class Interface():
         self.awayFools.set(0)
         self.placarVisitanteSubs.set(0)
         self.placarLocalSubs.set(0)
-        self.contador = datetime.now()
-        self.update()
+        self.contador = None
         
     def pause(self, opcao):
         if opcao == 1: #Aqui vai pausar
             self.contador_pause = datetime.now() - self.contador
             self.contador = None
         elif opcao == 2: #Aqui vai reiniciar o cronômetro
-            self.contador = datetime.now()
-            self.update()
-    
+            self.cronometro.set("0:00:00")
+            self.contador = None
+        elif opcao == 3: #Continua o cronômetro se estiver pausado
+            if self.contador_pause:
+                self.contador = datetime.now() - self.contador_pause
+                self.update()
+                self.contador_pause = None
+
+            
     def validate(self, opcao): #Serve para que os números não passem de seu mínimo permitido
         if opcao == 1:
             if self.placarLocal.get() <= 0:
@@ -423,17 +436,11 @@ class Interface():
                 return False 
         return True
             
-    def continuar(self): #Continua o cronômetro se estiver pausado
-        if self.contador_pause:
-            self.contador = datetime.now() - self.contador_pause
-            self.update()
-            self.contador_pause = None
-        
     def start_timer(self): #Inicia o cronômetro
         if not self.contador:  #Apenas inicie se o contador não estiver ativado
             self.contador = datetime.now()
             self.update()
-    
+            
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema amarelo
             self.frame1wid.config(bg = "yellow", highlightbackground = "yellow")
@@ -508,15 +515,15 @@ class Interface():
             self.awaySubsText.config(bg = "lightgray", fg = "red")
             self.frameLadoLabel.config(bg = "white", fg = "red")
             
-    def serial_Port(self): #Faz a comunicação com a porta serial
+"""    def serial_Port(self): #Faz a comunicação com a porta serial
         i = 0
         while i <= 99:
             i += 1
         bytes_enviar = str(i).encode()
         ser.write(bytes_enviar)
-        
+"""    
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
-    ser = serial.Serial("COM4", 115200, 8, "N", 1, 0.05)
+    #ser = serial.Serial("COM4", 115200, 8, "N", 1, 0.05)
     root.mainloop()
