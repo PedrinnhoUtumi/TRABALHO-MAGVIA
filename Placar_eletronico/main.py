@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import ttk
-from datetime import datetime
+from datetime import datetime, timedelta 
+import time
+import threading
 import serial
 
 class Interface():
@@ -26,12 +28,13 @@ class Interface():
         self.placarVisitante.set(0)
         self.tempo_correndo = False
         self.cronometro = StringVar()
-        self.cronometro.set("0:00:00")
+        self.cronometro.set("0:00:00.000")
         self.texto_entry = StringVar()
         self.texto_entry2 = StringVar()
         self.columnsEntrys = 7
         self.linhasEntrys = 15
         self.contador = None
+        self.tempo_extra = timedelta()
         self.config_tela()
         self.frames()
         self.botao()
@@ -206,11 +209,11 @@ class Interface():
         self.bt_continue = Button(self.frameLado, text = "Continuar", cursor = "hand1", command = lambda: self.pause(3))
         self.bt_continue.place(relx = 0.15, rely = 0.35, relwidth = 0.7, relheight = 0.03) #Continuar cronômetro após pausa
         
-        self.bt_add1min = Button(self.frameLado, text = "+1 minuto", cursor = "hand1")
+        self.bt_add1min = Button(self.frameLado, text = "+1 minuto", cursor = "hand1", command = self.add_minute)
         self.bt_add1min.place(relx = 0.15, rely = 0.4, relwidth = 0.7, relheight = 0.03) #Adiciona 1 minuto ao cronômetro
 
-        self.bt_add1min = Button(self.frameLado, text = "-1 minuto", cursor = "hand1")
-        self.bt_add1min.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.03) #Remove 1 minuto ao cronômetro
+        self.bt_minus1min = Button(self.frameLado, text = "-1 minuto", cursor = "hand1")
+        self.bt_minus1min.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.03) #Remove 1 minuto ao cronômetro
 
         self.entry_time = Entry (self.frameLado, cursor = "hand1")
         self.entry_time.place(relx = 0.15, rely = 0.5, relwidth = 0.7, relheight = 0.03)
@@ -365,8 +368,16 @@ class Interface():
     def update(self): #Para que nosso cronômetro comece a rodar
         if self.contador:
             tempo = datetime.now() - self.contador
-            self.cronometro.set(str(tempo).split('.')[0])
-        self.root.after(1000, self.update)
+            total_milliseconds = int(tempo.total_seconds() * 1000)
+            horas, resto = divmod(total_milliseconds, 3600000)
+            minutos, resto = divmod(resto, 60000)
+            segundos, milissegundos = divmod(resto, 1000)
+            self.cronometro.set(f"{int(horas):02}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):03}")
+        self.root.after(1, self.update)
+        self.root.after(1000, self.serial_Port)
+        
+    def add_minute(self):
+        self.tempo_extra += timedelta(minutes=1)
         
     def zero(self): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
@@ -374,7 +385,7 @@ class Interface():
         self.placarVisitante.set(0)
         self.set1.set(0)
         self.set2.set(0)
-        self.cronometro.set("0:00:00")
+        self.cronometro.set("0:00:00.000")
         self.texto_entry.set("")
         self.texto_entry2.set("")
         self.localFools.set(0)
@@ -388,7 +399,7 @@ class Interface():
             self.contador_pause = datetime.now() - self.contador
             self.contador = None
         elif opcao == 2: #Aqui vai reiniciar o cronômetro
-            self.cronometro.set("0:00:00")
+            self.cronometro.set("0:00:00.000")
             self.contador = None
         elif opcao == 3: #Continua o cronômetro se estiver pausado
             if self.contador_pause:
@@ -515,15 +526,21 @@ class Interface():
             self.awaySubsText.config(bg = "lightgray", fg = "red")
             self.frameLadoLabel.config(bg = "white", fg = "red")
             
-"""    def serial_Port(self): #Faz a comunicação com a porta serial
-        i = 0
-        while i <= 99:
-            i += 1
-        bytes_enviar = str(i).encode()
-        ser.write(bytes_enviar)
-"""    
+    def serial_Port(self): #Faz a comunicação com a porta serial
+        def send():
+            i = 0
+            while True:
+                bytes_enviar = str(i).encode()
+                ser.write(bytes_enviar)
+                ser.flush()
+                time.sleep(1)
+        thread = threading.Thread(target=send)
+        thread.start()
+
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
-    #ser = serial.Serial("COM4", 115200, 8, "N", 1, 0.05)
+    ser = serial.Serial("COM3", 115200, 8, "N", 1, 0.05)
+    
+
     root.mainloop()
