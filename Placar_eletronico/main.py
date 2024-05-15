@@ -373,7 +373,7 @@ class Interface():
             minutos, resto = divmod(resto, 60000)
             segundos, milissegundos = divmod(resto, 1000)
             self.cronometro.set(f"{int(horas):02}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):03}")
-        self.root.after(1, self.update)
+        self.root.after(10, self.update)
         self.root.after(1000, self.serial_Port)
         
     def add_minute(self):
@@ -467,6 +467,7 @@ class Interface():
             self.frameLocalSubs.config(bg = "orange", highlightbackground = "yellow")
             self.frameAwaySubs.config(bg = "orange", highlightbackground = "yellow")
             self.frameLado.config(bg = "orange", highlightbackground = "yellow")
+            self.entry_time.config(bg = "yellow", fg = "black")
             self.entry_texto.config(bg = "yellow", fg = "Black")
             self.entry_texto1.config(bg = "yellow", fg = "Black")
             self.time.config(bg = "yellow", fg = "black")
@@ -491,9 +492,10 @@ class Interface():
             self.frameLocalSubs.config(bg = "aqua", highlightbackground = "Blue")
             self.frameAwaySubs.config(bg = "aqua", highlightbackground = "Blue")
             self.frameLado.config(bg = "aqua", highlightbackground = "Blue")
+            self.entry_time.config(bg = "purple", fg = "white")
             self.entry_texto.config(bg = "purple", fg = "white")
             self.entry_texto1.config(bg = "purple", fg = "white")
-            self.time.config(bg = "purple", fg = "white")
+            self.time.config(bg = "white", fg = "black")
             self.set1Label.config(bg = "purple", fg = "white")
             self.set2Label.config(bg = "purple", fg = "white")
             self.AwayFoolsText.config(bg = "purple", fg = "white")
@@ -515,6 +517,7 @@ class Interface():
             self.frameLocalSubs.config(bg = "white", highlightbackground = "white")
             self.frameAwaySubs.config(bg = "white", highlightbackground = "white")
             self.frameLado.config(bg = "white", highlightbackground = "white")
+            self.entry_time.config(bg = "lightgray", fg = "red")
             self.entry_texto.config(bg = "lightgray", fg = "red")
             self.entry_texto1.config(bg = "lightgray", fg = "red")
             self.time.config(bg = "lightgray", fg = "red")
@@ -527,13 +530,13 @@ class Interface():
             self.frameLadoLabel.config(bg = "white", fg = "red")
             
     def serial_Port(self): #Faz a comunicação com a porta serial
-        def send():
+        def send(): #Funçao que manda os dados para a porta serial
             i = 0
             while True:
                 bytes_enviar = str(i).encode()
                 ser.write(bytes_enviar)
+                time.sleep(1000)
                 ser.flush()
-                time.sleep(1)
         thread = threading.Thread(target=send)
         thread.start()
 
@@ -541,6 +544,4 @@ if __name__ == "__main__": #Inicia o programa
     root = Tk()
     app = Interface(root)
     ser = serial.Serial("COM3", 115200, 8, "N", 1, 0.05)
-    
-
     root.mainloop()
