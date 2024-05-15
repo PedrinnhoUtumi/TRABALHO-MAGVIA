@@ -297,10 +297,8 @@ class Interface():
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
-            self.serial_Port()
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 1)
-            self.serial_Port()
         elif team == 3:
             self.placarTempo.set(self.placarTempo.get() + 1)
         elif team == 4:
@@ -317,32 +315,29 @@ class Interface():
             self.placarLocalSubs.set(self.placarLocalSubs.get() + 1)
         elif team == 10:
             self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() + 1)
-            
+        self.serial_Port()
+        
     def plus2(self, team): #Defiinindo a função que vai adicionar 2 pontos
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 2)
-            self.serial_Port()
         elif team == 2:
-            self.placarVisitante.set(self.placarVisitante.get() + 2)
-            self.serial_Port()
-            
+            self.placarVisitante.set(self.placarVisitante.get() + 2)            
+        self.serial_Port()
+        
     def plus3(self, team): #Defiinindo a função que vai adicionar 3 pontos
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 3)
-            self.serial_Port()
         elif team == 2:
             self.placarVisitante.set(self.placarVisitante.get() + 3)
-            self.serial_Port()
+        self.serial_Port()
     
     def minus(self, team): #Defiinindo a função que vai tirar pontos, sets etc
         if team == 1: 
             if self.validate(1):
                 self.placarLocal.set(self.placarLocal.get() - 1)
-                self.serial_Port()
         elif team == 2:
             if self.validate(2):
                 self.placarVisitante.set(self.placarVisitante.get() - 1)
-                self.serial_Port()
         elif team == 3:
             if self.validate(3):
                 self.set1.set(self.set1.get() - 1)
@@ -364,7 +359,8 @@ class Interface():
         elif team == 9:
             if self.validate(9):
                 self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() - 1)
-    
+        self.serial_Port()
+        
     def update(self): #Para que nosso cronômetro comece a rodar
         if self.contador:
             tempo = datetime.now() - self.contador
