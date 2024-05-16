@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from datetime import datetime, timedelta 
 import time
 import threading
@@ -369,8 +370,8 @@ class Interface():
             minutos, resto = divmod(resto, 60000)
             segundos, milissegundos = divmod(resto, 1000)
             self.cronometro.set(f"{int(horas):02}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):03}")
-        self.root.after(10, self.update)
         self.root.after(1000, self.serial_Port)
+        self.root.after(10, self.update)
         
     def add_minute(self):
         self.tempo_extra += timedelta(minutes=1)
@@ -531,13 +532,14 @@ class Interface():
             while True:
                 bytes_enviar = str(i).encode()
                 ser.write(bytes_enviar)
-                time.sleep(1000)
+                time.sleep(1)
                 ser.flush()
+                i += 1
         thread = threading.Thread(target=send)
         thread.start()
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
-    ser = serial.Serial("COM3", 115200, 8, "N", 1, 0.05)
+    ser = serial.Serial("COM5", 115200, 8, "N", 1, 0.05)
     root.mainloop()
