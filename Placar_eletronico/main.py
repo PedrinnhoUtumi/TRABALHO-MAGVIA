@@ -538,6 +538,7 @@ class Interface():
         thread = threading.Thread(target=send)
         thread.start()
 
+
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
