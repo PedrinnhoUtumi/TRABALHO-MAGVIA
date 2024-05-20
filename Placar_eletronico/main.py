@@ -531,19 +531,19 @@ class Interface():
     
     def serial_Port(self): #Faz a comunicação com a porta serial
         send_datas = { #Dicionário para que a gente consiga enviar todos os dados da forma correta 
-            "placarLocal": self.placarLocal.get(),
-            "placarLocalSubs": self.placarLocalSubs.get(),
-            "placarTempo": self.placarTempo.get(),
-            "localFools": self.localFools.get(),
-            "placarVisitanteSubs": self.placarVisitanteSubs.get(),
-            "awayFools": self.awayFools.get(),
-            "set1": self.set1.get(),
-            "set2": self.set2.get(),
-            "placarVisitante": self.placarVisitante.get(),
-            "tempo_correndo": int(self.tempo_correndo),
+            "placarLocal": self.placarLocal.get(), "limite": 99,
+            "placarLocalSubs": self.placarLocalSubs.get(), "limite": 9,
+            "placarTempo": self.placarTempo.get(), "limite": 9,
+            "localFools": self.localFools.get(), "limite": 9,
+            "placarVisitanteSubs": self.placarVisitanteSubs.get(), "limite": 9,
+            "awayFools": self.awayFools.get(), "limite": 9,
+            "set1": self.set1.get(), "limite": 9,
+            "set2": self.set2.get(), "limite": 9,
+            "placarVisitante": self.placarVisitante.get(), "limite": 99,
+            "tempo_correndo": int(self.tempo_correndo), 
             "cronometro": self.cronometro.get(),
-            "texto_entry": self.texto_entry.get(),
-            "texto_entry2": self.texto_entry2.get(),
+            "texto_entry": self.texto_entry.get(), 
+            "texto_entry2": self.texto_entry2.get(), 
             "columnsEntrys": self.columnsEntrys,
             "linhasEntrys": self.linhasEntrys,
             "contador": self.contador,
@@ -551,13 +551,15 @@ class Interface():
         }
         def send(): #Função para enviar os dados pela porta serial
             for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial 
+                """if v >= send_datas["limite"]:
+                    break """
                 format_data = f"{i}: {v}\n"
                 ser.write(format_data.encode())
                 time.sleep(0.01)
                 print(format_data)
         thread = threading.Thread(target=send)
         thread.start()
-
+    
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
