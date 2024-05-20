@@ -527,20 +527,39 @@ class Interface():
             self.frameLadoLabel.config(bg = "white", fg = "red")
             
     def serial_Port(self): #Faz a comunicação com a porta serial
-        def send(): #Funçao que manda os dados para a porta serial
-            i = 0
-            while True:
-                bytes_enviar = str(i).encode()
-                ser.write(bytes_enviar)
-                time.sleep(1)
-                ser.flush()
-                i += 1
+        dados_para_enviar = {
+            "placarLocal": self.placarLocal.get(),
+            "placarLocalSubs": self.placarLocalSubs.get(),
+            "placarTempo": self.placarTempo.get(),
+            "localFools": self.localFools.get(),
+            "placarVisitanteSubs": self.placarVisitanteSubs.get(),
+            "awayFools": self.awayFools.get(),
+            "set1": self.set1.get(),
+            "set2": self.set2.get(),
+            "placarVisitante": self.placarVisitante.get(),
+            "tempo_correndo": int(self.tempo_correndo),
+            "cronometro": self.cronometro.get(),
+            "texto_entry": self.texto_entry.get(),
+            "texto_entry2": self.texto_entry2.get(),
+            "columnsEntrys": self.columnsEntrys,
+            "linhasEntrys": self.linhasEntrys,
+            "contador": self.contador,
+            "tempo_extra": self.tempo_extra.total_seconds()  # Converte para segundos
+        }
+
+        # Função para enviar os dados pela porta serial
+        def send():
+            for chave, valor in dados_para_enviar.items():
+                # Formate os dados conforme necessário antes de enviá-los pela porta serial
+                dados_formatados = f"{chave}: {valor}\n"
+                ser.write(dados_formatados.encode())
+                time.sleep(0.01)
+                print(dados_formatados)
         thread = threading.Thread(target=send)
         thread.start()
-
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
-    ser = serial.Serial("COM5", 115200, 8, "N", 1, 0.05)
+    ser = serial.Serial("COM5", 115200, 8, "N", 1, timeout = 0.05)
     root.mainloop()
