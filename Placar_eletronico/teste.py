@@ -1,35 +1,18 @@
 import tkinter as tk
 
-class Table(tk.Frame):
-    def __init__(self, parent, rows=15, columns=7):
-        super().__init__(parent)
-        
-        self.rows = rows
-        self.columns = columns
-        
-        self.entries = [[None]*columns for _ in range(rows)]
-        
-        # Criando as entradas e organizando-as em uma grade
-        for i in range(rows):
-            for j in range(columns):
-                entry = tk.Entry(self, width=10)
-                entry.grid(row=i, column=j, sticky="nsew")
-                self.entries[i][j] = entry
-        
-        # Configurando o redimensionamento da grade
-        for i in range(rows):
-            self.grid_rowconfigure(i, weight=1)
-        for j in range(columns):
-            self.grid_columnconfigure(j, weight=1)
+def imprimir_valor():
+    valor = spinbox.get()
+    print("O valor selecionado é:", valor)
 
-def main():
-    root = tk.Tk()
-    root.title("Tabela com Entries no Tkinter")
-    
-    table = Table(root)
-    table.pack(expand=True, fill="both")
-    
-    root.mainloop()
+root = tk.Tk()
+root.title("Teste Spinbox")
 
-if __name__ == "__main__":
-    main()
+# Função para imprimir o valor atual do Spinbox quando o botão é clicado
+botao = tk.Button(root, text="Imprimir Valor", command=imprimir_valor)
+botao.pack(pady=10)
+
+# Spinbox para selecionar um valor de 0 a 10
+spinbox = tk.Spinbox(root, from_=0, to=10)
+spinbox.pack()
+
+root.mainloop()

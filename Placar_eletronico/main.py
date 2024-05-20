@@ -43,9 +43,9 @@ class Interface():
     def config_tela(self): #Aqui é onde eu configuro as informações da app
         self.root.title("Placar Eletrônico") #Configura titulo
         self.root.configure(background = "purple") #Configura cor de fundo
-        self.root.geometry("900x900") #Configura tamanho inicial do app
+        self.root.geometry("1100x1100") #Configura tamanho inicial do app
         self.root.resizable(True, True) #Configura sua responsividade
-        self.root.minsize(width = 600, height = 600) #Configura tamanho minimo do app
+        self.root.minsize(width = 1100, height = 1100) #Configura tamanho minimo do app
         
     def frames(self):  #Aqui é onde eu configuro frames e abas do app
         self.notebook = ttk.Notebook(self.root) #Cria abas
@@ -154,7 +154,7 @@ class Interface():
         self.frame3wid2Label.place(relx = 0.425, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
         
         self.frame4wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Comunicação Serial")
-        self.frame4wid2Label.place(relx = 0.425, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
+        self.frame4wid2Label.place(relx = 0.4, rely = 0.5, relwidth = 0.25, relheight = 0.2) 
         
         self.frame5wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
         self.frame5wid2Label.place(relx = 0.7, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
@@ -180,7 +180,6 @@ class Interface():
         self.frame6wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
         self.frame6wid2.place(relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
         
-        
         #Configura os frames da aba 3
         self.frame1wid3Label = Label(self.frame3wid, bg = "purple", fg = "white", text = "Time Local Esquerda")
         self.frame1wid3Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
@@ -195,6 +194,7 @@ class Interface():
         self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
         
     def botao(self):
+        #Botôes de controle
         self.bt_start = Button(self.frameLado, text = "Iniciar", cursor = "clock", command = self.start_timer)
         self.bt_start.place(relx = 0.15, rely = 0.15, relwidth = 0.7, relheight = 0.03) #Iniciar cronômetro
         
@@ -219,7 +219,7 @@ class Interface():
         self.entry_time = Entry (self.frameLado, cursor = "hand1")
         self.entry_time.place(relx = 0.15, rely = 0.5, relwidth = 0.7, relheight = 0.03)
         
-
+        #Botôes do frame2 da aba 1
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
         self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15) #-1 ponto do time de casa
 
@@ -286,6 +286,7 @@ class Interface():
         self.bt_plus3_visitante = Button(self.frame2, text = "+3", command = lambda: self.plus3(2), cursor = "hand1")
         self.bt_plus3_visitante.place(relx = 0.8, rely = 0.65, relwidth = 0.15, relheight = 0.15) #+3 pontos do time visitante
         
+        #Botôes da aba 2
         self.bt_theme = Button(self.frame3wid2, text = "Tema amarelo", command = lambda: self.change_theme(1), cursor = "hand1")
         self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Mudar tema para amarelo
         
@@ -294,6 +295,8 @@ class Interface():
 
         self.bt_theme3 = Button(self.frame3wid2, text = "Tema cinza", command = lambda: self.change_theme(3), cursor = "hand1")
         self.bt_theme3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Mudar tema para cinza
+
+
         
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
@@ -525,9 +528,9 @@ class Interface():
             self.localSubsText.config(bg = "lightgray", fg = "red")
             self.awaySubsText.config(bg = "lightgray", fg = "red")
             self.frameLadoLabel.config(bg = "white", fg = "red")
-            
+    
     def serial_Port(self): #Faz a comunicação com a porta serial
-        dados_para_enviar = {
+        send_datas = { #Dicionário para que a gente consiga enviar todos os dados da forma correta 
             "placarLocal": self.placarLocal.get(),
             "placarLocalSubs": self.placarLocalSubs.get(),
             "placarTempo": self.placarTempo.get(),
@@ -544,17 +547,14 @@ class Interface():
             "columnsEntrys": self.columnsEntrys,
             "linhasEntrys": self.linhasEntrys,
             "contador": self.contador,
-            "tempo_extra": self.tempo_extra.total_seconds()  # Converte para segundos
+            "tempo_extra": self.tempo_extra.total_seconds() 
         }
-
-        # Função para enviar os dados pela porta serial
-        def send():
-            for chave, valor in dados_para_enviar.items():
-                # Formate os dados conforme necessário antes de enviá-los pela porta serial
-                dados_formatados = f"{chave}: {valor}\n"
-                ser.write(dados_formatados.encode())
+        def send(): #Função para enviar os dados pela porta serial
+            for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial 
+                format_data = f"{i}: {v}\n"
+                ser.write(format_data.encode())
                 time.sleep(0.01)
-                print(dados_formatados)
+                print(format_data)
         thread = threading.Thread(target=send)
         thread.start()
 
@@ -563,3 +563,11 @@ if __name__ == "__main__": #Inicia o programa
     app = Interface(root)
     ser = serial.Serial("COM5", 115200, 8, "N", 1, timeout = 0.05)
     root.mainloop()
+
+
+"""
+Checkbutton: várias opções selecionáveis
+Radiobutton: uma opção selecionável
+Menubutton: dropdown
+Spínbox: Números
+"""
