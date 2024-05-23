@@ -40,7 +40,7 @@ class Interface():
         self.config_tela()
         self.frames()
         self.botao()
-        self.choose_serial()
+        self.using_serial()
 
     def config_tela(self): #Aqui é onde eu configuro as informações da app
         self.root.title("Placar Eletrônico") #Configura titulo
@@ -573,29 +573,28 @@ class Interface():
         thread = threading.Thread(target=send)
         thread.start()
 
-    def using_serial(self, use_serial):
+    def using_serial(self, use_serial = None):
         try:
             if use_serial:
                 self.ser = serial.Serial("COM5", 115200, 8, "N", 1, timeout = 1.0)
-                messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
                 print("Sua porta serial está aberta✔")
+                messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
+                options = [9600, 115200]
+                for option in options:
+                    self.menu.add_command(label=str(option), command = lambda op = option: self.select_serial(op))
             else:
                 self.ser = None
-                messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
+                self.menu.delete(0, "end")
                 print("Sua porta serial está fechada✘")
+                messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
         except serial.SerialException:
             self.ser = None
-            messagebox.showerror("Erro", "Não foi possível abrir a porta serial😔")
             print("Não foi possível abrir a porta serial😔")
-
-    def choose_serial(self):
-        options = [9600, 115200]
-        for option in options:
-            self.menu.add_command(label=str(option), command = lambda op = option: self.select_serial(op))
+            messagebox.showerror("Erro", "Não foi possível abrir a porta serial😔")
 
     def select_serial(self, op):
-        # Aqui você pode fazer o que precisa com a opção selecionada
-        print("Opção selecionada:", op)
+        print("Serial selecionada:", op)
+        messagebox.showinfo("Serial selecionada:", op)
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
