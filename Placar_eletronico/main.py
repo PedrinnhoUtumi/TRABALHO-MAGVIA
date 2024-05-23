@@ -54,19 +54,19 @@ class Interface():
         self.notebook.pack(fill=BOTH, expand=True)
         
         self.frame1wid = Frame(self.notebook, bg="purple") #Configura aba 1
-        self.notebook.add(self.frame1wid, text='Placar')
+        self.notebook.add(self.frame1wid, text="Placar")
         
         self.frame2wid = Frame(self.notebook, bg="purple") #Configura aba 2
-        self.notebook.add(self.frame2wid, text='Configurações')
+        self.notebook.add(self.frame2wid, text="Configurações")
         
         self.frame3wid = Frame(self.notebook, bg="purple") #Configura aba 3
-        self.notebook.add(self.frame3wid, text='Escalação')
+        self.notebook.add(self.frame3wid, text="Escalação")
         
         self.frame4wid = Frame(self.notebook, bg="purple") #Configura aba 4
-        self.notebook.add(self.frame4wid, text='Jornal')
+        self.notebook.add(self.frame4wid, text="Jornal")
 
         self.frame5wid = Frame(self.notebook, bg="purple") #Configura aba 4
-        self.notebook.add(self.frame5wid, text='24 Segundos')
+        self.notebook.add(self.frame5wid, text="24 Segundos")
         
         #Configura os frames na aba 1
         self.frameLado = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
@@ -308,6 +308,12 @@ class Interface():
         self.bt_choose_serial.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Escolhe a porta serial
         self.menu = Menu(self.bt_choose_serial, tearoff=0)
         self.bt_choose_serial.config(menu = self.menu)
+
+        self.timeout = Spinbox(self.frame4wid2, from_ = 0, to = 1000, cursor = "hand1")
+        self.timeout.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
+        
+        self.new_data = Button(self.frame4wid2, text = "Fecha serial", command = self.set_serial, cursor = "hand1")
+        self.new_data.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
 
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
@@ -576,12 +582,19 @@ class Interface():
     def using_serial(self, use_serial = None):
         try:
             if use_serial:
-                self.ser = serial.Serial("COM5", 115200, 8, "N", 1, timeout = 1.0)
+                self.ser = serial.Serial(
+            port = "COM5", 
+            baudrate = 115200, 
+            bytesize = 8, 
+            parity = "N", 
+            stopbits = 1, 
+            timeout = 1.0
+            )
                 print("Sua porta serial está aberta✔")
                 messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
-                options = [9600, 115200]
-                for option in options:
-                    self.menu.add_command(label=str(option), command = lambda op = option: self.select_serial(op))
+                self.options = [9600, 115200]
+                for self.option in self.options:
+                    self.menu.add_command(label=str(self.option), command = lambda op = self.option: self.select_serial(op))
             else:
                 self.ser = None
                 self.menu.delete(0, "end")
@@ -595,6 +608,11 @@ class Interface():
     def select_serial(self, op):
         print("Serial selecionada:", op)
         messagebox.showinfo("Serial selecionada:", op)
+
+    def set_serial(self):
+        
+        
+        messagebox.showinfo("Novas configurações", self.ser)
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
