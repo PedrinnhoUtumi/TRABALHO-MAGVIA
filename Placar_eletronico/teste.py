@@ -1,18 +1,18 @@
 import tkinter as tk
 
-def imprimir_valor():
-    valor = spinbox.get()
-    print("O valor selecionado é:", valor)
+def obter_texto():
+    texto = texto_box.get("1.0", tk.END)  # Obtém todo o texto do widget Text
+    print(texto)
 
 root = tk.Tk()
-root.title("Teste Spinbox")
+root.title("Exemplo de Texto")
 
-# Função para imprimir o valor atual do Spinbox quando o botão é clicado
-botao = tk.Button(root, text="Imprimir Valor", command=imprimir_valor)
-botao.pack(pady=10)
+# Cria um widget Text com barras de rolagem vertical e horizontal
+texto_box = tk.Text(root, wrap="word")
+texto_box.pack(expand=True, fill="both")
 
-# Spinbox para selecionar um valor de 0 a 10
-spinbox = tk.Spinbox(root, from_=0, to=10)
-spinbox.pack()
+# Adiciona um botão para obter o texto do widget Text
+botao_obter = tk.Button(root, text="Obter Texto", command=obter_texto)
+botao_obter.pack(pady=5)
 
 root.mainloop()

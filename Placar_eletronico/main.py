@@ -8,6 +8,7 @@ import serial
 
 class Interface():
     def __init__(self, root): #Aqui é onde eu conecto/crio tudo na minha função construtora
+        self.ser = None
         self.root = root
         self.placarLocal = IntVar()
         self.placarLocal.set(0)
@@ -39,6 +40,7 @@ class Interface():
         self.config_tela()
         self.frames()
         self.botao()
+        self.choose_serial()
 
     def config_tela(self): #Aqui é onde eu configuro as informações da app
         self.root.title("Placar Eletrônico") #Configura titulo
@@ -296,8 +298,17 @@ class Interface():
         self.bt_theme3 = Button(self.frame3wid2, text = "Tema cinza", command = lambda: self.change_theme(3), cursor = "hand1")
         self.bt_theme3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Mudar tema para cinza
 
+        self.bt_serial_open = Button(self.frame4wid2, text = "Abre serial", command = lambda: self.using_serial(True), cursor = "hand1")
+        self.bt_serial_open.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Abre a porta serial
 
-        
+        self.bt_serial_close = Button(self.frame4wid2, text = "Fecha serial", command = lambda: self.using_serial(False), cursor = "hand1")
+        self.bt_serial_close.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Fecha a porta serial 
+
+        self.bt_choose_serial = Menubutton(self.frame4wid2, text = "Escolhe serial", cursor = "hand1", relief="raised")
+        self.bt_choose_serial.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Escolhe a porta serial
+        self.menu = Menu(self.bt_choose_serial, tearoff=0)
+        self.bt_choose_serial.config(menu = self.menu)
+
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
@@ -378,6 +389,7 @@ class Interface():
         
     def add_minute(self):
         self.tempo_extra += timedelta(minutes=1)
+        self.serial_Port()
         
     def zero(self): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
@@ -393,7 +405,8 @@ class Interface():
         self.placarVisitanteSubs.set(0)
         self.placarLocalSubs.set(0)
         self.contador = None
-        
+        self.serial_Port()
+
     def pause(self, opcao):
         if opcao == 1: #Aqui vai pausar
             self.contador_pause = datetime.now() - self.contador
@@ -406,7 +419,7 @@ class Interface():
                 self.contador = datetime.now() - self.contador_pause
                 self.update()
                 self.contador_pause = None
-
+        self.serial_Port()
             
     def validate(self, opcao): #Serve para que os números não passem de seu mínimo permitido
         if opcao == 1:
@@ -451,7 +464,7 @@ class Interface():
         if not self.contador:  #Apenas inicie se o contador não estiver ativado
             self.contador = datetime.now()
             self.update()
-            
+            self.serial_Port()
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema amarelo
             self.frame1wid.config(bg = "yellow", highlightbackground = "yellow")
@@ -528,7 +541,7 @@ class Interface():
             self.localSubsText.config(bg = "lightgray", fg = "red")
             self.awaySubsText.config(bg = "lightgray", fg = "red")
             self.frameLadoLabel.config(bg = "white", fg = "red")
-    
+
     def serial_Port(self): #Faz a comunicação com a porta serial
         send_datas = { #Dicionário para que a gente consiga enviar todos os dados da forma correta 
             "placarLocal": self.placarLocal.get(), "limite": 99,
@@ -546,7 +559,6 @@ class Interface():
             "texto_entry2": self.texto_entry2.get(), 
             "columnsEntrys": self.columnsEntrys,
             "linhasEntrys": self.linhasEntrys,
-            "contador": self.contador,
             "tempo_extra": self.tempo_extra.total_seconds() 
         }
         def send(): #Função para enviar os dados pela porta serial
@@ -554,16 +566,40 @@ class Interface():
                 """if v >= send_datas["limite"]:
                     break """
                 format_data = f"{i}: {v}\n"
-                ser.write(format_data.encode())
-                time.sleep(0.01)
-                print(format_data)
+                if self.ser:
+                    self.ser.write(format_data.encode())
+                    time.sleep(0.01)
+                    print(format_data)
         thread = threading.Thread(target=send)
         thread.start()
-    
+
+    def using_serial(self, use_serial):
+        try:
+            if use_serial:
+                self.ser = serial.Serial("COM5", 115200, 8, "N", 1, timeout = 1.0)
+                messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
+                print("Sua porta serial está aberta✔")
+            else:
+                self.ser = None
+                messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
+                print("Sua porta serial está fechada✘")
+        except serial.SerialException:
+            self.ser = None
+            messagebox.showerror("Erro", "Não foi possível abrir a porta serial😔")
+            print("Não foi possível abrir a porta serial😔")
+
+    def choose_serial(self):
+        options = [9600, 115200]
+        for option in options:
+            self.menu.add_command(label=str(option), command = lambda op = option: self.select_serial(op))
+
+    def select_serial(self, op):
+        # Aqui você pode fazer o que precisa com a opção selecionada
+        print("Opção selecionada:", op)
+
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
-    ser = serial.Serial("COM5", 115200, 8, "N", 1, timeout = 0.05)
     root.mainloop()
 
 
