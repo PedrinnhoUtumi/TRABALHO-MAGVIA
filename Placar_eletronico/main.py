@@ -72,7 +72,7 @@ class Interface():
         self.frameLado = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frameLado.place(relx = 0.01, rely = 0.05, relwidth = 0.12, relheight = 0.8)
         
-        self.frameLadoLabel = Label(self.frameLado, bg = "aqua", font = ("Courier New", 12, "bold"), fg = "Black", text = "Funções")
+        self.frameLadoLabel = Label(self.frameLado, bg = "aqua", font = ("Courier New", 12, "bold"), fg = "black", text = "Funções")
         self.frameLadoLabel.place(relx = 0.14, rely = 0.05, relwidth = 0.7, relheight = 0.05)
         
         self.frame1 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
@@ -212,15 +212,6 @@ class Interface():
         self.bt_continue = Button(self.frameLado, text = "Continuar", cursor = "hand1", command = lambda: self.pause(3))
         self.bt_continue.place(relx = 0.15, rely = 0.35, relwidth = 0.7, relheight = 0.03) #Continuar cronômetro após pausa
         
-        self.bt_add1min = Button(self.frameLado, text = "+1 minuto", cursor = "hand1", command = self.add_minute)
-        self.bt_add1min.place(relx = 0.15, rely = 0.4, relwidth = 0.7, relheight = 0.03) #Adiciona 1 minuto ao cronômetro
-
-        self.bt_minus1min = Button(self.frameLado, text = "-1 minuto", cursor = "hand1")
-        self.bt_minus1min.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.03) #Remove 1 minuto ao cronômetro
-
-        self.entry_time = Entry (self.frameLado, cursor = "hand1")
-        self.entry_time.place(relx = 0.15, rely = 0.5, relwidth = 0.7, relheight = 0.03)
-        
         #Botôes do frame2 da aba 1
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
         self.bt_minus.place(relx = 0.05, rely = 0.05, relwidth = 0.15, relheight = 0.15) #-1 ponto do time de casa
@@ -306,14 +297,23 @@ class Interface():
 
         self.bt_choose_serial = Menubutton(self.frame4wid2, text = "Escolhe serial", cursor = "hand1", relief="raised")
         self.bt_choose_serial.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Escolhe a porta serial
-        self.menu = Menu(self.bt_choose_serial, tearoff=0)
+        self.menu = Menu(self.bt_choose_serial, tearoff = 0)
         self.bt_choose_serial.config(menu = self.menu)
 
-        self.timeout = Spinbox(self.frame4wid2, from_ = 0, to = 1000, cursor = "hand1")
+        self.timeout = Spinbox(self.frame4wid2, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
         self.timeout.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
         
-        self.new_data = Button(self.frame4wid2, text = "Fecha serial", command = self.set_serial, cursor = "hand1")
+        self.new_data = Button(self.frame4wid2, text = "Enviar serial", command = self.set_serial, cursor = "hand1")
         self.new_data.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
+
+        self.bt_add1min = Button(self.frame2wid2, text = "+1 minuto", cursor = "hand1", command = self.add_minute)
+        self.bt_add1min.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
+
+        self.bt_minus1min = Button(self.frame2wid2, text = "-1 minuto", cursor = "hand1")
+        self.bt_minus1min.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Remove 1 minuto ao cronômetro
+        
+        self.entry_time = Entry (self.frame2wid2, cursor = "hand1")
+        self.entry_time.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
 
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
@@ -352,7 +352,7 @@ class Interface():
             self.placarVisitante.set(self.placarVisitante.get() + 3)
         self.serial_Port()
     
-    def minus(self, team): #Defiinindo a função que vai tirar pontos, sets etc
+    def minus(self, team): #Definindo a função que vai tirar pontos, sets etc
         if team == 1: 
             if self.validate(1):
                 self.placarLocal.set(self.placarLocal.get() - 1)
@@ -473,30 +473,33 @@ class Interface():
             self.serial_Port()
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema amarelo
-            self.frame1wid.config(bg = "yellow", highlightbackground = "yellow")
-            self.frame1.config(bg = "orange", highlightbackground = "yellow")
-            self.frame2.config(bg = "orange", highlightbackground = "yellow")
-            self.frameTime.config(bg = "orange", highlightbackground = "yellow")
-            self.frameVisitante.config(bg = "orange", highlightbackground = "yellow")
-            self.frameLocalLabel.config(bg = "orange", highlightbackground = "yellow")
-            self.frameLocalFools.config(bg = "orange", highlightbackground = "yellow")
-            self.frameSet1.config(bg = "orange", highlightbackground = "yellow")
-            self.frameSet2.config(bg = "orange", highlightbackground = "yellow")
-            self.frameAwayFools.config(bg = "orange", highlightbackground = "yellow")
-            self.frameLocalSubs.config(bg = "orange", highlightbackground = "yellow")
-            self.frameAwaySubs.config(bg = "orange", highlightbackground = "yellow")
-            self.frameLado.config(bg = "orange", highlightbackground = "yellow")
-            self.entry_time.config(bg = "yellow", fg = "black")
-            self.entry_texto.config(bg = "yellow", fg = "Black")
-            self.entry_texto1.config(bg = "yellow", fg = "Black")
-            self.time.config(bg = "yellow", fg = "black")
-            self.set1Label.config(bg = "yellow", fg = "black")
-            self.set2Label.config(bg = "yellow", fg = "black")
-            self.AwayFoolsText.config(bg = "yellow", fg = "black")
-            self.localFoolsText.config(bg = "yellow", fg = "black")
-            self.localSubsText.config(bg = "yellow", fg = "black")
-            self.awaySubsText.config(bg = "yellow", fg = "black")
-            self.frameLadoLabel.config(bg = "orange", fg = "black")
+            yellow = "brown"
+            orange = "orange"
+            black = "black"
+            self.frame1wid.config(bg = yellow, highlightbackground = yellow)
+            self.frame1.config(bg = orange, highlightbackground = yellow)
+            self.frame2.config(bg = orange, highlightbackground = yellow)
+            self.frameTime.config(bg = orange, highlightbackground = yellow)
+            self.frameVisitante.config(bg = orange, highlightbackground = yellow)
+            self.frameLocalLabel.config(bg = orange, highlightbackground = yellow)
+            self.frameLocalFools.config(bg = orange, highlightbackground = yellow)
+            self.frameSet1.config(bg = orange, highlightbackground = yellow)
+            self.frameSet2.config(bg = orange, highlightbackground = yellow)
+            self.frameAwayFools.config(bg = orange, highlightbackground = yellow)
+            self.frameLocalSubs.config(bg = orange, highlightbackground = yellow)
+            self.frameAwaySubs.config(bg = orange, highlightbackground = yellow)
+            self.frameLado.config(bg = orange, highlightbackground = yellow)
+            self.entry_time.config(bg = yellow, fg = black)
+            self.entry_texto.config(bg = yellow, fg = black)
+            self.entry_texto1.config(bg = yellow, fg = black)
+            self.time.config(bg = yellow, fg = black)
+            self.set1Label.config(bg = yellow, fg = black)
+            self.set2Label.config(bg = yellow, fg = black)
+            self.AwayFoolsText.config(bg = yellow, fg = black)
+            self.localFoolsText.config(bg = yellow, fg = black)
+            self.localSubsText.config(bg = yellow, fg = black)
+            self.awaySubsText.config(bg = yellow, fg = black)
+            self.frameLadoLabel.config(bg = orange, fg = black)
         elif opcao == 2: #Tema roxo
             self.frame1wid.config(bg = "purple", highlightbackground = "Blue")
             self.frame1.config(bg = "aqua", highlightbackground = "Blue")
@@ -514,14 +517,14 @@ class Interface():
             self.entry_time.config(bg = "purple", fg = "white")
             self.entry_texto.config(bg = "purple", fg = "white")
             self.entry_texto1.config(bg = "purple", fg = "white")
-            self.time.config(bg = "white", fg = "black")
+            self.time.config(bg = "white", fg = black)
             self.set1Label.config(bg = "purple", fg = "white")
             self.set2Label.config(bg = "purple", fg = "white")
             self.AwayFoolsText.config(bg = "purple", fg = "white")
             self.localFoolsText.config(bg = "purple", fg = "white")
             self.localSubsText.config(bg = "purple", fg = "white")
             self.awaySubsText.config(bg = "purple", fg = "white")
-            self.frameLadoLabel.config(bg = "aqua", fg = "black")
+            self.frameLadoLabel.config(bg = "aqua", fg = black)
         elif opcao == 3: #Tema cinza
             self.frame1wid.config(bg = "lightgray", highlightbackground = "white")
             self.frame1.config(bg = "white", highlightbackground = "white")
@@ -583,16 +586,16 @@ class Interface():
         try:
             if use_serial:
                 self.ser = serial.Serial(
-            port = "COM5", 
-            baudrate = 115200, 
-            bytesize = 8, 
-            parity = "N", 
-            stopbits = 1, 
-            timeout = 1.0
-            )
+                    port = "COM5", 
+                    baudrate = 115200, 
+                    bytesize = 8, 
+                    parity = "N", 
+                    stopbits = 1, 
+                    timeout = 1.0
+                )
                 print("Sua porta serial está aberta✔")
                 messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
-                self.options = [9600, 115200]
+                self.options = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
                 for self.option in self.options:
                     self.menu.add_command(label=str(self.option), command = lambda op = self.option: self.select_serial(op))
             else:
@@ -610,8 +613,8 @@ class Interface():
         messagebox.showinfo("Serial selecionada:", op)
 
     def set_serial(self):
-        
-        
+        self.ser.port = self.option
+        self.ser.timeout = int(self.timeout.get())/1000
         messagebox.showinfo("Novas configurações", self.ser)
 
 if __name__ == "__main__": #Inicia o programa 
