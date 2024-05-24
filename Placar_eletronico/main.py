@@ -315,6 +315,21 @@ class Interface():
         self.entry_time = Entry (self.frame2wid2, cursor = "hand1")
         self.entry_time.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
 
+        self.choose_game = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Futebol", bg = "aqua")
+        self.choose_game.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
+        
+        self.choose_game2 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Voleibol", bg = "aqua")
+        self.choose_game2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
+        
+        self.choose_game3 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Basquete", bg = "aqua")
+        self.choose_game3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
+        
+        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = "aqua")
+        self.choose_game4.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
+        
+        self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = "aqua")
+        self.choose_game5.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
+
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)

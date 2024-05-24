@@ -1,18 +1,29 @@
 import tkinter as tk
 
-def obter_texto():
-    texto = texto_box.get("1.0", tk.END)  # Obtém todo o texto do widget Text
-    print(texto)
+def show_selected():
+    selected_option = var.get()
+    label.config(text="Opção selecionada: " + selected_option)
 
+# Criando a janela principal
 root = tk.Tk()
-root.title("Exemplo de Texto")
+root.title("Exemplo de RadioButtons")
 
-# Cria um widget Text com barras de rolagem vertical e horizontal
-texto_box = tk.Text(root, wrap="word")
-texto_box.pack(expand=True, fill="both")
+# Variável para armazenar a opção selecionada
+var = tk.StringVar()
 
-# Adiciona um botão para obter o texto do widget Text
-botao_obter = tk.Button(root, text="Obter Texto", command=obter_texto)
-botao_obter.pack(pady=5)
+# Criando os RadioButtons
+option1 = tk.Radiobutton(root, text="Opção 1", variable=var, value="Opção 1", command=show_selected)
+option2 = tk.Radiobutton(root, text="Opção 2", variable=var, value="Opção 2", command=show_selected)
+option3 = tk.Radiobutton(root, text="Opção 3", variable=var, value="Opção 3", command=show_selected)
 
+# Posicionando os RadioButtons na janela
+option1.pack(anchor="w")
+option2.pack(anchor="w")
+option3.pack(anchor="w")
+
+# Label para exibir a opção selecionada
+label = tk.Label(root)
+label.pack()
+
+# Loop principal
 root.mainloop()
