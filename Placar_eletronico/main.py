@@ -54,19 +54,19 @@ class Interface():
         self.notebook = ttk.Notebook(self.root) #Cria abas
         self.notebook.pack(fill=BOTH, expand=True)
         
-        self.frame1wid = Frame(self.notebook, bg="purple") #Configura aba 1
+        self.frame1wid = Frame(self.notebook, bg = "purple") #Configura aba 1
         self.notebook.add(self.frame1wid, text="Placar")
         
-        self.frame2wid = Frame(self.notebook, bg="purple") #Configura aba 2
+        self.frame2wid = Frame(self.notebook, bg = "purple") #Configura aba 2
         self.notebook.add(self.frame2wid, text="Configurações")
         
-        self.frame3wid = Frame(self.notebook, bg="purple") #Configura aba 3
+        self.frame3wid = Frame(self.notebook, bg = "purple") #Configura aba 3
         self.notebook.add(self.frame3wid, text="Escalação")
         
-        self.frame4wid = Frame(self.notebook, bg="purple") #Configura aba 4
+        self.frame4wid = Frame(self.notebook, bg = "purple") #Configura aba 4
         self.notebook.add(self.frame4wid, text="Jornal")
 
-        self.frame5wid = Frame(self.notebook, bg="purple") #Configura aba 4
+        self.frame5wid = Frame(self.notebook, bg = "purple") #Configura aba 4
         self.notebook.add(self.frame5wid, text="24 Segundos")
         
         #Configura os frames na aba 1
@@ -90,17 +90,17 @@ class Interface():
         self.frameLocalSubs.place(relx = 0.363, rely = 0.35, relwidth = 0.05, relheight = 0.05) #Placar das substituições do time da casa
         self.frameLocalSubs.bind("<Button-1>", lambda event: self.plus(9)) #Função do placar das substituições
         
-        self.localSubsText = Label(self.frame1wid, text="Subs", bg="purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.localSubsText = Label(self.frame1wid, text="Subs", bg = "purple", font=("Courier New", 12, "bold"), fg = "white")
         self.localSubsText.place(relx=0.363, rely=0.4, relwidth=0.05, relheight=0.02) #Texto escrito "Subs"
         
         self.frameLocalFools = Label(self.frame1wid, textvariable = self.localFools, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
         self.frameLocalFools.place(relx = 0.15, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time da casa
         self.frameLocalFools.bind("<Button-1>", lambda event: self.plus(4)) #Função do placar das faltas
         
-        self.localFoolsText = Label(self.frame1wid, text="Faltas", bg="purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.localFoolsText = Label(self.frame1wid, text="Faltas", bg = "purple", font=("Courier New", 12, "bold"), fg = "white")
         self.localFoolsText.place(relx=0.15, rely=0.63, relwidth=0.2, relheight=0.02) #Texto escrito "Faltas"
         
-        self.time = Label(self.frame1wid, text="Tempo", bg="purple", font=("Courier New", 24, "bold"), fg = "white")
+        self.time = Label(self.frame1wid, text="Tempo", bg = "purple", font=("Courier New", 24, "bold"), fg = "white")
         self.time.place(relx=0.425, rely=0.3, relwidth=0.2, relheight=0.05) #Texto escrito "Tempo"
         
         self.frameTime = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarTempo, cursor = "hand1")
@@ -111,14 +111,14 @@ class Interface():
         self.frameSet1.place(relx = 0.425, rely = 0.57, relwidth = 0.07, relheight = 0.05) #Placar dos sets do time da casa
         self.frameSet1.bind("<Button-1>", lambda event: self.plus(6)) #Função do placar dos sets do time da casa
         
-        self.set1Label = Label(self.frame1wid, text="Set", bg="purple", font=("Courier New", 10, "bold"), fg = "white")
+        self.set1Label = Label(self.frame1wid, text="Set", bg = "purple", font=("Courier New", 10, "bold"), fg = "white")
         self.set1Label.place(relx=0.43, rely=0.62, relwidth=0.05, relheight=0.03) #Texto escrito "Set"
         
         self.frameSet2 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set2, cursor = "hand1") 
         self.frameSet2.place(relx = 0.555, rely = 0.57, relwidth = 0.07, relheight = 0.05) #Placar dos sets do time visitante
         self.frameSet2.bind("<Button-1>", lambda event: self.plus(7)) #Função do placar dos sets do time visitante
         
-        self.set2Label = Label(self.frame1wid, text="Set", bg="purple", font=("Courier New", 10, "bold"), fg = "white")
+        self.set2Label = Label(self.frame1wid, text="Set", bg = "purple", font=("Courier New", 10, "bold"), fg = "white")
         self.set2Label.place(relx=0.57, rely=0.62, relwidth=0.05, relheight=0.03) #Texto escrito "Set"
         
         self.entry_texto = Entry(self.frame1wid, textvariable=self.texto_entry2, font=("Courier New", 12, "bold"), bg = "purple", fg = "white")
@@ -132,7 +132,7 @@ class Interface():
         self.frameAwaySubs.place(relx = 0.637, rely = 0.35, relwidth = 0.05, relheight = 0.05) #Placar das substituições do time visitante
         self.frameAwaySubs.bind("<Button-1>", lambda event: self.plus(10)) #Função do placar das substituições
         
-        self.awaySubsText = Label(self.frame1wid, text="Subs", bg="purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.awaySubsText = Label(self.frame1wid, text="Subs", bg = "purple", font=("Courier New", 12, "bold"), fg = "white")
         self.awaySubsText.place(relx=0.637, rely=0.4, relwidth=0.05, relheight=0.02) #Texto escrito "Subs"
 
         
@@ -140,7 +140,7 @@ class Interface():
         self.frameAwayFools.place(relx = 0.70, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time visitante
         self.frameAwayFools.bind("<Button-1>", lambda event: self.plus(5)) #Função do placar das faltas do time visitante
         
-        self.AwayFoolsText = Label(self.frame1wid, text="Faltas", bg="purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.AwayFoolsText = Label(self.frame1wid, text="Faltas", bg = "purple", font=("Courier New", 12, "bold"), fg = "white")
         self.AwayFoolsText.place(relx=0.70, rely=0.63, relwidth=0.2, relheight=0.02) #Texto escrito "Faltas"
         
         self.frame2 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
@@ -508,9 +508,9 @@ class Interface():
             
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema amarelo
-            yellow = "brown"
-            orange = "orange"
-            black = "black"
+            yellow = "#111111"
+            orange = "#0CF22F"
+            black = "#0CF22F"
             self.frame1wid.config(bg = yellow, highlightbackground = yellow)
             self.frame1.config(bg = orange, highlightbackground = yellow)
             self.frame2.config(bg = orange, highlightbackground = yellow)
@@ -536,7 +536,8 @@ class Interface():
             self.awaySubsText.config(bg = yellow, fg = black)
             self.frameLadoLabel.config(bg = orange, fg = black)
         elif opcao == 2: #Tema roxo
-            self.frame1wid.config(bg = "purple", highlightbackground = "Blue")
+            cor1 = "#B001F5"
+            self.frame1wid.config(bg = cor1, highlightbackground = "Blue")
             self.frame1.config(bg = "aqua", highlightbackground = "Blue")
             self.frame2.config(bg = "aqua", highlightbackground = "Blue")
             self.frameTime.config(bg = "aqua", highlightbackground = "Blue")
@@ -549,17 +550,17 @@ class Interface():
             self.frameLocalSubs.config(bg = "aqua", highlightbackground = "Blue")
             self.frameAwaySubs.config(bg = "aqua", highlightbackground = "Blue")
             self.frameLado.config(bg = "aqua", highlightbackground = "Blue")
-            self.entry_time.config(bg = "purple", fg = "white")
-            self.entry_texto.config(bg = "purple", fg = "white")
-            self.entry_texto1.config(bg = "purple", fg = "white")
-            self.time.config(bg = "white", fg = black)
-            self.set1Label.config(bg = "purple", fg = "white")
-            self.set2Label.config(bg = "purple", fg = "white")
-            self.AwayFoolsText.config(bg = "purple", fg = "white")
-            self.localFoolsText.config(bg = "purple", fg = "white")
-            self.localSubsText.config(bg = "purple", fg = "white")
-            self.awaySubsText.config(bg = "purple", fg = "white")
-            self.frameLadoLabel.config(bg = "aqua", fg = black)
+            self.entry_time.config(bg = cor1, fg = "white")
+            self.entry_texto.config(bg = cor1, fg = "white")
+            self.entry_texto1.config(bg = cor1, fg = "white")
+            self.time.config(bg = cor1, fg = "white")
+            self.set1Label.config(bg = cor1, fg = "white")
+            self.set2Label.config(bg = cor1, fg = "white")
+            self.AwayFoolsText.config(bg = cor1, fg = "white")
+            self.localFoolsText.config(bg = cor1, fg = "white")
+            self.localSubsText.config(bg = cor1, fg = "white")
+            self.awaySubsText.config(bg = cor1, fg = "white")
+            self.frameLadoLabel.config(bg = "aqua", fg = "black")
         elif opcao == 3: #Tema cinza
             self.frame1wid.config(bg = "lightgray", highlightbackground = "white")
             self.frame1.config(bg = "white", highlightbackground = "white")
@@ -599,8 +600,7 @@ class Interface():
             "Placar visitante": self.placarVisitante.get(), "limite": 99, 
             "Cronometro": self.cronometro.get(),
             "Time Casa": self.texto_entry.get(), 
-            "Time Visitante": self.texto_entry2.get(), 
-            "Tempo extra": self.tempo_extra.total_seconds() 
+            "Time Visitante": self.texto_entry2.get()
         }
         def send(): #Função para enviar os dados pela porta serial
             for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial 
@@ -623,7 +623,7 @@ class Interface():
                     bytesize = 8, 
                     parity = "N", 
                     stopbits = 1, 
-                    timeout = 2.0
+                    timeout = 1.0
                 )
                 print("Sua porta serial está aberta✔")
                 messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
