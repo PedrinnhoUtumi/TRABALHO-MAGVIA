@@ -46,8 +46,9 @@ class Interface():
         self.root.title("Placar Eletrônico") #Configura titulo
         self.root.configure(background = "purple") #Configura cor de fundo
         self.root.geometry("1100x1100") #Configura tamanho inicial do app
-        self.root.resizable(True, True) #Configura sua responsividade
+        self.root.resizable(False, False) #Configura sua responsividade
         self.root.minsize(width = 1100, height = 1100) #Configura tamanho minimo do app
+        self.root.maxsize(width = 1100, height = 1100) #Configura tamanho máximo do app
         
     def frames(self):  #Aqui é onde eu configuro frames e abas do app
         self.notebook = ttk.Notebook(self.root) #Cria abas
@@ -329,7 +330,7 @@ class Interface():
         
         self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = "aqua")
         self.choose_game5.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
-
+        
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
@@ -568,22 +569,19 @@ class Interface():
 
     def serial_Port(self): #Faz a comunicação com a porta serial
         send_datas = { #Dicionário para que a gente consiga enviar todos os dados da forma correta 
-            "placarLocal": self.placarLocal.get(), "limite": 99,
-            "placarLocalSubs": self.placarLocalSubs.get(), "limite": 9,
-            "placarTempo": self.placarTempo.get(), "limite": 9,
-            "localFools": self.localFools.get(), "limite": 9,
-            "placarVisitanteSubs": self.placarVisitanteSubs.get(), "limite": 9,
-            "awayFools": self.awayFools.get(), "limite": 9,
-            "set1": self.set1.get(), "limite": 9,
-            "set2": self.set2.get(), "limite": 9,
-            "placarVisitante": self.placarVisitante.get(), "limite": 99,
-            "tempo_correndo": int(self.tempo_correndo), 
-            "cronometro": self.cronometro.get(),
-            "texto_entry": self.texto_entry.get(), 
-            "texto_entry2": self.texto_entry2.get(), 
-            "columnsEntrys": self.columnsEntrys,
-            "linhasEntrys": self.linhasEntrys,
-            "tempo_extra": self.tempo_extra.total_seconds() 
+            "Placar local": self.placarLocal.get(), "limite": 99,
+            "Substituições local": self.placarLocalSubs.get(), "limite": 9,
+            "Período": self.placarTempo.get(), "limite": 9,
+            "Faltas local": self.localFools.get(), "limite": 9,
+            "substituições visitante": self.placarVisitanteSubs.get(), "limite": 9,
+            "Faltas visitante": self.awayFools.get(), "limite": 9,
+            "Set local": self.set1.get(), "limite": 9,
+            "Set visitante": self.set2.get(), "limite": 9,
+            "Placar visitante": self.placarVisitante.get(), "limite": 99, 
+            "Cronometro": self.cronometro.get(),
+            "Time Casa": self.texto_entry.get(), 
+            "Time Visitante": self.texto_entry2.get(), 
+            "Tempo extra": self.tempo_extra.total_seconds() 
         }
         def send(): #Função para enviar os dados pela porta serial
             for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial 
