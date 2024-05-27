@@ -30,7 +30,7 @@ class Interface():
         self.placarVisitante.set(0)
         self.tempo_correndo = False
         self.cronometro = StringVar()
-        self.cronometro.set("0:00:00.000")
+        self.cronometro.set("0:00:00.0")
         self.texto_entry = StringVar()
         self.texto_entry2 = StringVar()
         self.columnsEntrys = 7
@@ -316,6 +316,12 @@ class Interface():
         self.entry_time = Entry (self.frame2wid2, cursor = "hand1")
         self.entry_time.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
 
+        self.front = Button(self.frame2wid2, text = "Anda para frente ⏩", cursor = "hand1")
+        self.front.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
+
+        self.back = Button(self.frame2wid2, text = "⏪ Anda pra trás", cursor = "hand1")
+        self.back.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
+
         self.choose_game = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Futebol", bg = "aqua")
         self.choose_game.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
         
@@ -401,16 +407,28 @@ class Interface():
     def update(self): #Para que nosso cronômetro comece a rodar
         if self.contador:
             tempo = datetime.now() - self.contador
-            total_milliseconds = int(tempo.total_seconds() * 1000)
-            horas, resto = divmod(total_milliseconds, 3600000)
-            minutos, resto = divmod(resto, 60000)
-            segundos, milissegundos = divmod(resto, 1000)
-            self.cronometro.set(f"{int(horas):02}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):03}")
-        self.root.after(1000, self.serial_Port)
-        self.root.after(10, self.update)
+            total_milliseconds = int(tempo.total_seconds() * 10)
+            horas, resto = divmod(total_milliseconds, 36000)
+            minutos, resto = divmod(resto, 600)
+            segundos, milissegundos = divmod(resto, 10)
+            self.cronometro.set(f"{int(horas):02}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):01}")
+        if milissegundos == 1:
+            self.root.after(1000, self.serial_Port)
+
+        self.root.after(90, self.update)
         
     def add_minute(self):
-        self.tempo_extra += timedelta(minutes=1)
+        if self.contador:
+            self.contador -= timedelta(minutes=1)
+        else:
+            self.contador = datetime.now() - timedelta(minutes=1)
+        self.serial_Port()
+
+    def min_minute(self):
+        if self.contador:
+            self.contador += timedelta(minutes=1)
+        else:
+            self.contador = datetime.now() + timedelta(minutes=1)
         self.serial_Port()
         
     def zero(self): #Definindo tudo para seu número/caractere inicial
@@ -419,7 +437,7 @@ class Interface():
         self.placarVisitante.set(0)
         self.set1.set(0)
         self.set2.set(0)
-        self.cronometro.set("0:00:00.000")
+        self.cronometro.set("0:00:00.0")
         self.texto_entry.set("")
         self.texto_entry2.set("")
         self.localFools.set(0)
@@ -434,7 +452,7 @@ class Interface():
             self.contador_pause = datetime.now() - self.contador
             self.contador = None
         elif opcao == 2: #Aqui vai reiniciar o cronômetro
-            self.cronometro.set("0:00:00.000")
+            self.cronometro.set("0:00:00.0")
             self.contador = None
         elif opcao == 3: #Continua o cronômetro se estiver pausado
             if self.contador_pause:
@@ -487,6 +505,7 @@ class Interface():
             self.contador = datetime.now()
             self.update()
             self.serial_Port()
+            
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema amarelo
             yellow = "brown"
@@ -604,7 +623,7 @@ class Interface():
                     bytesize = 8, 
                     parity = "N", 
                     stopbits = 1, 
-                    timeout = 1.0
+                    timeout = 2.0
                 )
                 print("Sua porta serial está aberta✔")
                 messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
@@ -626,9 +645,12 @@ class Interface():
         messagebox.showinfo("Serial selecionada:", op)
 
     def set_serial(self):
-        self.ser.port = self.option
-        self.ser.timeout = int(self.timeout.get())/1000
-        messagebox.showinfo("Novas configurações", self.ser)
+        try:
+            self.ser.port = self.option
+            self.ser.timeout = int(self.timeout.get())/1000
+            messagebox.showinfo("Novas configurações", self.ser)
+        except serial.SerialException:
+            messagebox.showinfo("Não foi possivel", "Não foi possivel, pois não existe essa porta no eletrônico😔")
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
