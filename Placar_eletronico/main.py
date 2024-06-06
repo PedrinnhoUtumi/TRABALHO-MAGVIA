@@ -162,7 +162,7 @@ class Interface():
         self.frame4wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Comunicação Serial")
         self.frame4wid2Label.place(relx = 0.4, rely = 0.5, relwidth = 0.25, relheight = 0.2) 
         
-        self.frame5wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
+        self.frame5wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Atalhos")
         self.frame5wid2Label.place(relx = 0.7, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
         
         self.frame6wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
@@ -345,6 +345,21 @@ class Interface():
         self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = "aqua", variable = self.esporte, value = "Outros")
         self.choose_game5.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
+        self.controles = Label(self.frame5wid2, bg = "aqua", text = "Espaço = Inicia")
+        self.controles.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
+        
+        self.controles = Label(self.frame5wid2, bg = "aqua", text = "0 = Zerar")
+        self.controles.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
+        
+        self.controles = Label(self.frame5wid2, bg = "aqua", text = "Ctrl + u = Pausar")
+        self.controles.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
+        
+        self.controles = Label(self.frame5wid2, bg = "aqua", text = "Ctrl + i = Reiniciar")
+        self.controles.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
+
+        self.controles = Label(self.frame5wid2, bg = "aqua", text = "Ctrl + o = Continuar")
+        self.controles.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
+        
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
@@ -454,7 +469,6 @@ class Interface():
         self.placarLocalSubs.set(0)
         self.contador = None
         self.serial_Port()
-        print("A tecla zero foi pressionada ou o botão Zerar foi clicado")
 
     def pause(self, opcao, event = None):
         if opcao == 1: #Aqui vai pausar
@@ -623,9 +637,9 @@ class Interface():
         thread = threading.Thread(target=send)
         thread.start()
 
-    def using_serial(self, use_serial = True):
+    def using_serial(self, use_serial = None):
         try:
-            if use_serial == True:
+            if use_serial:
                 self.ser = serial.Serial(
                     port = "COM3", 
                     baudrate = 115200, 
