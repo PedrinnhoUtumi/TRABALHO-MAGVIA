@@ -37,6 +37,7 @@ class Interface():
         self.texto_entry2 = StringVar()
         self.columnsEntrys = 7
         self.linhasEntrys = 15
+        self.esporte = StringVar()
         self.contador = None
         self.tempo_extra = timedelta()
         self.config_tela()
@@ -329,19 +330,19 @@ class Interface():
         self.back = Button(self.frame2wid2, text = "⏪ Anda pra trás", cursor = "hand1")
         self.back.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
 
-        self.choose_game = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Futebol", bg = "aqua")
+        self.choose_game = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Futebol", bg = "aqua", variable = self.esporte, value = "Futebol")
         self.choose_game.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game2 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Voleibol", bg = "aqua")
+        self.choose_game2 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Voleibol", bg = "aqua", variable = self.esporte, value = "Voleibol")
         self.choose_game2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game3 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Basquete", bg = "aqua")
+        self.choose_game3 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Basquete", bg = "aqua", variable = self.esporte, value = "Basquete")
         self.choose_game3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = "aqua")
+        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = "aqua", variable = self.esporte, value = "Tênis de Mesa")
         self.choose_game4.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = "aqua")
+        self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = "aqua", variable = self.esporte, value = "Outros")
         self.choose_game5.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
@@ -595,7 +596,7 @@ class Interface():
             self.localSubsText.config(bg = "lightgray", fg = "red")
             self.awaySubsText.config(bg = "lightgray", fg = "red")
             self.frameLadoLabel.config(bg = "white", fg = "red")
-
+            
     def serial_Port(self): #Faz a comunicação com a porta serial
         send_datas = { #Dicionário para que a gente consiga enviar todos os dados da forma correta 
             "Placar local": self.placarLocal.get(), "limite": 99,
@@ -609,7 +610,8 @@ class Interface():
             "Placar visitante": self.placarVisitante.get(), "limite": 99, 
             "Cronometro": self.cronometro.get(),
             "Time Casa": self.texto_entry.get(), 
-            "Time Visitante": self.texto_entry2.get()
+            "Time Visitante": self.texto_entry2.get(),
+            "Esporte": self.esporte.get()
         }
         def send(): #Função para enviar os dados pela porta serial
             for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial
