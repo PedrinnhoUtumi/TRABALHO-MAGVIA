@@ -6,6 +6,8 @@ import time
 import threading
 import serial
 
+
+
 class Interface():
     def __init__(self, root): #Aqui é onde eu conecto/crio tudo na minha função construtora
         self.ser = None
@@ -200,18 +202,23 @@ class Interface():
         #Botôes de controle
         self.bt_start = Button(self.frameLado, text = "Iniciar", cursor = "clock", command = self.start_timer)
         self.bt_start.place(relx = 0.15, rely = 0.15, relwidth = 0.7, relheight = 0.03) #Iniciar cronômetro
+        self.root.bind("<space>", self.start_timer)
         
         self.bt_zero = Button(self.frameLado, text = "Zerar", command = self.zero, cursor = "hand1")
         self.bt_zero.place(relx = 0.15, rely = 0.2, relwidth = 0.7, relheight = 0.03) #Zerar toda a página
+        self.root.bind("0", self.zero)
         
         self.bt_pause = Button(self.frameLado, text = "Pausar", command = lambda: self.pause(1), cursor = "hand1")
         self.bt_pause.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.03) #Pausar cronômetro
+        self.root.bind("<Control-u>", lambda event: self.pause(1))
         
         self.bt_reniciar = Button(self.frameLado, text = "Reiniciar", command = lambda: self.pause(2), cursor = "hand1")
         self.bt_reniciar.place(relx = 0.15, rely = 0.3, relwidth = 0.7, relheight = 0.03) #Reinciar cronômetro
+        self.root.bind("<Control-i>", lambda event: self.pause(2))
         
         self.bt_continue = Button(self.frameLado, text = "Continuar", cursor = "hand1", command = lambda: self.pause(3))
         self.bt_continue.place(relx = 0.15, rely = 0.35, relwidth = 0.7, relheight = 0.03) #Continuar cronômetro após pausa
+        self.root.bind("<Control-o>", lambda event: self.pause(3))
         
         #Botôes do frame2 da aba 1
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
@@ -431,7 +438,7 @@ class Interface():
             self.contador = datetime.now() + timedelta(minutes=1)
         self.serial_Port()
         
-    def zero(self): #Definindo tudo para seu número/caractere inicial
+    def zero(self, event = None): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
         self.placarTempo.set(1)
         self.placarVisitante.set(0)
@@ -446,8 +453,9 @@ class Interface():
         self.placarLocalSubs.set(0)
         self.contador = None
         self.serial_Port()
+        print("A tecla zero foi pressionada ou o botão Zerar foi clicado")
 
-    def pause(self, opcao):
+    def pause(self, opcao, event = None):
         if opcao == 1: #Aqui vai pausar
             self.contador_pause = datetime.now() - self.contador
             self.contador = None
@@ -500,11 +508,12 @@ class Interface():
                 return False 
         return True
             
-    def start_timer(self): #Inicia o cronômetro
+    def start_timer(self, event = None): #Inicia o cronômetro
         if not self.contador:  #Apenas inicie se o contador não estiver ativado
             self.contador = datetime.now()
             self.update()
             self.serial_Port()
+            print("iniciando...")
             
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema amarelo
@@ -603,9 +612,7 @@ class Interface():
             "Time Visitante": self.texto_entry2.get()
         }
         def send(): #Função para enviar os dados pela porta serial
-            for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial 
-                """if v >= send_datas["limite"]:
-                    break """
+            for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial
                 format_data = f"{i}: {v}\n"
                 if self.ser:
                     self.ser.write(format_data.encode())
@@ -614,11 +621,11 @@ class Interface():
         thread = threading.Thread(target=send)
         thread.start()
 
-    def using_serial(self, use_serial = None):
+    def using_serial(self, use_serial = True):
         try:
-            if use_serial:
+            if use_serial == True:
                 self.ser = serial.Serial(
-                    port = "COM5", 
+                    port = "COM3", 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
@@ -629,7 +636,7 @@ class Interface():
                 messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
                 self.options = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
                 for self.option in self.options:
-                    self.menu.add_command(label=str(self.option), command = lambda op = self.option: self.select_serial(op))
+                    self.menu.add_command(label = str(self.option), command = lambda op = self.option: self.select_serial(op))
             else:
                 self.ser = None
                 self.menu.delete(0, "end")
@@ -638,7 +645,7 @@ class Interface():
         except serial.SerialException:
             self.ser = None
             print("Não foi possível abrir a porta serial😔")
-            messagebox.showerror("Erro", "Não foi possível abrir a porta serial😔")
+            messagebox.showerror("Erro", serial.SerialException)
 
     def select_serial(self, op):
         print("Serial selecionada:", op)
@@ -650,7 +657,7 @@ class Interface():
             self.ser.timeout = int(self.timeout.get())/1000
             messagebox.showinfo("Novas configurações", self.ser)
         except serial.SerialException:
-            messagebox.showinfo("Não foi possivel", "Não foi possivel, pois não existe essa porta no eletrônico😔")
+            messagebox.showerror("Não foi possivel", serial.SerialException)
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
