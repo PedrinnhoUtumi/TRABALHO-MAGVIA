@@ -212,11 +212,11 @@ class Interface():
         self.frame2wid4 = Label(self.frame4wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
         self.frame2wid4.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
 
-        self.framecithec = Label(self.frame2wid4, bg = "aqua", fg = "white", text = "TERMINAL 24 SEG.", font = ("Courier New", 24, "bold"))
-        self.framecithec.place(relx = 0, rely = 0.15, relwidth = 0.9, relheight = 0.1)
+        self.framecithec = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "TERMINAL 24 SEG.", font = ("Courier New", 24, "bold"))
+        self.framecithec.place(relx = 0, rely = 0.15, relwidth = 0.9, relheight = 0.05)
 
-        self.framecithec2 = Label(self.frame2wid4, bg = "aqua", fg = "white", text = "CITHEC - V.12/16", font = ("Courier New", 24, "bold"))
-        self.framecithec2.place(relx = 0, rely = 0.25, relwidth = 0.9, relheight = 0.1)
+        self.framecithec2 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "CITHEC - V.12/16", font = ("Courier New", 24, "bold"))
+        self.framecithec2.place(relx = 0, rely = 0.25, relwidth = 0.9, relheight = 0.05)
 
     def botao(self):
         #Botôes de controle
@@ -308,8 +308,8 @@ class Interface():
         self.bt_plus3_visitante.place(relx = 0.8, rely = 0.65, relwidth = 0.15, relheight = 0.15) #+3 pontos do time visitante
         
         #Botôes da aba 2
-        self.bt_theme = Button(self.frame3wid2, text = "Tema amarelo", command = lambda: self.change_theme(1), cursor = "hand1")
-        self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Mudar tema para amarelo
+        self.bt_theme = Button(self.frame3wid2, text = "Tema verde", command = lambda: self.change_theme(1), cursor = "hand1")
+        self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Mudar tema para verde
         
         self.bt_theme2 = Button(self.frame3wid2, text = "Tema roxo", command = lambda: self.change_theme(2), cursor = "hand1")
         self.bt_theme2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Mudar tema para roxo
@@ -381,7 +381,8 @@ class Interface():
         
     #Botões da aba 4
         self.ativar = Checkbutton(self.frame2wid4, bg = "aqua", text = "Ativar simulador 24 segundos")
-        self.ativar.place(relx = 0, rely = 0.05, relwidth = 0.5, relheight = 0.1)
+        self.ativar.place(relx = 0, rely = 0.05, relwidth = 0.5, relheight = 0.05)
+
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
@@ -553,7 +554,7 @@ class Interface():
             print("iniciando...")
             
     def change_theme(self, opcao): #Muda os temas
-        if opcao == 1: #Tema amarelo
+        if opcao == 1: #Tema verde
             yellow = "#111111"
             orange = "#0CF22F"
             black = "#0CF22F"
@@ -582,7 +583,7 @@ class Interface():
             self.awaySubsText.config(bg = yellow, fg = black)
             self.frameLadoLabel.config(bg = orange, fg = black)
         elif opcao == 2: #Tema roxo
-            cor1 = "#B001F5"
+            cor1 = "purple"
             self.frame1wid.config(bg = cor1, highlightbackground = "Blue")
             self.frame1.config(bg = "aqua", highlightbackground = "Blue")
             self.frame2.config(bg = "aqua", highlightbackground = "Blue")
