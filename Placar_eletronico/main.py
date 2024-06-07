@@ -655,7 +655,6 @@ class Interface():
                 format_data = f"{i}: {v}\n"
                 if self.ser:
                     self.ser.write(format_data.encode())
-                    time.sleep(0.01)
                     print(format_data)
         thread = threading.Thread(target=send)
         thread.start()
