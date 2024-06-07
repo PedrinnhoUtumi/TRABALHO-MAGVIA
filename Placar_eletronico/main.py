@@ -686,12 +686,13 @@ class Interface():
             messagebox.showerror("Erro", serial.SerialException)
 
     def select_serial(self, op):
-        print("Serial selecionada:", op)
-        messagebox.showinfo("Serial selecionada:", op)
+        self.op = op
+        print("Serial selecionada:", self.op)
+        messagebox.showinfo("Serial selecionada:", self.op)
 
     def set_serial(self):
         try:
-            self.ser.port = self.option
+            self.ser.port = self.op
             self.ser.timeout = int(self.timeout.get())/1000
             messagebox.showinfo("Novas configurações", self.ser)
         except serial.SerialException:
