@@ -199,6 +199,25 @@ class Interface():
         self.frame2wid3 = Label(self.frame3wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
         self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
         
+        #Configura os frames da aba 4
+        self.frame1wid4Label = Label(self.frame4wid, bg = "purple", fg = "white", text = "Serial dos 24 segundos")
+        self.frame1wid4Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
+        
+        self.frame1wid4 = Label(self.frame4wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame1wid4.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.75)
+        
+        self.frame2wid4Label = Label(self.frame4wid, bg = "purple", fg = "white", text = "Terminal")
+        self.frame2wid4Label.place(relx = 0.5, rely = 0.01, relwidth = 0.15, relheight = 0.05)
+        
+        self.frame2wid4 = Label(self.frame4wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame2wid4.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
+
+        self.framecithec = Label(self.frame2wid4, bg = "aqua", fg = "white", text = "TERMINAL 24 SEG.", font = ("Courier New", 24, "bold"))
+        self.framecithec.place(relx = 0, rely = 0.15, relwidth = 0.9, relheight = 0.1)
+
+        self.framecithec2 = Label(self.frame2wid4, bg = "aqua", fg = "white", text = "CITHEC - V.12/16", font = ("Courier New", 24, "bold"))
+        self.framecithec2.place(relx = 0, rely = 0.25, relwidth = 0.9, relheight = 0.1)
+
     def botao(self):
         #Botôes de controle
         self.bt_start = Button(self.frameLado, text = "Iniciar", cursor = "clock", command = self.start_timer)
@@ -360,6 +379,9 @@ class Interface():
         self.controles = Label(self.frame5wid2, bg = "aqua", text = "Ctrl + o = Continuar")
         self.controles.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
+    #Botões da aba 4
+        self.ativar = Checkbutton(self.frame2wid4, bg = "aqua", text = "Ativar simulador 24 segundos")
+        self.ativar.place(relx = 0, rely = 0.05, relwidth = 0.5, relheight = 0.1)
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
@@ -641,7 +663,7 @@ class Interface():
         try:
             if use_serial:
                 self.ser = serial.Serial(
-                    port = "COM3", 
+                    port = "COM5", 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
