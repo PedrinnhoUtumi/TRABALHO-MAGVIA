@@ -654,8 +654,14 @@ class Interface():
             for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial
                 format_data = f"{i}: {v}\n"
                 if self.ser:
-                    self.ser.write(format_data.encode())
-                    print(format_data)
+                    #b = [bytes(self.placarLocal.get()),bytes(self.placarLocalSubs.get())]
+                    array_bytes=[100,40,133,23,self.placarLocal.get(),self.placarLocalSubs.get(),self.placarVisitante.get()]
+                    arr_by = bytes(array_bytes)
+                    time.sleep(1)
+#                    self.ser.write(b)
+                    time.sleep(1)
+                    self.ser.write(arr_by)
+                    print(arr_by)
         thread = threading.Thread(target=send)
         thread.start()
 
