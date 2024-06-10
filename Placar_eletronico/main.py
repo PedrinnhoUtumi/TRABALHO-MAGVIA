@@ -661,22 +661,22 @@ class Interface():
         try:
             if use_serial:
                 self.ser = serial.Serial(
-                    port = "COM5", 
+                    port = self.op, 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
                     stopbits = 1, 
-                    timeout = 1.0
+                    timeout = int(self.timeout.get())/1000
                 )
+                self.menu.delete(0, "end")
                 print("Sua porta serial está aberta✔")
                 messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
+            else:
+                self.ser = None
+                print("Sua porta serial está fechada✘")
                 self.options = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
                 for self.option in self.options:
                     self.menu.add_command(label = str(self.option), command = lambda op = self.option: self.select_serial(op))
-            else:
-                self.ser = None
-                self.menu.delete(0, "end")
-                print("Sua porta serial está fechada✘")
                 messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
         except serial.SerialException:
             self.ser = None
@@ -689,12 +689,7 @@ class Interface():
         messagebox.showinfo("Serial selecionada:", self.op)
 
     def set_serial(self):
-        try:
-            self.ser.port = self.op
-            self.ser.timeout = int(self.timeout.get())/1000
-            messagebox.showinfo("Novas configurações", self.ser)
-        except serial.SerialException:
-            messagebox.showerror("Não foi possivel", serial.SerialException)
+        messagebox.showinfo("Novas configurações", self.ser)
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
