@@ -458,10 +458,8 @@ class Interface():
             minutos, resto = divmod(resto, 600)
             segundos, milissegundos = divmod(resto, 10)
             self.cronometro.set(f"{int(horas):02}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):01}")
-        if milissegundos == 1:
-            self.root.after(1000, self.serial_Port)
-
-        self.root.after(90, self.update)
+        self.root.after(100, self.serial_Port)
+        self.root.after(100, self.update)
         
     def add_minute(self):
         if self.contador:
@@ -635,6 +633,13 @@ class Interface():
             self.frameLadoLabel.config(bg = "white", fg = "red")
             
     def serial_Port(self): #Faz a comunicação com a porta serial
+        tempo = self.cronometro.get()
+        hr, min, seg_milisseg = tempo.split(':')
+        seg, milisseg = seg_milisseg.split('.')
+        hr = int(hr)
+        min = int(min)
+        seg = int(seg)
+        milisseg = int(milisseg)
         array_bytes = [100,
                      40,
                      133,
@@ -647,6 +652,10 @@ class Interface():
                      self.awayFools.get(),
                      self.placarVisitanteSubs.get(),
                      self.set2.get(),
+                     hr, 
+                     min, 
+                     seg, 
+                     milisseg
                      ]
         
         def send(): #Função para enviar os dados pela porta serial
