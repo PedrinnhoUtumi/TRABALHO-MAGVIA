@@ -635,7 +635,7 @@ class Interface():
             self.frameLadoLabel.config(bg = "white", fg = "red")
             
     def serial_Port(self): #Faz a comunicação com a porta serial
-        array_bytes=[100,
+        array_bytes = [100,
                      40,
                      133,
                      23,
@@ -650,11 +650,10 @@ class Interface():
                      ]
         
         def send(): #Função para enviar os dados pela porta serial
-            for i in array_bytes: #Formata os dados conforme necessário antes de enviá-los pela porta serial
-                if self.ser:
-                    arr_by = bytes(array_bytes)
-                    self.ser.write(arr_by)
-                    print(arr_by)
+            if self.ser:
+                arr_by = bytes(array_bytes)
+                self.ser.write(arr_by)
+                print(arr_by)
         thread = threading.Thread(target=send)
         thread.start()
 
