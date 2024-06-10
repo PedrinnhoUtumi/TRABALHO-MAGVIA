@@ -635,31 +635,24 @@ class Interface():
             self.frameLadoLabel.config(bg = "white", fg = "red")
             
     def serial_Port(self): #Faz a comunicação com a porta serial
-        send_datas = { #Dicionário para que a gente consiga enviar todos os dados da forma correta 
-            "Placar local": self.placarLocal.get(), "limite": 99,
-            "Substituições local": self.placarLocalSubs.get(), "limite": 9,
-            "Período": self.placarTempo.get(), "limite": 9,
-            "Faltas local": self.localFools.get(), "limite": 9,
-            "substituições visitante": self.placarVisitanteSubs.get(), "limite": 9,
-            "Faltas visitante": self.awayFools.get(), "limite": 9,
-            "Set local": self.set1.get(), "limite": 9,
-            "Set visitante": self.set2.get(), "limite": 9,
-            "Placar visitante": self.placarVisitante.get(), "limite": 99, 
-            "Cronometro": self.cronometro.get(),
-            "Time Casa": self.texto_entry.get(), 
-            "Time Visitante": self.texto_entry2.get(),
-            "Esporte": self.esporte.get()
-        }
+        array_bytes=[100,
+                     40,
+                     133,
+                     23,
+                     self.placarLocal.get(),
+                     self.localFools.get(),
+                     self.placarLocalSubs.get(),
+                     self.set1.get(),
+                     self.placarVisitante.get(),
+                     self.awayFools.get(),
+                     self.placarVisitanteSubs.get(),
+                     self.set2.get(),
+                     ]
+        
         def send(): #Função para enviar os dados pela porta serial
-            for i, v in send_datas.items(): #Formata os dados conforme necessário antes de enviá-los pela porta serial
-                format_data = f"{i}: {v}\n"
+            for i in array_bytes: #Formata os dados conforme necessário antes de enviá-los pela porta serial
                 if self.ser:
-                    #b = [bytes(self.placarLocal.get()),bytes(self.placarLocalSubs.get())]
-                    array_bytes=[100,40,133,23,self.placarLocal.get(),self.placarLocalSubs.get(),self.placarVisitante.get()]
                     arr_by = bytes(array_bytes)
-                    time.sleep(1)
-#                    self.ser.write(b)
-                    time.sleep(1)
                     self.ser.write(arr_by)
                     print(arr_by)
         thread = threading.Thread(target=send)
