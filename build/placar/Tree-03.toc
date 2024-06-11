@@ -1,0 +1,5 @@
+('C:\\Users\\magvi\\OneDrive\\Documentos\\GitHub\\TRABALHO-MAGVIA\\TRABALHO-MAGVIA\\build\\placar\\pyserial-3.5-py3.7.egg',
+ None,
+ {'*.py', '*.pyw', 'EGG-INFO', '*.cp37-win32.pyd', '*.pyd', '*.pyc'},
+ 'DATA',
+ [])
