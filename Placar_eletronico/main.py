@@ -458,8 +458,8 @@ class Interface():
             minutos, resto = divmod(resto, 600)
             segundos, milissegundos = divmod(resto, 10)
             self.cronometro.set(f"{int(horas):02}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):01}")
-        self.root.after(100, self.serial_Port)
-        self.root.after(100, self.update)
+            self.root.after(100, self.serial_Port)
+            self.root.after(100, self.update)
         
     def add_minute(self):
         if self.contador:
@@ -489,7 +489,6 @@ class Interface():
         self.placarVisitanteSubs.set(0)
         self.placarLocalSubs.set(0)
         self.contador = None
-        self.serial_Port()
 
     def pause(self, opcao, event = None):
         if opcao == 1: #Aqui vai pausar
