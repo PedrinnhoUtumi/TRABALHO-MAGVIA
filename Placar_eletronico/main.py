@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from tkinter import messagebox
+from tkinter.ttk import *
 from datetime import datetime, timedelta 
 import time
 import threading
