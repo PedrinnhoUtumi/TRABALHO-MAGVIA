@@ -165,7 +165,7 @@ class Interface():
         self.frame5wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Atalhos")
         self.frame5wid2Label.place(relx = 0.7, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame6wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "#")
+        self.frame6wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Atalhos")
         self.frame6wid2Label.place(relx = 0.7, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
         
         self.frame1wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
@@ -319,9 +319,11 @@ class Interface():
 
         self.bt_serial_open = Button(self.frame4wid2, text = "Abre serial", command = lambda: self.using_serial(True), cursor = "hand1")
         self.bt_serial_open.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Abre a porta serial
-
+        self.root.bind("<Control-p>", lambda event: self.using_serial(True))
+        
         self.bt_serial_close = Button(self.frame4wid2, text = "Fecha serial", command = lambda: self.using_serial(False), cursor = "hand1")
         self.bt_serial_close.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Fecha a porta serial 
+        self.root.bind("<Control-l>", lambda event: self.using_serial(False))
 
         self.bt_choose_serial = Menubutton(self.frame4wid2, text = "Escolhe serial", cursor = "hand1", relief="raised")
         self.bt_choose_serial.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Escolhe a porta serial
@@ -333,6 +335,7 @@ class Interface():
         
         self.new_data = Button(self.frame4wid2, text = "Mostrar serial", command = self.show_serial, cursor = "hand1")
         self.new_data.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
+        self.root.bind("<Control-m>", self.show_serial)
 
         self.bt_add1min = Button(self.frame2wid2, text = "+1 minuto", cursor = "hand1", command = self.add_minute)
         self.bt_add1min.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
@@ -378,6 +381,21 @@ class Interface():
 
         self.controles = Label(self.frame5wid2, bg = "aqua", text = "Ctrl + o = Continuar")
         self.controles.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
+        
+        self.controls = Label(self.frame6wid2, bg = "aqua", text = "Ctrl + p = Abre serial")
+        self.controls.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
+        
+        self.controls = Label(self.frame6wid2, bg = "aqua", text = "Ctrl + l = Fecha serial")
+        self.controls.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
+        
+        self.controls = Label(self.frame6wid2, bg = "aqua", text = "Ctrl + m = Mostra serial")
+        self.controls.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
+        
+        self.controls = Label(self.frame6wid2, bg = "aqua", text = "#")
+        self.controls.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
+
+        self.controls = Label(self.frame6wid2, bg = "aqua", text = "#")
+        self.controls.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
     #Botões da aba 4
         self.ativar = Checkbutton(self.frame2wid4, bg = "aqua", text = "Ativar simulador 24 segundos")
@@ -639,23 +657,24 @@ class Interface():
         min = int(min)
         seg = int(seg)
         milisseg = int(milisseg)
-        array_bytes = [100,
-                     40,
-                     133,
-                     23,
-                     self.placarLocal.get(),
-                     self.localFools.get(),
-                     self.placarLocalSubs.get(),
-                     self.set1.get(),
-                     self.placarVisitante.get(),
-                     self.awayFools.get(),
-                     self.placarVisitanteSubs.get(),
-                     self.set2.get(),
-                     hr, 
-                     min, 
-                     seg, 
-                     milisseg
-                     ]
+        array_bytes = [
+                    100,
+                    40,
+                    133,
+                    23,
+                    self.placarLocal.get(),
+                    self.localFools.get(),
+                    self.placarLocalSubs.get(),
+                    self.set1.get(),
+                    self.placarVisitante.get(),
+                    self.awayFools.get(),
+                    self.placarVisitanteSubs.get(),
+                    self.set2.get(),
+                    hr, 
+                    min, 
+                    seg, 
+                    milisseg
+                    ]
         
         def send(): #Função para enviar os dados pela porta serial
             if self.ser:
@@ -696,7 +715,7 @@ class Interface():
         print("Serial selecionada:", self.op)
         messagebox.showinfo("Serial selecionada:", self.op)
 
-    def show_serial(self):
+    def show_serial(self, event = None):
         messagebox.showinfo("Novas configurações", self.ser)
 
 if __name__ == "__main__": #Inicia o programa 
