@@ -824,11 +824,3 @@ if __name__ == "__main__": #Inicia o programa
     root = Tk()
     app = Interface(root)
     root.mainloop()
-
-
-"""
-Checkbutton: várias opções selecionáveis
-Radiobutton: uma opção selecionável
-Menubutton: dropdown
-Spínbox: Números
-"""
