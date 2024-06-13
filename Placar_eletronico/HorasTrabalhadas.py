@@ -1,19 +1,23 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 
-def calcular_horas_por_semana(horas_por_dia, dias_por_semana, data_inicio, data_fim):
+def calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim):
     data_inicio = datetime.strptime(data_inicio, '%d/%m/%Y')
     data_fim = datetime.strptime(data_fim, '%d/%m/%Y')
-    semanas_totais = (data_fim - data_inicio).days // 7
-    dias_totais = semanas_totais * dias_por_semana
-    horas_totais = dias_totais * horas_por_dia
-    return horas_totais
+    
+    total_horas = 0
+    data = data_inicio
+    while data <= data_fim:
+        if data.weekday() in [0, 3, 4]:  # 0 = segunda-feira, 3 = quinta-feira, 4 = sexta-feira
+            total_horas += horas_por_dia
+        data += timedelta(days=1)
+        
+    return total_horas
 
 horas_por_dia = 4
-dias_por_semana = 3
 data_inicio = "19/04/2024"
 data_fim = datetime.now().strftime('%d/%m/%Y')
 
-total_horas = calcular_horas_por_semana(horas_por_dia, dias_por_semana, data_inicio, data_fim)
+total_horas = calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim)
 
 horas_feriado = 4
 horas_devendo = 4
