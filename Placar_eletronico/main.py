@@ -37,6 +37,7 @@ class Interface():
         self.texto_entry2 = StringVar()
         self.columnsEntrys = 7
         self.linhasEntrys = 15
+        self.ativa = StringVar()
         self.esporte = StringVar()
         self.contador = None
         self.tempo_extra = timedelta()
@@ -58,19 +59,19 @@ class Interface():
         self.notebook.pack(fill=BOTH, expand=True)
         
         self.frame1wid = Frame(self.notebook, bg = "purple") #Configura aba 1
-        self.notebook.add(self.frame1wid, text="Placar")
+        self.notebook.add(self.frame1wid, text = "Placar")
         
         self.frame2wid = Frame(self.notebook, bg = "purple") #Configura aba 2
-        self.notebook.add(self.frame2wid, text="Configurações")
+        self.notebook.add(self.frame2wid, text = "Configurações")
         
         self.frame3wid = Frame(self.notebook, bg = "purple") #Configura aba 3
-        self.notebook.add(self.frame3wid, text="Escalação")
+        self.notebook.add(self.frame3wid, text = "Escalação")
         
         self.frame4wid = Frame(self.notebook, bg = "purple") #Configura aba 4
-        self.notebook.add(self.frame4wid, text="Jornal")
+        self.notebook.add(self.frame4wid, text = "24 Segundos")
 
         self.frame5wid = Frame(self.notebook, bg = "purple") #Configura aba 4
-        self.notebook.add(self.frame5wid, text="24 Segundos")
+        self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
         self.frameLado = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
@@ -218,6 +219,57 @@ class Interface():
         self.framecithec2 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "CITHEC - V.12/16", font = ("Courier New", 24, "bold"))
         self.framecithec2.place(relx = 0, rely = 0.25, relwidth = 0.9, relheight = 0.05)
 
+        self.frame1frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "A", font = ("Courier New", 24, "bold"))
+        self.frame1frame2wid4.place (relx = 0, rely = 0.35, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame2frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Programa", font = ("Courier New", 12, "bold"))
+        self.frame2frame2wid4.place (relx = 0.35, rely = 0.35, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame3frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Mostra", font = ("Courier New", 12, "bold"))
+        self.frame3frame2wid4.place (relx = 0.7, rely = 0.35, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame4frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F1", font = ("Courier New", 24, "bold"))
+        self.frame4frame2wid4.place (relx = 0, rely = 0.45, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame5frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F2", font = ("Courier New", 24, "bold"))
+        self.frame5frame2wid4.place (relx = 0.35, rely = 0.45, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame6frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F3", font = ("Courier New", 24, "bold"))
+        self.frame6frame2wid4.place (relx = 0.7, rely = 0.45, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame7frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F4", font = ("Courier New", 24, "bold"))
+        self.frame7frame2wid4.place (relx = 0, rely = 0.55, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame8frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F5", font = ("Courier New", 24, "bold"))
+        self.frame8frame2wid4.place (relx = 0.35, rely = 0.55, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame9frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "60s", font = ("Courier New", 24, "bold"))
+        self.frame9frame2wid4.place (relx = 0.7, rely = 0.55, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame10frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Camp", font = ("Courier New", 12, "bold"))
+        self.frame10frame2wid4.place (relx = 0, rely = 0.65, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame11frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "T. Prog.", font = ("Courier New", 12, "bold"))
+        self.frame11frame2wid4.place (relx = 0.35, rely = 0.65, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame12frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "24s", font = ("Courier New", 24, "bold"))
+        self.frame12frame2wid4.place (relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame13frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Para", font = ("Courier New", 12, "bold"))
+        self.frame13frame2wid4.place (relx = 0, rely = 0.75, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame14frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Anda", font = ("Courier New", 12, "bold"))
+        self.frame14frame2wid4.place (relx = 0.35, rely = 0.75, relwidth = 0.2, relheight = 0.05)
+        
+        self.frame15frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "14s", font = ("Courier New", 24, "bold"))
+        self.frame15frame2wid4.place (relx = 0.7, rely = 0.75, relwidth = 0.2, relheight = 0.05)
+
+        self.labelspacebar = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Barra de espaço ativa?", font = ("Courier New", 12, "bold"))
+        self.labelspacebar.place(relx = 0, rely = 0.85, relwidth = 0.6, relheight = 0.05)
+        
+        self.framecronoframe1wid4 = Label(self.frame1wid4, bg = "aqua", textvariable = self.cronometro, font = ("Courier New", 36, "bold"))
+        self.framecronoframe1wid4.place(relx = 0.13, rely = 0.45, relwidth = 0.75, relheight = 0.2) #Cronometro
+        
     def botao(self):
         #Botôes de controle
         self.bt_start = Button(self.frameLado, text = "Iniciar", cursor = "clock", command = self.start_timer)
@@ -400,6 +452,50 @@ class Interface():
     #Botões da aba 4
         self.ativar = Checkbutton(self.frame2wid4, bg = "aqua", text = "Ativar simulador 24 segundos")
         self.ativar.place(relx = 0, rely = 0.05, relwidth = 0.5, relheight = 0.05)
+
+        self.esppacoativa = Radiobutton(self.frame2wid4, bg = "aqua", text = "14s", variable = self.ativa, value = "14s")
+        self.esppacoativa.place(relx = 0, rely = 0.9, relwidth = 0.15, relheight = 0.05)
+    
+        self.esppacoativa2 = Radiobutton(self.frame2wid4, bg = "aqua", text = "24s", variable = self.ativa, value = "24s")
+        self.esppacoativa2.place(relx = 0.2, rely = 0.9, relwidth = 0.15, relheight = 0.05)
+    
+        self.esppacoativa3 = Radiobutton(self.frame2wid4, bg = "aqua", text = "Prog", variable = self.ativa, value = "Prog")
+        self.esppacoativa3.place(relx = 0.4, rely = 0.9, relwidth = 0.15, relheight = 0.05)
+    
+        self.esppacoativa4 = Radiobutton(self.frame2wid4, bg = "aqua", text = "Para/Anda", variable = self.ativa, value = "Para/Anda")
+        self.esppacoativa4.place(relx = 0.6, rely = 0.9, relwidth = 0.2, relheight = 0.05)
+        
+        self.bt_serial_open = Button(self.frame1wid4, text = "Abre serial", command = lambda: self.using_serial(True), cursor = "hand1")
+        self.bt_serial_open.place(relx = 0.05, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Abre a porta serial
+        self.root.bind("<Control-p>", lambda event: self.using_serial(True))
+        
+        self.bt_serial_close = Button(self.frame1wid4, text = "Fecha serial", command = lambda: self.using_serial(False), cursor = "hand1")
+        self.bt_serial_close.place(relx = 0.4, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Fecha a porta serial 
+        self.root.bind("<Control-l>", lambda event: self.using_serial(False))
+
+        self.new_data = Button(self.frame1wid4, text = "Mostrar serial", command = self.show_serial, cursor = "hand1")
+        self.new_data.place(relx = 0.75, rely = 0.05, relwidth = 0.2, relheight = 0.05)
+        self.root.bind("<Control-m>", self.show_serial)
+        
+        self.bt_choose_serial = Menubutton(self.frame1wid4, text = "Escolhe serial", cursor = "hand1", relief="raised")
+        self.bt_choose_serial.place(relx = 0.225, rely = 0.15, relwidth = 0.2, relheight = 0.05) #Escolhe a porta serial
+        self.menu = Menu(self.bt_choose_serial, tearoff = 0)
+        self.bt_choose_serial.config(menu = self.menu)
+
+        self.timeout = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
+        self.timeout.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
+
+        self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar")
+        self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
+        
+        self.ativar3 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Para cronômetro dos 24 segundos")
+        self.ativar3.place(relx = 0, rely = 0.3, relwidth = 0.5, relheight = 0.02)
+        
+        self.ativar4 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Sem interligar c/ Placar")
+        self.ativar4.place(relx = 0, rely = 0.35, relwidth = 0.5, relheight = 0.02)
+        
+        self.ativar5 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Modo 24 segundos")
+        self.ativar5.place(relx = 0, rely = 0.4, relwidth = 0.5, relheight = 0.02)
 
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
@@ -717,6 +813,12 @@ class Interface():
 
     def show_serial(self, event = None):
         messagebox.showinfo("Novas configurações", self.ser)
+        """
+    def spaceBar_start(self):
+        if self.ativa == "Para/Anda":
+            ativa = self.ativa.get()
+            para, anda = ativa.split("/")"""
+            
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
