@@ -48,9 +48,8 @@ class Interface():
         self.root.title("Placar Eletrônico") #Configura titulo
         self.root.configure(background = "purple") #Configura cor de fundo
         self.root.geometry("1100x1100") #Configura tamanho inicial do app
-        self.root.resizable(False, False) #Configura sua responsividade
-        self.root.minsize(width = 1100, height = 1100) #Configura tamanho minimo do app
-        self.root.maxsize(width = 1100, height = 1100) #Configura tamanho máximo do app
+        self.root.resizable(True, True) #Configura sua responsividade
+        self.root.minsize(width = 700, height = 700) #Configura tamanho minimo do app
         
     def frames(self):  #Aqui é onde eu configuro frames e abas do app
         self.notebook = ttk.Notebook(self.root) #Cria abas
@@ -463,25 +462,25 @@ class Interface():
         self.esppacoativa4 = Radiobutton(self.frame2wid4, bg = "aqua", text = "Para/Anda", variable = self.ativa, value = "Para/Anda")
         self.esppacoativa4.place(relx = 0.6, rely = 0.9, relwidth = 0.2, relheight = 0.05)
         
-        self.bt_serial_open = Button(self.frame1wid4, text = "Abre serial", command = lambda: self.using_serial(True), cursor = "hand1")
-        self.bt_serial_open.place(relx = 0.05, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Abre a porta serial
+        self.bt_serial_open2 = Button(self.frame1wid4, text = "Abre serial", command = lambda: self.using_serial(True), cursor = "hand1")
+        self.bt_serial_open2.place(relx = 0.05, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Abre a porta serial
         self.root.bind("<Control-p>", lambda event: self.using_serial(True))
         
-        self.bt_serial_close = Button(self.frame1wid4, text = "Fecha serial", command = lambda: self.using_serial(False), cursor = "hand1")
-        self.bt_serial_close.place(relx = 0.4, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Fecha a porta serial 
+        self.bt_serial_close2 = Button(self.frame1wid4, text = "Fecha serial", command = lambda: self.using_serial(False), cursor = "hand1")
+        self.bt_serial_close2.place(relx = 0.4, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Fecha a porta serial 
         self.root.bind("<Control-l>", lambda event: self.using_serial(False))
 
-        self.new_data = Button(self.frame1wid4, text = "Mostrar serial", command = self.show_serial, cursor = "hand1")
-        self.new_data.place(relx = 0.75, rely = 0.05, relwidth = 0.2, relheight = 0.05)
+        self.new_data2 = Button(self.frame1wid4, text = "Mostrar serial", command = self.show_serial, cursor = "hand1")
+        self.new_data2.place(relx = 0.75, rely = 0.05, relwidth = 0.2, relheight = 0.05)
         self.root.bind("<Control-m>", self.show_serial)
         
-        self.bt_choose_serial = Menubutton(self.frame1wid4, text = "Escolhe serial", cursor = "hand1", relief="raised")
-        self.bt_choose_serial.place(relx = 0.225, rely = 0.15, relwidth = 0.2, relheight = 0.05) #Escolhe a porta serial
-        self.menu = Menu(self.bt_choose_serial, tearoff = 0)
-        self.bt_choose_serial.config(menu = self.menu)
+        self.bt_choose_serial2 = Menubutton(self.frame1wid4, text = "Escolhe serial", cursor = "hand1", relief="raised")
+        self.bt_choose_serial2.place(relx = 0.225, rely = 0.15, relwidth = 0.2, relheight = 0.05) #Escolhe a porta serial
+        self.menu2 = Menu(self.bt_choose_serial2, tearoff = 0)
+        self.bt_choose_serial2.config(menu = self.menu2)
 
-        self.timeout = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
-        self.timeout.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
+        self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
+        self.timeout2.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
 
         self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar")
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
@@ -798,6 +797,7 @@ class Interface():
                 self.options = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
                 for self.option in self.options:
                     self.menu.add_command(label = str(self.option), command = lambda op = self.option: self.select_serial(op))
+                    self.menu2.add_command(label = str(self.option), command = lambda op = self.option: self.select_serial(op))
                 messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
         except serial.SerialException:
             self.ser = None
