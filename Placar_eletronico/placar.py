@@ -6,8 +6,6 @@ import time
 import threading
 import serial
 
-
-
 class Interface():
     def __init__(self, root): #Aqui é onde eu conecto/crio tudo na minha função construtora
         self.ser = None
