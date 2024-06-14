@@ -45,7 +45,7 @@ class Interface():
         self.config_tela()
         self.frames()
         self.botao()
-        self.carregar_estado()
+        self.load_state()
         self.using_serial()
 
     def config_tela(self): #Aqui é onde eu configuro as informações da app
@@ -486,7 +486,7 @@ class Interface():
         self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
         self.timeout2.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
 
-        self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar", variable = self.check, command = self.salvar_estado)
+        self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar", variable = self.check, command = self.save_state)
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
 
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
@@ -656,17 +656,12 @@ class Interface():
             self.serial_Port()
             print("iniciando...")
             
-    def verificar_estado(self):
-        if self.check.get():
-            print("Checkbutton ativado")
-        else:
-            print("Checkbutton desativado")
-            
-    def salvar_estado(self):
+    
+    def save_state(self):
         with open("estado_checkbutton.pkl", "wb") as f:
             pickle.dump(self.check.get(), f)
             
-    def carregar_estado(self):
+    def load_state(self):
         try:
             with open("estado_checkbutton.pkl", "rb") as f:
                 estado = pickle.load(f)
