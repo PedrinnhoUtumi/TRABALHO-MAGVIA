@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import time
 import threading
 import serial
+import pickle
 
 class Interface():
     def __init__(self, root): #Aqui é onde eu conecto/crio tudo na minha função construtora
@@ -40,7 +41,7 @@ class Interface():
         self.contador = None
         self.tempo_extra = timedelta()
         self.check = BooleanVar()
-        self.check.set(False)
+        self.check.set(True)
         self.config_tela()
         self.frames()
         self.botao()
@@ -659,6 +660,19 @@ class Interface():
             print("Checkbutton ativado")
         else:
             print("Checkbutton desativado")
+            
+    def salvar_estado(self):
+        with open("estado_checkbutton.pkl", "wb") as f:
+            pickle.dump(self.check.get(), f)
+            
+    def carregar_estado(self):
+        try:
+            with open("estado_checkbutton.pkl", "rb") as f:
+                estado = pickle.load(f)
+                self.check.set(estado)
+        except FileNotFoundError:
+            self.check.set(False)  # Define o estado padrão como desativado caso o arquivo não exista
+
                 
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema verde
