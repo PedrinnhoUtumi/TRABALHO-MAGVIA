@@ -39,6 +39,8 @@ class Interface():
         self.esporte = StringVar()
         self.contador = None
         self.tempo_extra = timedelta()
+        self.check = BooleanVar()
+        self.check.set(False)
         self.config_tela()
         self.frames()
         self.botao()
@@ -482,17 +484,8 @@ class Interface():
         self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
         self.timeout2.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
 
-        self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar")
+        self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar", variable = self.check, command = self.verificar_estado)
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
-        
-        self.ativar3 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Para cronômetro dos 24 segundos")
-        self.ativar3.place(relx = 0, rely = 0.3, relwidth = 0.5, relheight = 0.02)
-        
-        self.ativar4 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Sem interligar c/ Placar")
-        self.ativar4.place(relx = 0, rely = 0.35, relwidth = 0.5, relheight = 0.02)
-        
-        self.ativar5 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Modo 24 segundos")
-        self.ativar5.place(relx = 0, rely = 0.4, relwidth = 0.5, relheight = 0.02)
 
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
@@ -661,6 +654,12 @@ class Interface():
             self.serial_Port()
             print("iniciando...")
             
+    def verificar_estado(self):
+        if self.check.get():
+            print("Checkbutton ativado")
+        else:
+            print("Checkbutton desativado")
+                
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema verde
             yellow = "#111111"

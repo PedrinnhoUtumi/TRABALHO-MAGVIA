@@ -1,32 +1,28 @@
 import tkinter as tk
 
-def selecionar_opcao(opcao):
-    print(f"Opção selecionada: {opcao}")
+# Função para verificar o estado do Checkbutton
+def verificar_estado():
+    if var.get():
+        print("Checkbutton ativado")
+    else:
+        print("Checkbutton desativado")
 
+# Criando a janela principal
 root = tk.Tk()
-root.geometry("300x200")
 
-# Define as opções para os MenuButtons
-opcoes = ["Opção 1", "Opção 2", "Opção 3"]
+# Criando uma variável de controle
+var = tk.BooleanVar()
 
-# Cria o primeiro MenuButton
-menu_button1 = tk.Menubutton(root, text="MenuButton 1", relief="raised")
-menu_button1.menu = tk.Menu(menu_button1, tearoff=0)
-menu_button1["menu"] = menu_button1.menu
+# Definindo o valor da variável de controle como True para deixar o Checkbutton ativado
+var.set(True)
 
-for opcao in opcoes:
-    menu_button1.menu.add_command(label=opcao, command=lambda opcao=opcao: selecionar_opcao(opcao))
+# Criando o Checkbutton e associando-o à variável de controle
+checkbutton = tk.Checkbutton(root, text="Checkbutton", variable=var)
+checkbutton.pack()
 
-menu_button1.pack()
+# Botão para verificar o estado do Checkbutton
+btn_verificar = tk.Button(root, text="Verificar Estado", command=verificar_estado)
+btn_verificar.pack()
 
-# Cria o segundo MenuButton com as mesmas opções
-menu_button2 = tk.Menubutton(root, text="MenuButton 2", relief="raised")
-menu_button2.menu = tk.Menu(menu_button2, tearoff=0)
-menu_button2["menu"] = menu_button2.menu
-
-for opcao in opcoes:
-    menu_button2.menu.add_command(label=opcao, command=lambda opcao=opcao: selecionar_opcao(opcao))
-
-menu_button2.pack()
-
+# Exibindo a janela
 root.mainloop()
