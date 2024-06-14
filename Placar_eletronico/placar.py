@@ -45,6 +45,7 @@ class Interface():
         self.config_tela()
         self.frames()
         self.botao()
+        self.carregar_estado()
         self.using_serial()
 
     def config_tela(self): #Aqui é onde eu configuro as informações da app
@@ -485,7 +486,7 @@ class Interface():
         self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
         self.timeout2.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
 
-        self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar", variable = self.check, command = self.verificar_estado)
+        self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar", variable = self.check, command = self.salvar_estado)
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
 
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
