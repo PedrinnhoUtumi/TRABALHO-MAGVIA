@@ -366,7 +366,7 @@ class Interface():
         self.bt_plus3_visitante.place(relx = 0.8, rely = 0.65, relwidth = 0.15, relheight = 0.15) #+3 pontos do time visitante
         
         #Botôes da aba 2
-        self.bt_theme = Button(self.frame3wid2, text = "Tema verde", command = lambda: self.change_theme(1), cursor = "hand1")
+        self.bt_theme = Button(self.frame3wid2, text = "Tema azul", command = lambda: self.change_theme(1), cursor = "hand1")
         self.bt_theme.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Mudar tema para verde
         
         self.bt_theme2 = Button(self.frame3wid2, text = "Tema roxo", command = lambda: self.change_theme(2), cursor = "hand1")
@@ -676,7 +676,7 @@ class Interface():
 
                 
     def change_theme(self, opcao): #Muda os temas
-        if opcao == 1: #Tema verde
+        if opcao == 1: #Tema azul
             cor1 = "#025959"
             cor2 = "#04BFBF"
             cor3 = "#04ADBF"
