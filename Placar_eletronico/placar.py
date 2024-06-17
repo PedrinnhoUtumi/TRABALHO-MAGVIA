@@ -42,6 +42,11 @@ class Interface():
         self.tempo_extra = timedelta()
         self.check = BooleanVar()
         self.check.set(True)
+        self.blue = "blue"
+        self.aqua = "aqua"
+        self.purple = "purple"
+        self.black = "black"
+        self.white = "white"
         self.config_tela()
         self.frames()
         self.botao()
@@ -50,7 +55,7 @@ class Interface():
 
     def config_tela(self): #Aqui é onde eu configuro as informações da app
         self.root.title("Placar Eletrônico") #Configura titulo
-        self.root.configure(background = "purple") #Configura cor de fundo
+        self.root.configure(background = self.purple) #Configura cor de fundo
         self.root.geometry("1100x1100") #Configura tamanho inicial do app
         self.root.resizable(True, True) #Configura sua responsividade
         self.root.minsize(width = 700, height = 700) #Configura tamanho minimo do app
@@ -59,216 +64,216 @@ class Interface():
         self.notebook = ttk.Notebook(self.root) #Cria abas
         self.notebook.pack(fill=BOTH, expand=True)
         
-        self.frame1wid = Frame(self.notebook, bg = "purple") #Configura aba 1
+        self.frame1wid = Frame(self.notebook, bg = self.purple) #Configura aba 1
         self.notebook.add(self.frame1wid, text = "Placar")
         
-        self.frame2wid = Frame(self.notebook, bg = "purple") #Configura aba 2
+        self.frame2wid = Frame(self.notebook, bg = self.purple) #Configura aba 2
         self.notebook.add(self.frame2wid, text = "Configurações")
         
-        self.frame3wid = Frame(self.notebook, bg = "purple") #Configura aba 3
+        self.frame3wid = Frame(self.notebook, bg = self.purple) #Configura aba 3
         self.notebook.add(self.frame3wid, text = "Escalação")
         
-        self.frame4wid = Frame(self.notebook, bg = "purple") #Configura aba 4
+        self.frame4wid = Frame(self.notebook, bg = self.purple) #Configura aba 4
         self.notebook.add(self.frame4wid, text = "24 Segundos")
 
-        self.frame5wid = Frame(self.notebook, bg = "purple") #Configura aba 4
+        self.frame5wid = Frame(self.notebook, bg = self.purple) #Configura aba 4
         self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
-        self.frameLado = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
+        self.frameLado = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frameLado.place(relx = 0.01, rely = 0.05, relwidth = 0.12, relheight = 0.8)
         
-        self.frameLadoLabel = Label(self.frameLado, bg = "aqua", font = ("Courier New", 12, "bold"), fg = "black", text = "Funções")
+        self.frameLadoLabel = Label(self.frameLado, bg = self.aqua, font = ("Courier New", 12, "bold"), fg = self.black, text = "Funções")
         self.frameLadoLabel.place(relx = 0.14, rely = 0.05, relwidth = 0.7, relheight = 0.05)
         
-        self.frame1 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
+        self.frame1 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
         
-        self.entry_texto1 = Entry(self.frame1wid, textvariable=self.texto_entry, font=("Courier New", 12, "bold"), bg = "purple", fg = "white")
+        self.entry_texto1 = Entry(self.frame1wid, textvariable=self.texto_entry, font=("Courier New", 12, "bold"), bg = self.purple, fg = self.white)
         self.entry_texto1.place(relx=0.15, rely=0.3, relwidth=0.2, relheight=0.05) #Nome do time da casa
         
-        self.frameLocalLabel = Label(self.frame1wid, textvariable = self.placarLocal, bg = "aqua", font = ("Courier New", 48, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameLocalLabel = Label(self.frame1wid, textvariable = self.placarLocal, bg = self.aqua, font = ("Courier New", 48, "bold"), highlightbackground = self.blue, highlightthickness = 2, cursor = "hand1")
         self.frameLocalLabel.place(relx = 0.15, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar do time da casa
         self.frameLocalLabel.bind("<Button-1>", lambda event: self.plus(1)) #Função do placar
         
-        self.frameLocalSubs = Label(self.frame1wid, textvariable = self.placarLocalSubs, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameLocalSubs = Label(self.frame1wid, textvariable = self.placarLocalSubs, bg = self.aqua, font = ("Courier New", 12, "bold"), highlightbackground = self.blue, highlightthickness = 2, cursor = "hand1")
         self.frameLocalSubs.place(relx = 0.363, rely = 0.35, relwidth = 0.05, relheight = 0.05) #Placar das substituições do time da casa
         self.frameLocalSubs.bind("<Button-1>", lambda event: self.plus(9)) #Função do placar das substituições
         
-        self.localSubsText = Label(self.frame1wid, text="Subs", bg = "purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.localSubsText = Label(self.frame1wid, text="Subs", bg = self.purple, font=("Courier New", 12, "bold"), fg = self.white)
         self.localSubsText.place(relx=0.363, rely=0.4, relwidth=0.05, relheight=0.02) #Texto escrito "Subs"
         
-        self.frameLocalFools = Label(self.frame1wid, textvariable = self.localFools, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameLocalFools = Label(self.frame1wid, textvariable = self.localFools, bg = self.aqua, font = ("Courier New", 12, "bold"), highlightbackground = self.blue, highlightthickness = 2, cursor = "hand1")
         self.frameLocalFools.place(relx = 0.15, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time da casa
         self.frameLocalFools.bind("<Button-1>", lambda event: self.plus(4)) #Função do placar das faltas
         
-        self.localFoolsText = Label(self.frame1wid, text="Faltas", bg = "purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.localFoolsText = Label(self.frame1wid, text="Faltas", bg = self.purple, font=("Courier New", 12, "bold"), fg = self.white)
         self.localFoolsText.place(relx=0.15, rely=0.63, relwidth=0.2, relheight=0.02) #Texto escrito "Faltas"
         
-        self.time = Label(self.frame1wid, text="Tempo", bg = "purple", font=("Courier New", 24, "bold"), fg = "white")
+        self.time = Label(self.frame1wid, text="Tempo", bg = self.purple, font=("Courier New", 24, "bold"), fg = self.white)
         self.time.place(relx=0.425, rely=0.3, relwidth=0.2, relheight=0.05) #Texto escrito "Tempo"
         
-        self.frameTime = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarTempo, cursor = "hand1")
+        self.frameTime = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarTempo, cursor = "hand1")
         self.frameTime.place(relx = 0.425, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Tempo/Periodo
         self.frameTime.bind("<Button-1>", lambda event: self.plus(3)) #Função do placar do tempo
         
-        self.frameSet1 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set1, cursor = "hand1") 
+        self.frameSet1 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set1, cursor = "hand1") 
         self.frameSet1.place(relx = 0.425, rely = 0.57, relwidth = 0.07, relheight = 0.05) #Placar dos sets do time da casa
         self.frameSet1.bind("<Button-1>", lambda event: self.plus(6)) #Função do placar dos sets do time da casa
         
-        self.set1Label = Label(self.frame1wid, text="Set", bg = "purple", font=("Courier New", 10, "bold"), fg = "white")
+        self.set1Label = Label(self.frame1wid, text="Set", bg = self.purple, font=("Courier New", 10, "bold"), fg = self.white)
         self.set1Label.place(relx=0.43, rely=0.62, relwidth=0.05, relheight=0.03) #Texto escrito "Set"
         
-        self.frameSet2 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set2, cursor = "hand1") 
+        self.frameSet2 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set2, cursor = "hand1") 
         self.frameSet2.place(relx = 0.555, rely = 0.57, relwidth = 0.07, relheight = 0.05) #Placar dos sets do time visitante
         self.frameSet2.bind("<Button-1>", lambda event: self.plus(7)) #Função do placar dos sets do time visitante
         
-        self.set2Label = Label(self.frame1wid, text="Set", bg = "purple", font=("Courier New", 10, "bold"), fg = "white")
+        self.set2Label = Label(self.frame1wid, text="Set", bg = self.purple, font=("Courier New", 10, "bold"), fg = self.white)
         self.set2Label.place(relx=0.57, rely=0.62, relwidth=0.05, relheight=0.03) #Texto escrito "Set"
         
-        self.entry_texto = Entry(self.frame1wid, textvariable=self.texto_entry2, font=("Courier New", 12, "bold"), bg = "purple", fg = "white")
+        self.entry_texto = Entry(self.frame1wid, textvariable=self.texto_entry2, font=("Courier New", 12, "bold"), bg = self.purple, fg = self.white)
         self.entry_texto.place(relx=0.70, rely=0.3, relwidth=0.2, relheight=0.05) #Nome do time visitante
         
-        self.frameVisitante = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarVisitante, cursor = "hand1")
+        self.frameVisitante = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"), textvariable = self.placarVisitante, cursor = "hand1")
         self.frameVisitante.place(relx = 0.70, rely = 0.35, relwidth = 0.2, relheight = 0.2) #Placar time visitante
         self.frameVisitante.bind("<Button-1>", lambda event: self.plus(2)) #Função do placar do time visitante
         
-        self.frameAwaySubs = Label(self.frame1wid, textvariable = self.placarVisitanteSubs, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameAwaySubs = Label(self.frame1wid, textvariable = self.placarVisitanteSubs, bg = self.aqua, font = ("Courier New", 12, "bold"), highlightbackground = self.blue, highlightthickness = 2, cursor = "hand1")
         self.frameAwaySubs.place(relx = 0.637, rely = 0.35, relwidth = 0.05, relheight = 0.05) #Placar das substituições do time visitante
         self.frameAwaySubs.bind("<Button-1>", lambda event: self.plus(10)) #Função do placar das substituições
         
-        self.awaySubsText = Label(self.frame1wid, text="Subs", bg = "purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.awaySubsText = Label(self.frame1wid, text="Subs", bg = self.purple, font=("Courier New", 12, "bold"), fg = self.white)
         self.awaySubsText.place(relx=0.637, rely=0.4, relwidth=0.05, relheight=0.02) #Texto escrito "Subs"
 
         
-        self.frameAwayFools = Label(self.frame1wid, textvariable = self.awayFools, bg = "aqua", font = ("Courier New", 12, "bold"), highlightbackground = "Blue", highlightthickness = 2, cursor = "hand1")
+        self.frameAwayFools = Label(self.frame1wid, textvariable = self.awayFools, bg = self.aqua, font = ("Courier New", 12, "bold"), highlightbackground = self.blue, highlightthickness = 2, cursor = "hand1")
         self.frameAwayFools.place(relx = 0.70, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time visitante
         self.frameAwayFools.bind("<Button-1>", lambda event: self.plus(5)) #Função do placar das faltas do time visitante
         
-        self.AwayFoolsText = Label(self.frame1wid, text="Faltas", bg = "purple", font=("Courier New", 12, "bold"), fg = "white")
+        self.AwayFoolsText = Label(self.frame1wid, text="Faltas", bg = self.purple, font=("Courier New", 12, "bold"), fg = self.white)
         self.AwayFoolsText.place(relx=0.70, rely=0.63, relwidth=0.2, relheight=0.02) #Texto escrito "Faltas"
         
-        self.frame2 = Label(self.frame1wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame2 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
         
         #Configura os frames na aba 2
-        self.frame1wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Esporte")
+        self.frame1wid2Label = Label(self.frame2wid, bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white, text = "Esporte")
         self.frame1wid2Label.place(relx = 0.15, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame2wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Cronômetro")
+        self.frame2wid2Label = Label(self.frame2wid, bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white, text = "Cronômetro")
         self.frame2wid2Label.place(relx = 0.15, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame3wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Mudar tema")
+        self.frame3wid2Label = Label(self.frame2wid, bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white, text = "Mudar tema")
         self.frame3wid2Label.place(relx = 0.425, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame4wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Comunicação Serial")
+        self.frame4wid2Label = Label(self.frame2wid, bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white, text = "Comunicação Serial")
         self.frame4wid2Label.place(relx = 0.4, rely = 0.5, relwidth = 0.25, relheight = 0.2) 
         
-        self.frame5wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Atalhos")
+        self.frame5wid2Label = Label(self.frame2wid, bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white, text = "Atalhos")
         self.frame5wid2Label.place(relx = 0.7, rely = 0.2, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame6wid2Label = Label(self.frame2wid, bg = "purple", font = ("Courier New", 12, "bold"), fg = "White", text = "Atalhos")
+        self.frame6wid2Label = Label(self.frame2wid, bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white, text = "Atalhos")
         self.frame6wid2Label.place(relx = 0.7, rely = 0.5, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame1wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
+        self.frame1wid2 = Label(self.frame2wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frame1wid2.place(relx = 0.15, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame2wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame2wid2 = Label(self.frame2wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame2wid2.place(relx = 0.15, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame3wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
+        self.frame3wid2 = Label(self.frame2wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frame3wid2.place(relx = 0.425, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame4wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame4wid2 = Label(self.frame2wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame4wid2.place(relx = 0.425, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame5wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2, font = ("Courier New", 48, "bold"))
+        self.frame5wid2 = Label(self.frame2wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frame5wid2.place(relx = 0.7, rely = 0.05, relwidth = 0.2, relheight = 0.2) 
         
-        self.frame6wid2 = Label(self.frame2wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame6wid2 = Label(self.frame2wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame6wid2.place(relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
         
         #Configura os frames da aba 3
-        self.frame1wid3Label = Label(self.frame3wid, bg = "purple", fg = "white", text = "Time Local Esquerda")
+        self.frame1wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Local Esquerda")
         self.frame1wid3Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
-        self.frame1wid3 = Label(self.frame3wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame1wid3 = Label(self.frame3wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame1wid3.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.75)
         
-        self.frame2wid3Label = Label(self.frame3wid, bg = "purple", fg = "white", text = "Time Visitante Direita")
+        self.frame2wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Visitante Direita")
         self.frame2wid3Label.place(relx = 0.5, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
-        self.frame2wid3 = Label(self.frame3wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame2wid3 = Label(self.frame3wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
         
         #Configura os frames da aba 4
-        self.frame1wid4Label = Label(self.frame4wid, bg = "purple", fg = "white", text = "Serial dos 24 segundos")
+        self.frame1wid4Label = Label(self.frame4wid, bg = self.purple, fg = self.white, text = "Serial dos 24 segundos")
         self.frame1wid4Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
-        self.frame1wid4 = Label(self.frame4wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame1wid4 = Label(self.frame4wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame1wid4.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.75)
         
-        self.frame2wid4Label = Label(self.frame4wid, bg = "purple", fg = "white", text = "Terminal")
+        self.frame2wid4Label = Label(self.frame4wid, bg = self.purple, fg = self.white, text = "Terminal")
         self.frame2wid4Label.place(relx = 0.5, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
-        self.frame2wid4 = Label(self.frame4wid, bg = "aqua", highlightbackground = "Blue", highlightthickness = 2)
+        self.frame2wid4 = Label(self.frame4wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame2wid4.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
 
-        self.framecithec = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "TERMINAL 24 SEG.", font = ("Courier New", 24, "bold"))
+        self.framecithec = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "TERMINAL 24 SEG.", font = ("Courier New", 24, "bold"))
         self.framecithec.place(relx = 0, rely = 0.15, relwidth = 0.9, relheight = 0.05)
 
-        self.framecithec2 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "CITHEC - V.12/16", font = ("Courier New", 24, "bold"))
+        self.framecithec2 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "CITHEC - V.12/16", font = ("Courier New", 24, "bold"))
         self.framecithec2.place(relx = 0, rely = 0.25, relwidth = 0.9, relheight = 0.05)
 
-        self.frame1frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "A", font = ("Courier New", 24, "bold"))
+        self.frame1frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "A", font = ("Courier New", 24, "bold"))
         self.frame1frame2wid4.place (relx = 0, rely = 0.35, relwidth = 0.2, relheight = 0.05)
         
-        self.frame2frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Programa", font = ("Courier New", 12, "bold"))
+        self.frame2frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "Programa", font = ("Courier New", 12, "bold"))
         self.frame2frame2wid4.place (relx = 0.35, rely = 0.35, relwidth = 0.2, relheight = 0.05)
         
-        self.frame3frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Mostra", font = ("Courier New", 12, "bold"))
+        self.frame3frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "Mostra", font = ("Courier New", 12, "bold"))
         self.frame3frame2wid4.place (relx = 0.7, rely = 0.35, relwidth = 0.2, relheight = 0.05)
         
-        self.frame4frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F1", font = ("Courier New", 24, "bold"))
+        self.frame4frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "F1", font = ("Courier New", 24, "bold"))
         self.frame4frame2wid4.place (relx = 0, rely = 0.45, relwidth = 0.2, relheight = 0.05)
         
-        self.frame5frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F2", font = ("Courier New", 24, "bold"))
+        self.frame5frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "F2", font = ("Courier New", 24, "bold"))
         self.frame5frame2wid4.place (relx = 0.35, rely = 0.45, relwidth = 0.2, relheight = 0.05)
         
-        self.frame6frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F3", font = ("Courier New", 24, "bold"))
+        self.frame6frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "F3", font = ("Courier New", 24, "bold"))
         self.frame6frame2wid4.place (relx = 0.7, rely = 0.45, relwidth = 0.2, relheight = 0.05)
         
-        self.frame7frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F4", font = ("Courier New", 24, "bold"))
+        self.frame7frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "F4", font = ("Courier New", 24, "bold"))
         self.frame7frame2wid4.place (relx = 0, rely = 0.55, relwidth = 0.2, relheight = 0.05)
         
-        self.frame8frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "F5", font = ("Courier New", 24, "bold"))
+        self.frame8frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "F5", font = ("Courier New", 24, "bold"))
         self.frame8frame2wid4.place (relx = 0.35, rely = 0.55, relwidth = 0.2, relheight = 0.05)
         
-        self.frame9frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "60s", font = ("Courier New", 24, "bold"))
+        self.frame9frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "60s", font = ("Courier New", 24, "bold"))
         self.frame9frame2wid4.place (relx = 0.7, rely = 0.55, relwidth = 0.2, relheight = 0.05)
         
-        self.frame10frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Camp", font = ("Courier New", 12, "bold"))
+        self.frame10frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "Camp", font = ("Courier New", 12, "bold"))
         self.frame10frame2wid4.place (relx = 0, rely = 0.65, relwidth = 0.2, relheight = 0.05)
         
-        self.frame11frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "T. Prog.", font = ("Courier New", 12, "bold"))
+        self.frame11frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "T. Prog.", font = ("Courier New", 12, "bold"))
         self.frame11frame2wid4.place (relx = 0.35, rely = 0.65, relwidth = 0.2, relheight = 0.05)
         
-        self.frame12frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "24s", font = ("Courier New", 24, "bold"))
+        self.frame12frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "24s", font = ("Courier New", 24, "bold"))
         self.frame12frame2wid4.place (relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.05)
         
-        self.frame13frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Para", font = ("Courier New", 12, "bold"))
+        self.frame13frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "Para", font = ("Courier New", 12, "bold"))
         self.frame13frame2wid4.place (relx = 0, rely = 0.75, relwidth = 0.2, relheight = 0.05)
         
-        self.frame14frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Anda", font = ("Courier New", 12, "bold"))
+        self.frame14frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "Anda", font = ("Courier New", 12, "bold"))
         self.frame14frame2wid4.place (relx = 0.35, rely = 0.75, relwidth = 0.2, relheight = 0.05)
         
-        self.frame15frame2wid4 = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "14s", font = ("Courier New", 24, "bold"))
+        self.frame15frame2wid4 = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "14s", font = ("Courier New", 24, "bold"))
         self.frame15frame2wid4.place (relx = 0.7, rely = 0.75, relwidth = 0.2, relheight = 0.05)
 
-        self.labelspacebar = Label(self.frame2wid4, bg = "aqua", fg = "black", text = "Barra de espaço ativa?", font = ("Courier New", 12, "bold"))
+        self.labelspacebar = Label(self.frame2wid4, bg = self.aqua, fg = self.black, text = "Barra de espaço ativa?", font = ("Courier New", 12, "bold"))
         self.labelspacebar.place(relx = 0, rely = 0.85, relwidth = 0.6, relheight = 0.05)
         
-        self.framecronoframe1wid4 = Label(self.frame1wid4, bg = "aqua", textvariable = self.cronometro, font = ("Courier New", 36, "bold"))
+        self.framecronoframe1wid4 = Label(self.frame1wid4, bg = self.aqua, textvariable = self.cronometro, font = ("Courier New", 36, "bold"))
         self.framecronoframe1wid4.place(relx = 0.13, rely = 0.45, relwidth = 0.75, relheight = 0.2) #Cronometro
         
     def botao(self):
@@ -383,7 +388,7 @@ class Interface():
         self.menu = Menu(self.bt_choose_serial, tearoff = 0)
         self.bt_choose_serial.config(menu = self.menu)
 
-        self.timeout = Spinbox(self.frame4wid2, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
+        self.timeout = Spinbox(self.frame4wid2, from_ = 0, to = 1000, cursor = "hand1", background = self.aqua)
         self.timeout.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
         
         self.new_data = Button(self.frame4wid2, text = "Mostrar serial", command = self.show_serial, cursor = "hand1")
@@ -405,65 +410,65 @@ class Interface():
         self.back = Button(self.frame2wid2, text = "⏪ Anda pra trás", cursor = "hand1")
         self.back.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
 
-        self.choose_game = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Futebol", bg = "aqua", variable = self.esporte, value = "Futebol")
+        self.choose_game = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Futebol", bg = self.aqua, variable = self.esporte, value = "Futebol")
         self.choose_game.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game2 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Voleibol", bg = "aqua", variable = self.esporte, value = "Voleibol")
+        self.choose_game2 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Voleibol", bg = self.aqua, variable = self.esporte, value = "Voleibol")
         self.choose_game2.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game3 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Basquete", bg = "aqua", variable = self.esporte, value = "Basquete")
+        self.choose_game3 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Basquete", bg = self.aqua, variable = self.esporte, value = "Basquete")
         self.choose_game3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = "aqua", variable = self.esporte, value = "Tênis de Mesa")
+        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = self.aqua, variable = self.esporte, value = "Tênis de Mesa")
         self.choose_game4.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = "aqua", variable = self.esporte, value = "Outros")
+        self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = self.aqua, variable = self.esporte, value = "Outros")
         self.choose_game5.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
-        self.controles = Label(self.frame5wid2, bg = "aqua", text = "Espaço = Inicia")
+        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "Espaço = Inicia")
         self.controles.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
         
-        self.controles = Label(self.frame5wid2, bg = "aqua", text = "0 = Zerar")
+        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "0 = Zerar")
         self.controles.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
         
-        self.controles = Label(self.frame5wid2, bg = "aqua", text = "Ctrl + u = Pausar")
+        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "Ctrl + u = Pausar")
         self.controles.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
         
-        self.controles = Label(self.frame5wid2, bg = "aqua", text = "Ctrl + i = Reiniciar")
+        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "Ctrl + i = Reiniciar")
         self.controles.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
 
-        self.controles = Label(self.frame5wid2, bg = "aqua", text = "Ctrl + o = Continuar")
+        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "Ctrl + o = Continuar")
         self.controles.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
-        self.controls = Label(self.frame6wid2, bg = "aqua", text = "Ctrl + p = Abre serial")
+        self.controls = Label(self.frame6wid2, bg = self.aqua, text = "Ctrl + p = Abre serial")
         self.controls.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
         
-        self.controls = Label(self.frame6wid2, bg = "aqua", text = "Ctrl + l = Fecha serial")
+        self.controls = Label(self.frame6wid2, bg = self.aqua, text = "Ctrl + l = Fecha serial")
         self.controls.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
         
-        self.controls = Label(self.frame6wid2, bg = "aqua", text = "Ctrl + m = Mostra serial")
+        self.controls = Label(self.frame6wid2, bg = self.aqua, text = "Ctrl + m = Mostra serial")
         self.controls.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
         
-        self.controls = Label(self.frame6wid2, bg = "aqua", text = "#")
+        self.controls = Label(self.frame6wid2, bg = self.aqua, text = "#")
         self.controls.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
 
-        self.controls = Label(self.frame6wid2, bg = "aqua", text = "#")
+        self.controls = Label(self.frame6wid2, bg = self.aqua, text = "#")
         self.controls.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
     #Botões da aba 4
-        self.ativar = Checkbutton(self.frame2wid4, bg = "aqua", text = "Ativar simulador 24 segundos")
+        self.ativar = Checkbutton(self.frame2wid4, bg = self.aqua, text = "Ativar simulador 24 segundos")
         self.ativar.place(relx = 0, rely = 0.05, relwidth = 0.5, relheight = 0.05)
 
-        self.esppacoativa = Radiobutton(self.frame2wid4, bg = "aqua", text = "14s", variable = self.ativa, value = "14s")
+        self.esppacoativa = Radiobutton(self.frame2wid4, bg = self.aqua, text = "14s", variable = self.ativa, value = "14s")
         self.esppacoativa.place(relx = 0, rely = 0.9, relwidth = 0.15, relheight = 0.05)
     
-        self.esppacoativa2 = Radiobutton(self.frame2wid4, bg = "aqua", text = "24s", variable = self.ativa, value = "24s")
+        self.esppacoativa2 = Radiobutton(self.frame2wid4, bg = self.aqua, text = "24s", variable = self.ativa, value = "24s")
         self.esppacoativa2.place(relx = 0.2, rely = 0.9, relwidth = 0.15, relheight = 0.05)
     
-        self.esppacoativa3 = Radiobutton(self.frame2wid4, bg = "aqua", text = "Prog", variable = self.ativa, value = "Prog")
+        self.esppacoativa3 = Radiobutton(self.frame2wid4, bg = self.aqua, text = "Prog", variable = self.ativa, value = "Prog")
         self.esppacoativa3.place(relx = 0.4, rely = 0.9, relwidth = 0.15, relheight = 0.05)
     
-        self.esppacoativa4 = Radiobutton(self.frame2wid4, bg = "aqua", text = "Para/Anda", variable = self.ativa, value = "Para/Anda")
+        self.esppacoativa4 = Radiobutton(self.frame2wid4, bg = self.aqua, text = "Para/Anda", variable = self.ativa, value = "Para/Anda")
         self.esppacoativa4.place(relx = 0.6, rely = 0.9, relwidth = 0.2, relheight = 0.05)
         
         self.bt_serial_open2 = Button(self.frame1wid4, text = "Abre serial", command = lambda: self.using_serial(True), cursor = "hand1")
@@ -483,10 +488,10 @@ class Interface():
         self.menu2 = Menu(self.bt_choose_serial2, tearoff = 0)
         self.bt_choose_serial2.config(menu = self.menu2)
 
-        self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = "aqua")
+        self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = self.aqua)
         self.timeout2.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
 
-        self.ativar2 = Checkbutton(self.frame1wid4, bg = "aqua", text = "Abrir ao entrar", variable = self.check, command = self.save_state)
+        self.ativar2 = Checkbutton(self.frame1wid4, bg = self.aqua, text = "Abrir ao entrar", variable = self.check, command = self.save_state)
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
 
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
@@ -700,45 +705,45 @@ class Interface():
             self.awaySubsText.config(bg = yellow, fg = black)
             self.frameLadoLabel.config(bg = orange, fg = black)
         elif opcao == 2: #Tema roxo
-            cor1 = "purple"
-            self.frame1wid.config(bg = cor1, highlightbackground = "Blue")
-            self.frame1.config(bg = "aqua", highlightbackground = "Blue")
-            self.frame2.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameTime.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameVisitante.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameLocalLabel.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameLocalFools.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameSet1.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameSet2.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameAwayFools.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameLocalSubs.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameAwaySubs.config(bg = "aqua", highlightbackground = "Blue")
-            self.frameLado.config(bg = "aqua", highlightbackground = "Blue")
-            self.entry_time.config(bg = cor1, fg = "white")
-            self.entry_texto.config(bg = cor1, fg = "white")
-            self.entry_texto1.config(bg = cor1, fg = "white")
-            self.time.config(bg = cor1, fg = "white")
-            self.set1Label.config(bg = cor1, fg = "white")
-            self.set2Label.config(bg = cor1, fg = "white")
-            self.AwayFoolsText.config(bg = cor1, fg = "white")
-            self.localFoolsText.config(bg = cor1, fg = "white")
-            self.localSubsText.config(bg = cor1, fg = "white")
-            self.awaySubsText.config(bg = cor1, fg = "white")
-            self.frameLadoLabel.config(bg = "aqua", fg = "black")
+            cor1 = self.purple
+            self.frame1wid.config(bg = cor1, highlightbackground = self.blue)
+            self.frame1.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frame2.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameTime.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameVisitante.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameLocalLabel.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameLocalFools.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameSet1.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameSet2.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameAwayFools.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameLocalSubs.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameAwaySubs.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameLado.config(bg = self.aqua, highlightbackground = self.blue)
+            self.entry_time.config(bg = cor1, fg = self.white)
+            self.entry_texto.config(bg = cor1, fg = self.white)
+            self.entry_texto1.config(bg = cor1, fg = self.white)
+            self.time.config(bg = cor1, fg = self.white)
+            self.set1Label.config(bg = cor1, fg = self.white)
+            self.set2Label.config(bg = cor1, fg = self.white)
+            self.AwayFoolsText.config(bg = cor1, fg = self.white)
+            self.localFoolsText.config(bg = cor1, fg = self.white)
+            self.localSubsText.config(bg = cor1, fg = self.white)
+            self.awaySubsText.config(bg = cor1, fg = self.white)
+            self.frameLadoLabel.config(bg = self.aqua, fg = self.black)
         elif opcao == 3: #Tema cinza
-            self.frame1wid.config(bg = "lightgray", highlightbackground = "white")
-            self.frame1.config(bg = "white", highlightbackground = "white")
-            self.frame2.config(bg = "white", highlightbackground = "white")
-            self.frameTime.config(bg = "white", highlightbackground = "white")
-            self.frameVisitante.config(bg = "white", highlightbackground = "white")
-            self.frameLocalLabel.config(bg = "white", highlightbackground = "white")
-            self.frameLocalFools.config(bg = "white", highlightbackground = "white")
-            self.frameSet1.config(bg = "white", highlightbackground = "white")
-            self.frameSet2.config(bg = "white", highlightbackground = "white")
-            self.frameAwayFools.config(bg = "white", highlightbackground = "white")
-            self.frameLocalSubs.config(bg = "white", highlightbackground = "white")
-            self.frameAwaySubs.config(bg = "white", highlightbackground = "white")
-            self.frameLado.config(bg = "white", highlightbackground = "white")
+            self.frame1wid.config(bg = "lightgray", highlightbackground = self.white)
+            self.frame1.config(bg = self.white, highlightbackground = self.white)
+            self.frame2.config(bg = self.white, highlightbackground = self.white)
+            self.frameTime.config(bg = self.white, highlightbackground = self.white)
+            self.frameVisitante.config(bg = self.white, highlightbackground = self.white)
+            self.frameLocalLabel.config(bg = self.white, highlightbackground = self.white)
+            self.frameLocalFools.config(bg = self.white, highlightbackground = self.white)
+            self.frameSet1.config(bg = self.white, highlightbackground = self.white)
+            self.frameSet2.config(bg = self.white, highlightbackground = self.white)
+            self.frameAwayFools.config(bg = self.white, highlightbackground = self.white)
+            self.frameLocalSubs.config(bg = self.white, highlightbackground = self.white)
+            self.frameAwaySubs.config(bg = self.white, highlightbackground = self.white)
+            self.frameLado.config(bg = self.white, highlightbackground = self.white)
             self.entry_time.config(bg = "lightgray", fg = "red")
             self.entry_texto.config(bg = "lightgray", fg = "red")
             self.entry_texto1.config(bg = "lightgray", fg = "red")
@@ -749,7 +754,7 @@ class Interface():
             self.localFoolsText.config(bg = "lightgray", fg = "red")
             self.localSubsText.config(bg = "lightgray", fg = "red")
             self.awaySubsText.config(bg = "lightgray", fg = "red")
-            self.frameLadoLabel.config(bg = "white", fg = "red")
+            self.frameLadoLabel.config(bg = self.white, fg = "red")
             
     def serial_Port(self): #Faz a comunicação com a porta serial
         tempo = self.cronometro.get()
