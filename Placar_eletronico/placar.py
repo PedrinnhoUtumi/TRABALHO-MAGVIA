@@ -34,8 +34,6 @@ class Interface():
         self.cronometro.set("0:00:00.0")
         self.texto_entry = StringVar()
         self.texto_entry2 = StringVar()
-        self.columnsEntrys = 7
-        self.linhasEntrys = 15
         self.ativa = StringVar()
         self.esporte = StringVar()
         self.contador = None
