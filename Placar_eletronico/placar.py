@@ -662,12 +662,12 @@ class Interface():
             
     
     def save_state(self):
-        with open("estado_checkbutton.pkl", "wb") as f:
+        with open("save_state.pkl", "wb") as f:
             pickle.dump(self.check.get(), f)
             
     def load_state(self):
         try:
-            with open("estado_checkbutton.pkl", "rb") as f:
+            with open("save_state.pkl", "rb") as f:
                 estado = pickle.load(f)
                 self.check.set(estado)
         except FileNotFoundError:
