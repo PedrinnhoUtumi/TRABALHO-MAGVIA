@@ -11,6 +11,7 @@ class Interface():
     def __init__(self, root): #Aqui é onde eu conecto/crio tudo na minha função construtora
         self.ser = None
         self.root = root
+        self.p = ""
         self.placarLocal = IntVar()
         self.placarLocal.set(0)
         self.placarLocalSubs = IntVar()
@@ -30,6 +31,7 @@ class Interface():
         self.placarVisitante = IntVar()
         self.placarVisitante.set(0)
         self.tempo_correndo = False
+        self.op2 = None
         self.cronometro = StringVar()
         self.cronometro.set("0:00:00.0")
         self.texto_entry = StringVar()
@@ -51,6 +53,7 @@ class Interface():
         self.load_state()
         self.using_serial()
         self.using_serial2()
+        self.open_enter()
 
     def config_tela(self): #Aqui é onde eu configuro as informações da app
         self.root.title("Placar Eletrônico") #Configura titulo
@@ -394,8 +397,8 @@ class Interface():
         self.new_data.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         self.root.bind("<Control-m>", self.show_serial)
 
-        self.bt_add1min = Button(self.frame2wid2, text = "+1 minuto", cursor = "hand1", command = self.add_minute)
-        self.bt_add1min.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
+        self.bt_add1min = Button(self.frame2, text = "+1 minuto", cursor = "hand1", command = self.add_minute)
+        self.bt_add1min.place(relx = 0.42, rely = 0.65, relwidth = 0.15, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
 
         self.bt_minus1min = Button(self.frame2wid2, text = "-1 minuto", cursor = "hand1")
         self.bt_minus1min.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Remove 1 minuto ao cronômetro
@@ -492,7 +495,7 @@ class Interface():
 
         self.ativar2 = Checkbutton(self.frame1wid4, bg = self.aqua, text = "Abrir ao entrar", variable = self.check, command = self.save_state)
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
-
+        
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if team == 1: 
             self.placarLocal.set(self.placarLocal.get() + 1)
@@ -572,18 +575,20 @@ class Interface():
             self.root.after(100, self.update)
         
     def add_minute(self):
-        if self.contador:
-            self.contador -= timedelta(minutes=1)
-        else:
-            self.contador = datetime.now() - timedelta(minutes=1)
-        self.serial_Port()
-
+        tempo = self.cronometro.get()
+        hr, min, seg_milisseg = tempo.split(':')
+        seg, milisseg = seg_milisseg.split('.')
+        hr = int(hr)
+        min = int(min)
+        seg = int(seg)
+        milisseg = int(milisseg)
+        min += 1            
+        self.cronometro.set(f"{(hr):02}:{(min):02}:{(seg):02}.{(milisseg):01}")
+        tempo = self.cronometro - self.contador
+        self.update()    
+        
     def min_minute(self):
-        if self.contador:
-            self.contador += timedelta(minutes=1)
-        else:
-            self.contador = datetime.now() + timedelta(minutes=1)
-        self.serial_Port()
+        self.contador += timedelta(minutes = 1)
         
     def zero(self, event = None): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
@@ -842,7 +847,7 @@ class Interface():
             self.ser2 = None
             print("Não foi possível abrir a porta serial😔")
             messagebox.showerror("Erro", serial.SerialException)
-        
+            
     def select_serial(self, op):
         self.op = op
         print("Serial selecionada:", self.op)
@@ -858,12 +863,14 @@ class Interface():
     
     def show_serial2(self, event = None):
         messagebox.showinfo("Novas configurações", self.ser2)
-        """
-    def spaceBar_start(self):
-        if self.ativa == "Para/Anda":
-            ativa = self.ativa.get()
-            para, anda = ativa.split("/")"""
-            
+    
+    def open_enter(self):
+        print("Entrando em open_enter")
+        if self.check.get():
+            self.using_serial2(True)
+            self.op2 = "COM3"
+        else:
+            print("Checkbutton não está marcado")    
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
