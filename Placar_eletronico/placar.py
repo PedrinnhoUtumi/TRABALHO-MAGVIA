@@ -804,14 +804,14 @@ class Interface():
                 )
                 self.menu.delete(0, "end")
                 print("Sua porta serial está aberta✔")
-                messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
+                messagebox.showinfo("ABERTA✔", "Sua porta serial está aberta✔")
             else:
                 self.ser = None
                 print("Sua porta serial está fechada✘")
                 self.options = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
                 for self.option in self.options:
                     self.menu.add_command(label = str(self.option), command = lambda op = self.option: self.select_serial(op))
-                messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
+                messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
         except serial.SerialException:
             self.ser = None
             print("Não foi possível abrir a porta serial😔")
@@ -830,14 +830,14 @@ class Interface():
                 )
                 self.menu2.delete(0, "end")
                 print("Sua porta serial está aberta✔")
-                messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
+                messagebox.showinfo("ABERTA✔", "Sua porta serial está aberta✔")
             else:
                 self.ser2 = None
                 print("Sua porta serial está fechada✘")
                 self.options2 = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
                 for self.option2 in self.options2:
                     self.menu2.add_command(label = str(self.option2), command = lambda op2 = self.option2: self.select_serial2(op2))
-                messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
+                messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
         except serial.SerialException:
             self.ser2 = None
             print("Não foi possível abrir a porta serial😔")
