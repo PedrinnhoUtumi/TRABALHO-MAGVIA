@@ -50,6 +50,7 @@ class Interface():
         self.botao()
         self.load_state()
         self.using_serial()
+        self.using_serial2()
 
     def config_tela(self): #Aqui é onde eu configuro as informações da app
         self.root.title("Placar Eletrônico") #Configura titulo
@@ -469,17 +470,17 @@ class Interface():
         self.esppacoativa4 = Radiobutton(self.frame2wid4, bg = self.aqua, text = "Para/Anda", variable = self.ativa, value = "Para/Anda")
         self.esppacoativa4.place(relx = 0.6, rely = 0.9, relwidth = 0.2, relheight = 0.05)
         
-        self.bt_serial_open2 = Button(self.frame1wid4, text = "Abre serial", command = lambda: self.using_serial(True), cursor = "hand1")
+        self.bt_serial_open2 = Button(self.frame1wid4, text = "Abre serial", command = lambda: self.using_serial2(True), cursor = "hand1")
         self.bt_serial_open2.place(relx = 0.05, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Abre a porta serial
-        self.root.bind("<Control-p>", lambda event: self.using_serial(True))
+        self.root.bind("<Control-p>", lambda event: self.using_serial2(True))
         
-        self.bt_serial_close2 = Button(self.frame1wid4, text = "Fecha serial", command = lambda: self.using_serial(False), cursor = "hand1")
+        self.bt_serial_close2 = Button(self.frame1wid4, text = "Fecha serial", command = lambda: self.using_serial2(False), cursor = "hand1")
         self.bt_serial_close2.place(relx = 0.4, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Fecha a porta serial 
-        self.root.bind("<Control-l>", lambda event: self.using_serial(False))
+        self.root.bind("<Control-l>", lambda event: self.using_serial2(False))
 
-        self.new_data2 = Button(self.frame1wid4, text = "Mostrar serial", command = self.show_serial, cursor = "hand1")
+        self.new_data2 = Button(self.frame1wid4, text = "Mostrar serial", command = self.show_serial2, cursor = "hand1")
         self.new_data2.place(relx = 0.75, rely = 0.05, relwidth = 0.2, relheight = 0.05)
-        self.root.bind("<Control-m>", self.show_serial)
+        self.root.bind("<Control-m>", self.show_serial2)
         
         self.bt_choose_serial2 = Menubutton(self.frame1wid4, text = "Escolhe serial", cursor = "hand1", relief="raised")
         self.bt_choose_serial2.place(relx = 0.225, rely = 0.15, relwidth = 0.2, relheight = 0.05) #Escolhe a porta serial
@@ -810,20 +811,53 @@ class Interface():
                 self.options = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
                 for self.option in self.options:
                     self.menu.add_command(label = str(self.option), command = lambda op = self.option: self.select_serial(op))
-                    self.menu2.add_command(label = str(self.option), command = lambda op = self.option: self.select_serial(op))
                 messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
         except serial.SerialException:
             self.ser = None
             print("Não foi possível abrir a porta serial😔")
             messagebox.showerror("Erro", serial.SerialException)
-
+            
+    def using_serial2(self, use_serial = None):
+        try:
+            if use_serial:
+                self.ser2 = serial.Serial(
+                    port = self.op2, 
+                    baudrate = 115200, 
+                    bytesize = 8, 
+                    parity = "N", 
+                    stopbits = 1, 
+                    timeout = int(self.timeout2.get())/1000
+                )
+                self.menu2.delete(0, "end")
+                print("Sua porta serial está aberta✔")
+                messagebox.showinfo("Você abriu!!!", "Sua porta serial está aberta✔")
+            else:
+                self.ser2 = None
+                print("Sua porta serial está fechada✘")
+                self.options2 = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
+                for self.option2 in self.options2:
+                    self.menu2.add_command(label = str(self.option2), command = lambda op2 = self.option2: self.select_serial2(op2))
+                messagebox.showinfo("Você fechou!!!", "Sua porta serial está fechada✘")
+        except serial.SerialException:
+            self.ser2 = None
+            print("Não foi possível abrir a porta serial😔")
+            messagebox.showerror("Erro", serial.SerialException)
+        
     def select_serial(self, op):
         self.op = op
         print("Serial selecionada:", self.op)
         messagebox.showinfo("Serial selecionada:", self.op)
+        
+    def select_serial2(self, op2):
+        self.op2 = op2
+        print("Serial selecionada:", self.op2)
+        messagebox.showinfo("Serial selecionada:", self.op2)
 
     def show_serial(self, event = None):
         messagebox.showinfo("Novas configurações", self.ser)
+    
+    def show_serial2(self, event = None):
+        messagebox.showinfo("Novas configurações", self.ser2)
         """
     def spaceBar_start(self):
         if self.ativa == "Para/Anda":
