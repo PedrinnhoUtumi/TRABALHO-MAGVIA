@@ -10,6 +10,7 @@ import pickle
 class Interface():
     def __init__(self, root): #Aqui é onde eu conecto/crio tudo na minha função construtora
         self.ser = None
+        self.ser2 = None
         self.root = root
         self.p = ""
         self.placarLocal = IntVar()
@@ -31,7 +32,6 @@ class Interface():
         self.placarVisitante = IntVar()
         self.placarVisitante.set(0)
         self.tempo_correndo = False
-        self.op2 = None
         self.cronometro = StringVar()
         self.cronometro.set("0:00:00.0")
         self.texto_entry = StringVar()
@@ -39,6 +39,7 @@ class Interface():
         self.ativa = StringVar()
         self.esporte = StringVar()
         self.contador = None
+        self.tempo = ""
         self.tempo_extra = timedelta()
         self.check = BooleanVar()
         self.check.set(True)
@@ -78,7 +79,7 @@ class Interface():
         self.frame4wid = Frame(self.notebook, bg = self.purple) #Configura aba 4
         self.notebook.add(self.frame4wid, text = "24 Segundos")
 
-        self.frame5wid = Frame(self.notebook, bg = self.purple) #Configura aba 4
+        self.frame5wid = Frame(self.notebook, bg = self.purple) #Configura aba 5
         self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
@@ -570,7 +571,7 @@ class Interface():
             horas, resto = divmod(total_milliseconds, 36000)
             minutos, resto = divmod(resto, 600)
             segundos, milissegundos = divmod(resto, 10)
-            self.cronometro.set(f"{int(horas):02}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):01}")
+            self.cronometro.set(f"{int(horas):01}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):01}")
             self.root.after(100, self.serial_Port)
             self.root.after(100, self.update)
         
@@ -583,12 +584,17 @@ class Interface():
         seg = int(seg)
         milisseg = int(milisseg)
         min += 1            
-        self.cronometro.set(f"{(hr):02}:{(min):02}:{(seg):02}.{(milisseg):01}")
-        tempo = self.cronometro - self.contador
-        self.update()    
+        self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
         
     def min_minute(self):
         self.contador += timedelta(minutes = 1)
+        
+    def start_timer(self, event = None): #Inicia o cronômetro
+        if not self.contador:  #Apenas inicie se o contador não estiver ativado
+            self.contador = datetime.now()
+            self.update()
+            self.serial_Port()
+            print("iniciando...")
         
     def zero(self, event = None): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
@@ -657,14 +663,6 @@ class Interface():
                 self.placarVisitanteSubs.set(0)
                 return False 
         return True
-            
-    def start_timer(self, event = None): #Inicia o cronômetro
-        if not self.contador:  #Apenas inicie se o contador não estiver ativado
-            self.contador = datetime.now()
-            self.update()
-            self.serial_Port()
-            print("iniciando...")
-            
     
     def save_state(self):
         with open("save_state.pkl", "wb") as f:
@@ -847,7 +845,7 @@ class Interface():
             self.ser2 = None
             print("Não foi possível abrir a porta serial😔")
             messagebox.showerror("Erro", serial.SerialException)
-            
+        
     def select_serial(self, op):
         self.op = op
         print("Serial selecionada:", self.op)
@@ -865,12 +863,19 @@ class Interface():
         messagebox.showinfo("Novas configurações", self.ser2)
     
     def open_enter(self):
-        print("Entrando em open_enter")
-        if self.check.get():
-            self.using_serial2(True)
-            self.op2 = "COM3"
-        else:
-            print("Checkbutton não está marcado")    
+        print("Iniciando a porta serial dos 24 segundos")
+        try:
+            if self.check.get():
+                self.op2 = "COM3"
+                self.using_serial2(True)
+            else:
+                print("Checkbutton não está marcado")  
+                messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
+        except serial.SerialException:
+            print("Não foi possível abrir a porta serial😔")
+            messagebox.showerror("Erro", serial.SerialException)
+            self.ser2 = None
+            
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
