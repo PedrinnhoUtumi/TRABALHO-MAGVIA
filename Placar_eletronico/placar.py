@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import messagebox
 from datetime import datetime, timedelta 
 import time
+import serial.tools.list_ports
 import threading
 import serial
 import pickle
@@ -798,7 +799,7 @@ class Interface():
         try:
             if use_serial:
                 self.ser = serial.Serial(
-                    port = self.op, 
+                    port = self.op.device, 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
@@ -811,7 +812,7 @@ class Interface():
             else:
                 self.ser = None
                 print("Sua porta serial está fechada✘")
-                self.options = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
+                self.options = list(serial.tools.list_ports.comports())
                 for self.option in self.options:
                     self.menu.add_command(label = str(self.option), command = lambda op = self.option: self.select_serial(op))
                 messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
@@ -824,7 +825,7 @@ class Interface():
         try:
             if use_serial:
                 self.ser2 = serial.Serial(
-                    port = self.op2, 
+                    port = self.op2.device, 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
@@ -837,7 +838,7 @@ class Interface():
             else:
                 self.ser2 = None
                 print("Sua porta serial está fechada✘")
-                self.options2 = ["COM1", "COM2" , "COM3", "COM4", "COM5", "COM6", "COM7", "COM8", "COM9", "COM10"]
+                self.options2 = list(serial.tools.list_ports.comports())
                 for self.option2 in self.options2:
                     self.menu2.add_command(label = str(self.option2), command = lambda op2 = self.option2: self.select_serial2(op2))
                 messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
@@ -866,8 +867,9 @@ class Interface():
         print("Iniciando a porta serial dos 24 segundos")
         try:
             if self.check.get():
-                self.op2 = "COM3"
-                self.using_serial2(True)
+                if self.option2 == "COM6":
+                    self.op2 = self.option2
+                    self.using_serial2(True)
             else:
                 print("Checkbutton não está marcado")  
                 messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
@@ -875,7 +877,6 @@ class Interface():
             print("Não foi possível abrir a porta serial😔")
             messagebox.showerror("Erro", serial.SerialException)
             self.ser2 = None
-            
 
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
