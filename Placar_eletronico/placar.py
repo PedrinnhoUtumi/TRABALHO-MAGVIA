@@ -399,10 +399,10 @@ class Interface():
         self.new_data.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         self.root.bind("<Control-m>", self.show_serial)
 
-        self.bt_add1min = Button(self.frame2, text = "+1 minuto", cursor = "hand1", command = self.add_minute)
+        self.bt_add1min = Button(self.frame2, text = "+1 minuto", cursor = "hand1", command = lambda: self.handle_minute("add"))
         self.bt_add1min.place(relx = 0.42, rely = 0.65, relwidth = 0.15, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
 
-        self.bt_minus1min = Button(self.frame2wid2, text = "-1 minuto", cursor = "hand1")
+        self.bt_minus1min = Button(self.frame2wid2, text = "-1 minuto", cursor = "hand1", command = lambda: self.handle_minute("remove"))
         self.bt_minus1min.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Remove 1 minuto ao cronômetro
         
         self.entry_time = Entry (self.frame2wid2, cursor = "hand1")
@@ -576,19 +576,33 @@ class Interface():
             self.root.after(100, self.serial_Port)
             self.root.after(100, self.update)
         
-    def add_minute(self):
-        tempo = self.cronometro.get()
-        hr, min, seg_milisseg = tempo.split(':')
-        seg, milisseg = seg_milisseg.split('.')
-        hr = int(hr)
-        min = int(min)
-        seg = int(seg)
-        milisseg = int(milisseg)
-        min += 1            
-        self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
+    def handle_minute(self, opcao):
+        if opcao == "add":
+            tempo = self.cronometro.get()
+            hr, min, seg_milisseg = tempo.split(':')
+            seg, milisseg = seg_milisseg.split('.')
+            hr = int(hr)
+            min = int(min)
+            seg = int(seg)
+            milisseg = int(milisseg)
+            min += 1            
+            if min > 59:
+                min = 0
+                hr += 1  
+            self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
         
-    def min_minute(self):
-        self.contador += timedelta(minutes = 1)
+        elif opcao == "remove":
+            tempo = self.cronometro.get()
+            hr, min, seg_milisseg = tempo.split(':')
+            seg, milisseg = seg_milisseg.split('.')
+            hr = int(hr)
+            min = int(min)
+            seg = int(seg)
+            milisseg = int(milisseg)
+            min -= 1   
+            if min <= 0:
+                min = 0         
+            self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
         
     def start_timer(self, event = None): #Inicia o cronômetro
         if not self.contador:  #Apenas inicie se o contador não estiver ativado
@@ -867,7 +881,7 @@ class Interface():
         print("Iniciando a porta serial dos 24 segundos")
         try:
             if self.check.get():
-                if self.option2 == "COM6":
+                if self.option2.device == "COM6":
                     self.op2 = self.option2
                     self.using_serial2(True)
             else:
