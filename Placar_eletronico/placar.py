@@ -78,7 +78,7 @@ class Interface():
         self.notebook.add(self.frame3wid, text = "Escalação")
         
         self.frame4wid = Frame(self.notebook, bg = self.purple) #Configura aba 4
-        self.notebook.add(self.frame4wid, text = "24 Segundos")
+        self.notebook.add(self.frame4wid, text = "24 Seg")
 
         self.frame5wid = Frame(self.notebook, bg = self.purple) #Configura aba 5
         self.notebook.add(self.frame5wid, text = "Jornal")
@@ -211,7 +211,7 @@ class Interface():
         self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
         
         #Configura os frames da aba 4
-        self.frame1wid4Label = Label(self.frame4wid, bg = self.purple, fg = self.white, text = "Serial dos 24 segundos")
+        self.frame1wid4Label = Label(self.frame4wid, bg = self.purple, fg = self.white, text = "Serial dos 24 seg")
         self.frame1wid4Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
         self.frame1wid4 = Label(self.frame4wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
@@ -460,7 +460,7 @@ class Interface():
         self.controls.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
     #Botões da aba 4
-        self.ativar = Checkbutton(self.frame2wid4, bg = self.aqua, text = "Ativar simulador 24 segundos")
+        self.ativar = Checkbutton(self.frame2wid4, bg = self.aqua, text = "Ativar simulador 24 seg")
         self.ativar.place(relx = 0, rely = 0.05, relwidth = 0.5, relheight = 0.05)
 
         self.esppacoativa = Radiobutton(self.frame2wid4, bg = self.aqua, text = "14s", variable = self.ativa, value = "14s")
@@ -568,11 +568,11 @@ class Interface():
     def update(self): #Para que nosso cronômetro comece a rodar
         if self.contador:
             tempo = datetime.now() - self.contador
-            total_milliseconds = int(tempo.total_seconds() * 10)
-            horas, resto = divmod(total_milliseconds, 36000)
-            minutos, resto = divmod(resto, 600)
-            segundos, milissegundos = divmod(resto, 10)
-            self.cronometro.set(f"{int(horas):01}:{int(minutos):02}:{int(segundos):02}.{int(milissegundos):01}")
+            total_milliseg = int(tempo.total_seconds() * 10)
+            hr, resto = divmod(total_milliseg, 36000)
+            min, resto = divmod(resto, 600)
+            seg, milisseg = divmod(resto, 10)
+            self.cronometro.set(f"{int(hr):01}:{int(min):02}:{int(seg):02}.{int(milisseg):01}")
             self.root.after(100, self.serial_Port)
             self.root.after(100, self.update)
         
@@ -590,6 +590,7 @@ class Interface():
                 min = 0
                 hr += 1  
             self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
+            self.update()
         
         elif opcao == "remove":
             tempo = self.cronometro.get()
@@ -603,13 +604,17 @@ class Interface():
             if min <= 0:
                 min = 0         
             self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
-        
-    def start_timer(self, event = None): #Inicia o cronômetro
-        if not self.contador:  #Apenas inicie se o contador não estiver ativado
+            self.update()
+        return self.cronometro
+            
+    def start_timer(self, event=None):
+        if not self.contador:
             self.contador = datetime.now()
+            tempo_ajustado = self.handle_minute("add")  # Exemplo: adicionar um minuto
+            print(f"Tempo após ajuste: {tempo_ajustado}")
             self.update()
             self.serial_Port()
-            print("iniciando...")
+            print("Iniciando...")
         
     def zero(self, event = None): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
@@ -878,7 +883,7 @@ class Interface():
         messagebox.showinfo("Novas configurações", self.ser2)
     
     def open_enter(self):
-        print("Iniciando a porta serial dos 24 segundos")
+        print("Iniciando a porta serial dos 24 seg")
         try:
             if self.check.get():
                 if self.option2.device == "COM6":
