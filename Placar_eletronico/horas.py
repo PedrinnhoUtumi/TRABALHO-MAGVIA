@@ -9,7 +9,7 @@ def calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim):
         if data.weekday() in [0, 3, 4]:  # 0 = segunda-feira, 3 = quinta-feira, 4 = sexta-feira
             total_horas += horas_por_dia
         data += timedelta(days=1)
-    return total_horas
+    return total_horas 
 
 horas_por_dia = 4
 data_inicio = "19/04/2024"
