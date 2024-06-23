@@ -605,17 +605,17 @@ class Interface():
                 min = 0         
             self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
             self.update()
-        return self.cronometro
-            
+        return min    
+        
     def start_timer(self, event=None):
         if not self.contador:
             self.contador = datetime.now()
-            tempo_ajustado = self.handle_minute("add")  # Exemplo: adicionar um minuto
-            print(f"Tempo após ajuste: {tempo_ajustado}")
             self.update()
             self.serial_Port()
             print("Iniciando...")
-        
+            if min:
+                self.contador = datetime.now() - min
+                self.update()
     def zero(self, event = None): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
         self.placarTempo.set(1)
