@@ -479,15 +479,12 @@ class Interface():
         
         self.bt_serial_open2 = Button(self.frame1wid4, text = "Abre serial", command = lambda: self.using_serial2(True), cursor = "hand1")
         self.bt_serial_open2.place(relx = 0.05, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Abre a porta serial
-        self.root.bind("<Control-p>", lambda event: self.using_serial2(True))
         
         self.bt_serial_close2 = Button(self.frame1wid4, text = "Fecha serial", command = lambda: self.using_serial2(False), cursor = "hand1")
         self.bt_serial_close2.place(relx = 0.4, rely = 0.05, relwidth = 0.2, relheight = 0.05) #Fecha a porta serial 
-        self.root.bind("<Control-l>", lambda event: self.using_serial2(False))
 
         self.new_data2 = Button(self.frame1wid4, text = "Mostrar serial", command = self.show_serial2, cursor = "hand1")
         self.new_data2.place(relx = 0.75, rely = 0.05, relwidth = 0.2, relheight = 0.05)
-        self.root.bind("<Control-m>", self.show_serial2)
         
         self.bt_choose_serial2 = Menubutton(self.frame1wid4, text = "Escolhe serial", cursor = "hand1", relief = "ridge")
         self.bt_choose_serial2.place(relx = 0.225, rely = 0.15, relwidth = 0.2, relheight = 0.05) #Escolhe a porta serial
