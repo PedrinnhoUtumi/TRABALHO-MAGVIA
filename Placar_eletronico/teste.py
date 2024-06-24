@@ -1,21 +1,46 @@
-from datetime import datetime
+import tkinter as tk
+from datetime import datetime, timedelta
 
-# Exemplo de string que representa o tempo
-cronometro_str = "2024-06-21 15:30:45.123456"
+class CronometroApp:
+    def __init__(self, root):
+        self.root = root
+        self.root.title("Cronômetro Regressivo")
+        
+        self.cronometro_label = tk.Label(self.root, text="00:00:00.0", font=("Arial", 24))
+        self.cronometro_label.pack(pady=20)
 
-# Formato da string
-formato = '%Y-%m-%d %H:%M:%S.%f'
+        self.tempo_inicial = None
+        self.update()
 
-# Converter a string para datetime
-contador = datetime.strptime(cronometro_str, formato)
+    def update(self):
+        if self.tempo_inicial:
+            tempo_atual = datetime.now()
+            tempo_decorrido = tempo_atual - self.tempo_inicial
+            tempo_restante = timedelta(seconds=60) - tempo_decorrido  # Contagem regressiva de 1 minuto (60 segundos)
 
-# Extrair apenas horas, minutos, segundos e milissegundos
-horas = contador.hour
-minutos = contador.minute
-segundos = contador.second
-milissegundos = int(contador.microsecond / 1000)  # Convertendo microssegundos para milissegundos
+            if tempo_restante.total_seconds() <= 0:
+                self.cronometro_label.config(text="00:00:00.0")
+                print("Contagem regressiva concluída")
+                return
+            
+            total_milliseg = int(tempo_restante.total_seconds() * 10)
+            hr, resto = divmod(total_milliseg, 36000)
+            min, resto = divmod(resto, 600)
+            seg, milisseg = divmod(resto, 10)
+            tempo_formatado = f"{int(hr):01}:{int(min):02}:{int(seg):02}.{int(milisseg):01}"
+            self.cronometro_label.config(text=tempo_formatado)
 
-# Formatar como desejado (por exemplo, HH:MM:SS.mmm)
-tempo_formatado = f"{horas:02}:{minutos:02}:{segundos:02}.{milissegundos:03}"
+        self.root.after(100, self.update)
 
-print(f'Tempo formatado: {tempo_formatado}')
+    def start_timer(self):
+        self.tempo_inicial = datetime.now()
+        self.update()
+
+if __name__ == "__main__":
+    root = tk.Tk()
+    app = CronometroApp(root)
+    
+    start_button = tk.Button(root, text="Iniciar Contagem Regressiva", command=app.start_timer)
+    start_button.pack(pady=10)
+    
+    root.mainloop()

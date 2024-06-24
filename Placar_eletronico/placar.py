@@ -13,7 +13,10 @@ class Interface():
         self.ser = None
         self.ser2 = None
         self.root = root
-        self.p = ""
+        self.hr = 0         
+        self.min = 0
+        self.seg = 0
+        self.milisseg = 0
         self.placarLocal = IntVar()
         self.placarLocal.set(0)
         self.placarLocalSubs = IntVar()
@@ -399,8 +402,8 @@ class Interface():
         self.new_data.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         self.root.bind("<Control-m>", self.show_serial)
 
-        self.bt_add1min = Button(self.frame2, text = "+1 minuto", cursor = "hand1", command = lambda: self.handle_minute("add"))
-        self.bt_add1min.place(relx = 0.42, rely = 0.65, relwidth = 0.15, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
+        self.bt_add1min = Button(self.frame2wid2, text = "+1 minuto", cursor = "hand1", command = lambda: self.handle_minute("add"))
+        self.bt_add1min.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
 
         self.bt_minus1min = Button(self.frame2wid2, text = "-1 minuto", cursor = "hand1", command = lambda: self.handle_minute("remove"))
         self.bt_minus1min.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Remove 1 minuto ao cronômetro
@@ -408,10 +411,10 @@ class Interface():
         self.entry_time = Entry (self.frame2wid2, cursor = "hand1")
         self.entry_time.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
 
-        self.front = Button(self.frame2wid2, text = "Anda para frente ⏩", cursor = "hand1")
+        self.front = Button(self.frame2wid2, text = "Anda para frente ⏩", cursor = "hand1", command = self.front_back("front"))
         self.front.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
 
-        self.back = Button(self.frame2wid2, text = "⏪ Anda pra trás", cursor = "hand1")
+        self.back = Button(self.frame2wid2, text = "⏪ Anda pra trás", cursor = "hand1", command = self.front_back("back"))
         self.back.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
 
         self.choose_game = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Futebol", bg = self.aqua, variable = self.esporte, value = "Futebol")
@@ -577,35 +580,30 @@ class Interface():
             self.root.after(100, self.update)
         
     def handle_minute(self, opcao):
+        tempo = self.cronometro.get()
+        hr, min, seg_milisseg = tempo.split(':')
+        seg, milisseg = seg_milisseg.split('.')
+        self.hr = int(hr)         
+        self.min = int(min)
+        self.seg = int(seg)
+        self.milisseg = int(milisseg)
         if opcao == "add":
-            tempo = self.cronometro.get()
-            hr, min, seg_milisseg = tempo.split(':')
-            seg, milisseg = seg_milisseg.split('.')
-            hr = int(hr)
-            min = int(min)
-            seg = int(seg)
-            milisseg = int(milisseg)
-            min += 1            
-            if min > 59:
-                min = 0
-                hr += 1  
-            self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
-            self.update()
+            self.min += 1            
+            if self.min > 59:
+                self.min = 0
+                self.hr += 1  
         
         elif opcao == "remove":
-            tempo = self.cronometro.get()
-            hr, min, seg_milisseg = tempo.split(':')
-            seg, milisseg = seg_milisseg.split('.')
-            hr = int(hr)
-            min = int(min)
-            seg = int(seg)
-            milisseg = int(milisseg)
-            min -= 1   
-            if min <= 0:
-                min = 0         
-            self.cronometro.set(f"{(hr):01}:{(min):02}:{(seg):02}.{(milisseg):01}")
-            self.update()
-        return min    
+            self.min -= 1   
+            if self.min < 0: 
+                self.min = 59
+                self.hr -= 1 
+            if self.hr < 0:  
+                self.hr = 0
+                self.min = 0   
+        self.cronometro.set(f"{(self.hr):01}:{(self.min):02}:{(self.seg):02}.{(self.milisseg):01}")
+        self.update()
+        print(self.min)
         
     def start_timer(self, event=None):
         if not self.contador:
@@ -613,21 +611,48 @@ class Interface():
             self.update()
             self.serial_Port()
             print("Iniciando...")
-            if min:
-                self.contador = datetime.now() - min
+            if self.min != 0:
+                self.contador = datetime.now() - timedelta(minutes = self.min)
                 self.update()
+        
+    def front_back(self, opcao):
+            if opcao == "front":
+                self.update()
+            elif opcao == "back":
+                if self.contador:
+                    agora = datetime.now()
+                    tempo_decorrido = agora - self.contador
+                    tempo_restante = timedelta(hours=self.hr, minutes=self.min, seconds=self.seg, milliseconds=self.milisseg) - tempo_decorrido
+
+                    # Atualiza o cronômetro com o tempo restante
+                    total_seconds = tempo_restante.total_seconds()
+                    hr = int(total_seconds // 3600)
+                    min = int((total_seconds % 3600) // 60)
+                    seg = int(total_seconds % 60)
+                    milisseg = int((tempo_restante.microseconds // 1000) // 10)
+
+                    self.cronometro.set(f"{hr:01}:{min:02}:{seg:02}.{milisseg:01}")
+                    self.update()
+                else:
+                    print("Contador não iniciado")    
+                    
     def zero(self, event = None): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
         self.placarTempo.set(1)
         self.placarVisitante.set(0)
         self.set1.set(0)
         self.set2.set(0)
+        self.contador_pause = None
         self.cronometro.set("0:00:00.0")
         self.texto_entry.set("")
         self.texto_entry2.set("")
         self.localFools.set(0)
         self.awayFools.set(0)
         self.placarVisitanteSubs.set(0)
+        self.hr = 0         
+        self.min = 0
+        self.seg = 0
+        self.milisseg = 0
         self.placarLocalSubs.set(0)
         self.contador = None
 
@@ -638,6 +663,7 @@ class Interface():
         elif opcao == 2: #Aqui vai reiniciar o cronômetro
             self.cronometro.set("0:00:00.0")
             self.contador = None
+            self.contador_pause = None
         elif opcao == 3: #Continua o cronômetro se estiver pausado
             if self.contador_pause:
                 self.contador = datetime.now() - self.contador_pause
