@@ -390,7 +390,7 @@ class Interface():
         self.bt_serial_close.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Fecha a porta serial 
         self.root.bind("<Control-l>", lambda event: self.using_serial(False))
 
-        self.bt_choose_serial = Menubutton(self.frame4wid2, text = "Escolhe serial", cursor = "hand1", relief="raised")
+        self.bt_choose_serial = Menubutton(self.frame4wid2, text = "Escolhe serial", cursor = "hand1", relief = "ridge")
         self.bt_choose_serial.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Escolhe a porta serial
         self.menu = Menu(self.bt_choose_serial, tearoff = 0)
         self.bt_choose_serial.config(menu = self.menu)
@@ -490,7 +490,7 @@ class Interface():
         self.new_data2.place(relx = 0.75, rely = 0.05, relwidth = 0.2, relheight = 0.05)
         self.root.bind("<Control-m>", self.show_serial2)
         
-        self.bt_choose_serial2 = Menubutton(self.frame1wid4, text = "Escolhe serial", cursor = "hand1", relief="raised")
+        self.bt_choose_serial2 = Menubutton(self.frame1wid4, text = "Escolhe serial", cursor = "hand1", relief = "ridge")
         self.bt_choose_serial2.place(relx = 0.225, rely = 0.15, relwidth = 0.2, relheight = 0.05) #Escolhe a porta serial
         self.menu2 = Menu(self.bt_choose_serial2, tearoff = 0)
         self.bt_choose_serial2.config(menu = self.menu2)
