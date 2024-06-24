@@ -52,6 +52,14 @@ class Interface():
         self.purple = "purple"
         self.black = "black"
         self.white = "white"
+        self.root.bind("<Control-p>", lambda event: self.using_serial(True))
+        self.root.bind("<Control-l>", lambda event: self.using_serial(False))
+        self.root.bind("<Control-m>", self.show_serial)
+        self.root.bind("<space>", self.start_timer)
+        self.root.bind("0", self.zero)
+        self.root.bind("<Control-u>", lambda event: self.pause(1))
+        self.root.bind("<Control-i>", lambda event: self.pause(2))
+        self.root.bind("<Control-o>", lambda event: self.pause(3))
         self.config_tela()
         self.frames()
         self.botao()
@@ -287,23 +295,18 @@ class Interface():
         #Botôes de controle
         self.bt_start = Button(self.frameLado, text = "Iniciar", cursor = "clock", command = self.start_timer)
         self.bt_start.place(relx = 0.15, rely = 0.15, relwidth = 0.7, relheight = 0.03) #Iniciar cronômetro
-        self.root.bind("<space>", self.start_timer)
         
         self.bt_zero = Button(self.frameLado, text = "Zerar", command = self.zero, cursor = "hand1")
         self.bt_zero.place(relx = 0.15, rely = 0.2, relwidth = 0.7, relheight = 0.03) #Zerar toda a página
-        self.root.bind("0", self.zero)
         
         self.bt_pause = Button(self.frameLado, text = "Pausar", command = lambda: self.pause(1), cursor = "hand1")
         self.bt_pause.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.03) #Pausar cronômetro
-        self.root.bind("<Control-u>", lambda event: self.pause(1))
         
         self.bt_reniciar = Button(self.frameLado, text = "Reiniciar", command = lambda: self.pause(2), cursor = "hand1")
         self.bt_reniciar.place(relx = 0.15, rely = 0.3, relwidth = 0.7, relheight = 0.03) #Reinciar cronômetro
-        self.root.bind("<Control-i>", lambda event: self.pause(2))
         
         self.bt_continue = Button(self.frameLado, text = "Continuar", cursor = "hand1", command = lambda: self.pause(3))
         self.bt_continue.place(relx = 0.15, rely = 0.35, relwidth = 0.7, relheight = 0.03) #Continuar cronômetro após pausa
-        self.root.bind("<Control-o>", lambda event: self.pause(3))
         
         #Botôes do frame2 da aba 1
         self.bt_minus = Button(self.frame2, text = "-1", command = lambda: self.minus(1), cursor = "hand1")
@@ -384,11 +387,9 @@ class Interface():
 
         self.bt_serial_open = Button(self.frame4wid2, text = "Abre serial", command = lambda: self.using_serial(True), cursor = "hand1")
         self.bt_serial_open.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Abre a porta serial
-        self.root.bind("<Control-p>", lambda event: self.using_serial(True))
         
         self.bt_serial_close = Button(self.frame4wid2, text = "Fecha serial", command = lambda: self.using_serial(False), cursor = "hand1")
         self.bt_serial_close.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Fecha a porta serial 
-        self.root.bind("<Control-l>", lambda event: self.using_serial(False))
 
         self.bt_choose_serial = Menubutton(self.frame4wid2, text = "Escolhe serial", cursor = "hand1", relief = "ridge")
         self.bt_choose_serial.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15) #Escolhe a porta serial
@@ -400,7 +401,6 @@ class Interface():
         
         self.new_data = Button(self.frame4wid2, text = "Mostrar serial", command = self.show_serial, cursor = "hand1")
         self.new_data.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
-        self.root.bind("<Control-m>", self.show_serial)
 
         self.bt_add1min = Button(self.frame2wid2, text = "+1 minuto", cursor = "hand1", command = lambda: self.handle_minute("add"))
         self.bt_add1min.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
@@ -578,6 +578,7 @@ class Interface():
             self.cronometro.set(f"{int(hr):01}:{int(min):02}:{int(seg):02}.{int(milisseg):01}")
             self.root.after(100, self.serial_Port)
             self.root.after(100, self.update)
+            
     def handle_minute(self, opcao):
         tempo = self.cronometro.get()
         hr, min, seg_milisseg = tempo.split(':')
