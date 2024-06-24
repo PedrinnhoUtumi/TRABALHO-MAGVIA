@@ -411,10 +411,10 @@ class Interface():
         self.entry_time = Entry (self.frame2wid2, cursor = "hand1")
         self.entry_time.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
 
-        self.front = Button(self.frame2wid2, text = "Anda para frente ⏩", cursor = "hand1", command = self.front_back("front"))
+        self.front = Button(self.frame2wid2, text = "Anda para frente ⏩", cursor = "hand1")
         self.front.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
 
-        self.back = Button(self.frame2wid2, text = "⏪ Anda pra trás", cursor = "hand1", command = self.front_back("back"))
+        self.back = Button(self.frame2wid2, text = "⏪ Anda pra trás", cursor = "hand1")
         self.back.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
 
         self.choose_game = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Futebol", bg = self.aqua, variable = self.esporte, value = "Futebol")
@@ -578,7 +578,6 @@ class Interface():
             self.cronometro.set(f"{int(hr):01}:{int(min):02}:{int(seg):02}.{int(milisseg):01}")
             self.root.after(100, self.serial_Port)
             self.root.after(100, self.update)
-        
     def handle_minute(self, opcao):
         tempo = self.cronometro.get()
         hr, min, seg_milisseg = tempo.split(':')
@@ -603,7 +602,6 @@ class Interface():
                 self.min = 0   
         self.cronometro.set(f"{(self.hr):01}:{(self.min):02}:{(self.seg):02}.{(self.milisseg):01}")
         self.update()
-        print(self.min)
         
     def start_timer(self, event=None):
         if not self.contador:
@@ -613,28 +611,7 @@ class Interface():
             print("Iniciando...")
             if self.min != 0:
                 self.contador = datetime.now() - timedelta(minutes = self.min)
-                self.update()
-        
-    def front_back(self, opcao):
-            if opcao == "front":
-                self.update()
-            elif opcao == "back":
-                if self.contador:
-                    agora = datetime.now()
-                    tempo_decorrido = agora - self.contador
-                    tempo_restante = timedelta(hours=self.hr, minutes=self.min, seconds=self.seg, milliseconds=self.milisseg) - tempo_decorrido
-
-                    # Atualiza o cronômetro com o tempo restante
-                    total_seconds = tempo_restante.total_seconds()
-                    hr = int(total_seconds // 3600)
-                    min = int((total_seconds % 3600) // 60)
-                    seg = int(total_seconds % 60)
-                    milisseg = int((tempo_restante.microseconds // 1000) // 10)
-
-                    self.cronometro.set(f"{hr:01}:{min:02}:{seg:02}.{milisseg:01}")
-                    self.update()
-                else:
-                    print("Contador não iniciado")    
+                self.update()   
                     
     def zero(self, event = None): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
@@ -870,7 +847,7 @@ class Interface():
         try:
             if use_serial:
                 self.ser2 = serial.Serial(
-                    port = self.op2.device, 
+                    port = self.op2, 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
@@ -912,12 +889,17 @@ class Interface():
         print("Iniciando a porta serial dos 24 seg")
         try:
             if self.check.get():
-                if self.option2.device == "COM6":
-                    self.op2 = self.option2
-                    self.using_serial2(True)
+                portas = serial.tools.list_ports.comports()
+                for porta in portas:
+                    try:
+                        self.op2 = porta.device
+                        self.using_serial2(True)
+                    except serial.SerialException:
+                        messagebox.showinfo("Erro", "Nenhuma porta serial encontrada")
             else:
                 print("Checkbutton não está marcado")  
                 messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
+                self.ser2 = None
         except serial.SerialException:
             print("Não foi possível abrir a porta serial😔")
             messagebox.showerror("Erro", serial.SerialException)
