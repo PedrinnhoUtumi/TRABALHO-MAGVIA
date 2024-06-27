@@ -96,13 +96,12 @@ class Interface():
         
         #Configura os frames na aba 1
         try:
-            imagem = Image.open("magvia.png")
-            imagem.show()
+            imagem = Image.open("Placar_eletronico\magvia.png")
+            imagem_redimensionada = imagem.resize((100, 100), Image.ANTIALIAS)
+
+            self.foto = ImageTk.PhotoImage(imagem_redimensionada)
         except Exception as e:
             messagebox.showinfo("erro ao abrir imagem", e)
-             
-        #self.frameFoto = Label(self.root, image = imagem, bg = self.aqua)
-        #self.frameFoto.place(relx = 0.9, rely = 0.5, relwidth = 0.12, relheight = 0.8)
         
         self.frameLado = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frameLado.place(relx = 0.01, rely = 0.05, relwidth = 0.12, relheight = 0.8)
@@ -112,6 +111,9 @@ class Interface():
         
         self.frame1 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
+        
+        self.frameFoto = Label(self.frame1, image = self.foto, bg = self.aqua)
+        self.frameFoto.place(relx = 0.8, rely = 0.05, relwidth = 0.2, relheight = 0.5)
         
         self.entry_texto1 = Entry(self.frame1wid, textvariable=self.texto_entry, font=("Courier New", 12, "bold"), bg = self.purple, fg = self.white)
         self.entry_texto1.place(relx=0.15, rely=0.3, relwidth=0.2, relheight=0.05) #Nome do time da casa
