@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 import time
 import serial.tools.list_ports
 import threading
+from PIL import Image, ImageTk
 import serial
 import pickle
 
@@ -94,6 +95,11 @@ class Interface():
         self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
+        image = Image.open("../")
+        photo = ImageTk.PhotoImage(image)
+
+        
+        
         self.frameLado = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frameLado.place(relx = 0.01, rely = 0.05, relwidth = 0.12, relheight = 0.8)
         
