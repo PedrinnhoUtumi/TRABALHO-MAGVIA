@@ -96,7 +96,7 @@ class Interface():
         
         #Configura os frames na aba 1
         try:
-            imagem = Image.open("")
+            imagem = Image.open("magvia.png")
             imagem.show()
         except Exception as e:
             messagebox.showinfo("erro ao abrir imagem", e)
