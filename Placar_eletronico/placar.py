@@ -95,7 +95,7 @@ class Interface():
         self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
-        imagem = Image.open("./logo.png")
+        imagem = Image.open("./magvia.png")
         imagem.show()
         
         #self.frameFoto = Label(self.root, image = imagem, bg = self.aqua)
