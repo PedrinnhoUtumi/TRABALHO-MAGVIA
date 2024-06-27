@@ -95,9 +95,12 @@ class Interface():
         self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
-        imagem = Image.open("./magvia.png")
-        imagem.show()
-        
+        try:
+            imagem = Image.open("")
+            imagem.show()
+        except Exception as e:
+            messagebox.showinfo("erro ao abrir imagem", e)
+             
         #self.frameFoto = Label(self.root, image = imagem, bg = self.aqua)
         #self.frameFoto.place(relx = 0.9, rely = 0.5, relwidth = 0.12, relheight = 0.8)
         
