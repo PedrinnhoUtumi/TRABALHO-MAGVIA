@@ -95,10 +95,11 @@ class Interface():
         self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
-        image = Image.open("../")
-        photo = ImageTk.PhotoImage(image)
-
+        imagem = Image.open("logo.png")
+        foto = ImageTk.PhotoImage(imagem)
         
+        self.frameFoto = Label(self.root, image = foto)
+        self.frameFoto.place(relx = 0.9, rely = 0.5, relwidth = 0.12, relheight = 0.8)
         
         self.frameLado = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frameLado.place(relx = 0.01, rely = 0.05, relwidth = 0.12, relheight = 0.8)
