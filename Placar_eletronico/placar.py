@@ -95,13 +95,9 @@ class Interface():
         self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
-        try:
-            imagem = Image.open("Placar_eletronico\magvia.png")
-            imagem_redimensionada = imagem.resize((100, 100), Image.ANTIALIAS)
-
-            self.foto = ImageTk.PhotoImage(imagem_redimensionada)
-        except Exception as e:
-            messagebox.showinfo("erro ao abrir imagem", e)
+        imagem = Image.open("Placar_eletronico\magvia.png")
+        imagem_redimensionada = imagem.resize((100, 100), Image.ANTIALIAS)
+        self.foto = ImageTk.PhotoImage(imagem_redimensionada)
         
         self.frameLado = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frameLado.place(relx = 0.01, rely = 0.05, relwidth = 0.12, relheight = 0.8)
@@ -437,7 +433,7 @@ class Interface():
         self.choose_game3 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Basquete", bg = self.aqua, variable = self.esporte, value = "Basquete")
         self.choose_game3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = self.aqua, variable = self.esporte, value = "Tênis de Mesa")
+        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = self.aqua, variable = self.esporte, value = "Tênis de Mesa", command = self.esporte_validacao)
         self.choose_game4.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
         
         self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = self.aqua, variable = self.esporte, value = "Outros")
@@ -510,26 +506,27 @@ class Interface():
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
         
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
-        if team == 1: 
-            self.placarLocal.set(self.placarLocal.get() + 1)
-        elif team == 2:
-            self.placarVisitante.set(self.placarVisitante.get() + 1)
-        elif team == 3:
-            self.placarTempo.set(self.placarTempo.get() + 1)
-        elif team == 4:
-            self.localFools.set(self.localFools.get() + 1)
-        elif team == 5:
-            self.awayFools.set(self.awayFools.get() + 1)
-        elif team == 6:
-            self.set1.set(self.set1.get() + 1)
-        elif team == 7:
-            self.set2.set(self.set2.get() + 1)
-        elif team == 8:
-            self.placarTempo.set(self.placarTempo.get() + 1)
-        elif team == 9:
-            self.placarLocalSubs.set(self.placarLocalSubs.get() + 1)
-        elif team == 10:
-            self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() + 1)
+        if self.esporte_validacao():
+            if team == 1: 
+                self.placarLocal.set(self.placarLocal.get() + 1)
+            elif team == 2:
+                self.placarVisitante.set(self.placarVisitante.get() + 1)
+            elif team == 3:
+                self.placarTempo.set(self.placarTempo.get() + 1)
+            elif team == 4:
+                self.localFools.set(self.localFools.get() + 1)
+            elif team == 5:
+                self.awayFools.set(self.awayFools.get() + 1)
+            elif team == 6:
+                self.set1.set(self.set1.get() + 1)
+            elif team == 7:
+                self.set2.set(self.set2.get() + 1)
+            elif team == 8:
+                self.placarTempo.set(self.placarTempo.get() + 1)
+            elif team == 9:
+                self.placarLocalSubs.set(self.placarLocalSubs.get() + 1)
+            elif team == 10:
+                self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() + 1)
         self.serial_Port()
         
     def plus2(self, team): #Defiinindo a função que vai adicionar 2 pontos
@@ -650,6 +647,7 @@ class Interface():
             self.cronometro.set("0:00:00.0")
             self.contador = None
             self.contador_pause = None
+            self.min = 0
         elif opcao == 3: #Continua o cronômetro se estiver pausado
             if self.contador_pause:
                 self.contador = datetime.now() - self.contador_pause
@@ -790,7 +788,28 @@ class Interface():
             self.localSubsText.config(bg = cor1, fg = cor2)
             self.awaySubsText.config(bg = cor1, fg = cor2)
             self.frameLadoLabel.config(bg = self.white, fg = cor2)
-            
+    
+    def esporte_validacao(self):
+        esporte = self.esporte.get()
+        if self.placarTempo.get() >= 8:
+            self.placarTempo.set(8)
+        if esporte == "Tênis de Mesa":
+            if self.placarLocal.get() >= 11:
+                self.placarLocal.set(0)
+                return False
+            elif self.placarVisitante.get() >= 11:
+                self.placarVisitante.set(0)
+                return False
+        if esporte == "Futebol":
+            if self.placarLocal.get() >= 99:
+                self.placarLocal.set(0)
+                return False
+            elif self.placarVisitante.get() >= 99:
+                self.placarVisitante.set(0)
+                return False
+        return True
+    
+    
     def serial_Port(self): #Faz a comunicação com a porta serial
         tempo = self.cronometro.get()
         hr, min, seg_milisseg = tempo.split(':')
@@ -808,6 +827,7 @@ class Interface():
                     self.localFools.get(),
                     self.placarLocalSubs.get(),
                     self.set1.get(),
+                    self.placarTempo.get(),
                     self.placarVisitante.get(),
                     self.awayFools.get(),
                     self.placarVisitanteSubs.get(),
