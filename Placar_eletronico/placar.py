@@ -705,7 +705,6 @@ class Interface():
                 self.check.set(estado)
         except FileNotFoundError:
             self.check.set(False)  # Define o estado padrão como desativado caso o arquivo não exista
-
                 
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema azul
@@ -802,7 +801,7 @@ class Interface():
                 self.placarLocal.set(0)
                 return False
             elif self.placarVisitante.get() >= 11:
-                self.placarVisitante.set(11)
+                self.placarVisitante.set(0)
                 return False
         
         if esporte == "Futebol":
@@ -814,16 +813,14 @@ class Interface():
                 return False
         
         if esporte == "Voleibol":
-            diferenca = self.placarLocal.get() - self.placarVisitante.get()
+            diferenca = abs(self.placarLocal.get() - self.placarVisitante.get())
             if diferenca >= 2:
                 if self.placarLocal.get() >= 25:
                     self.placarLocal.set(0)
                     return False
-                elif self.placarVisitante.get() >= 25:
+                if self.placarVisitante.get() >= 25:
                     self.placarVisitante.set(0)
                     return False
-            elif diferenca < 2 and self.placarLocal.get() >= 24 and self.placarVisitante.get() >= 24:
-                pass
         
         if esporte == "Basquetebol":
             if self.placarLocal.get() >= 99:
