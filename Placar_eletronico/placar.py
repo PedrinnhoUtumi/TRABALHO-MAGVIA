@@ -897,7 +897,7 @@ class Interface():
         try:
             if use_serial:
                 self.ser = serial.Serial(
-                    port = self.op, 
+                    port = self.op.device, 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
@@ -923,7 +923,7 @@ class Interface():
         try:
             if use_serial:
                 self.ser2 = serial.Serial(
-                    port = self.op2, 
+                    port = self.op2.device, 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
@@ -967,7 +967,7 @@ class Interface():
                 portas = serial.tools.list_ports.comports()
                 for porta in portas:
                     try:
-                        self.op = porta.device
+                        self.op = porta
                         self.using_serial(True)
                     except serial.SerialException:
                         messagebox.showinfo("Erro", "Nenhuma porta serial encontrada")
@@ -986,7 +986,7 @@ class Interface():
                 portas = serial.tools.list_ports.comports()
                 for porta in portas:
                     try:
-                        self.op2 = porta.device
+                        self.op2 = porta
                         self.using_serial2(True)
                     except serial.SerialException:
                         messagebox.showinfo("Erro", "Nenhuma porta serial encontrada")
