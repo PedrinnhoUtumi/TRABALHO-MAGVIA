@@ -96,7 +96,7 @@ class Interface():
         
         #Configura os frames na aba 1
         imagem = Image.open("Placar_eletronico\magvia.png")
-        imagem_redimensionada = imagem.resize((100, 100), Image.ANTIALIAS)
+        imagem_redimensionada = imagem.resize((100, 100), Image.LANCZOS)
         self.foto = ImageTk.PhotoImage(imagem_redimensionada)
         
         self.frameLado = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
@@ -433,7 +433,7 @@ class Interface():
         self.choose_game3 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Basquete", bg = self.aqua, variable = self.esporte, value = "Basquete")
         self.choose_game3.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
         
-        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = self.aqua, variable = self.esporte, value = "Tênis de Mesa", command = self.esporte_validacao)
+        self.choose_game4 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Tênis de Mesa", bg = self.aqua, variable = self.esporte, value = "Tênis de Mesa")
         self.choose_game4.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
         
         self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = self.aqua, variable = self.esporte, value = "Outros")
@@ -725,6 +725,7 @@ class Interface():
             self.frameLocalSubs.config(bg = cor2, highlightbackground = cor1)
             self.frameAwaySubs.config(bg = cor2, highlightbackground = cor1)
             self.frameLado.config(bg = cor2, highlightbackground = cor1)
+            self.frameFoto.config(bg = cor2)
             self.entry_time.config(bg = cor1, fg = cor3)
             self.entry_texto.config(bg = cor1, fg = cor3)
             self.entry_texto1.config(bg = cor1, fg = cor3)
@@ -750,6 +751,7 @@ class Interface():
             self.frameLocalSubs.config(bg = self.aqua, highlightbackground = self.blue)
             self.frameAwaySubs.config(bg = self.aqua, highlightbackground = self.blue)
             self.frameLado.config(bg = self.aqua, highlightbackground = self.blue)
+            self.frameFoto.config(bg = self.aqua)
             self.entry_time.config(bg = self.purple, fg = self.white)
             self.entry_texto.config(bg = self.purple, fg = self.white)
             self.entry_texto1.config(bg = self.purple, fg = self.white)
@@ -777,6 +779,7 @@ class Interface():
             self.frameLocalSubs.config(bg = self.white, highlightbackground = self.white)
             self.frameAwaySubs.config(bg = self.white, highlightbackground = self.white)
             self.frameLado.config(bg = self.white, highlightbackground = self.white)
+            self.frameFoto.config(bg = self.white)
             self.entry_time.config(bg = cor1, fg = cor2)
             self.entry_texto.config(bg = cor1, fg = cor2)
             self.entry_texto1.config(bg = cor1, fg = cor2)
@@ -791,24 +794,54 @@ class Interface():
     
     def esporte_validacao(self):
         esporte = self.esporte.get()
-        if self.placarTempo.get() >= 8:
-            self.placarTempo.set(8)
+        if self.placarTempo.get() > 9:
+            self.placarTempo.set(9)
+            
         if esporte == "Tênis de Mesa":
             if self.placarLocal.get() >= 11:
                 self.placarLocal.set(0)
                 return False
             elif self.placarVisitante.get() >= 11:
-                self.placarVisitante.set(0)
+                self.placarVisitante.set(11)
                 return False
+        
         if esporte == "Futebol":
             if self.placarLocal.get() >= 99:
-                self.placarLocal.set(0)
+                self.placarLocal.set(99)
                 return False
             elif self.placarVisitante.get() >= 99:
-                self.placarVisitante.set(0)
+                self.placarVisitante.set(99)
                 return False
+        
+        if esporte == "Voleibol":
+            diferenca = self.placarLocal.get() - self.placarVisitante.get()
+            if diferenca >= 2:
+                if self.placarLocal.get() >= 25:
+                    self.placarLocal.set(0)
+                    return False
+                elif self.placarVisitante.get() >= 25:
+                    self.placarVisitante.set(0)
+                    return False
+            elif diferenca < 2 and self.placarLocal.get() >= 24 and self.placarVisitante.get() >= 24:
+                pass
+        
+        if esporte == "Basquetebol":
+            if self.placarLocal.get() >= 99:
+                self.placarLocal.set(99)
+                return False
+            elif self.placarVisitante.get() >= 99:
+                self.placarVisitante.set(99)
+                return False
+        
+        if esporte == "Outros":
+            if self.placarLocal.get() >= 99:
+                self.placarLocal.set(99)
+                return False
+            elif self.placarVisitante.get() >= 99:
+                self.placarVisitante.set(99)
+                return False
+        
         return True
-    
     
     def serial_Port(self): #Faz a comunicação com a porta serial
         tempo = self.cronometro.get()
@@ -915,7 +948,6 @@ class Interface():
         messagebox.showinfo("Novas configurações", self.ser2)
     
     def open_enter(self):
-        print("Iniciando a porta serial dos 24 seg")
         try:
             if self.check.get():
                 portas = serial.tools.list_ports.comports()
