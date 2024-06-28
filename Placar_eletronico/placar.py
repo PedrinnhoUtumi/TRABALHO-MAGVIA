@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk, messagebox
 from datetime import datetime, timedelta 
-import time
 import serial.tools.list_ports
 import threading
 from PIL import Image, ImageTk
@@ -816,9 +815,11 @@ class Interface():
         if esporte == "Tênis de Mesa":
             if self.placarLocal.get() >= 11:
                 self.placarLocal.set(0)
+                self.placarVisitante.set(0)
                 return False
             elif self.placarVisitante.get() >= 11:
                 self.placarVisitante.set(0)
+                self.placarLocal.set(0)
                 return False
         
         if esporte == "Futebol":
@@ -834,9 +835,11 @@ class Interface():
             if diferenca >= 2:
                 if self.placarLocal.get() >= 25:
                     self.placarLocal.set(0)
+                    self.placarVisitante.set(0)
                     return False
                 if self.placarVisitante.get() >= 25:
                     self.placarVisitante.set(0)
+                    self.placarLocal.set(0)
                     return False
         
         if esporte == "Basquetebol":
