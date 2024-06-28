@@ -47,6 +47,8 @@ class Interface():
         self.tempo_extra = timedelta()
         self.check = BooleanVar()
         self.check.set(True)
+        self.check2 = BooleanVar()
+        self.check2.set(True)
         self.blue = "blue"
         self.aqua = "aqua"
         self.purple = "purple"
@@ -64,9 +66,11 @@ class Interface():
         self.frames()
         self.botao()
         self.load_state()
+        self.load_state2()
         self.using_serial()
         self.using_serial2()
         self.open_enter()
+        self.open_enter2()
 
     def config_tela(self): #Aqui é onde eu configuro as informações da app
         self.root.title("Placar Eletrônico") #Configura titulo
@@ -406,9 +410,9 @@ class Interface():
         self.timeout = Spinbox(self.frame4wid2, from_ = 0, to = 1000, cursor = "hand1", background = self.aqua)
         self.timeout.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
         
-        self.new_data = Button(self.frame4wid2, text = "Mostrar serial", command = self.show_serial, cursor = "hand1")
-        self.new_data.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
-
+        self.ativar2 = Checkbutton(self.frame4wid2, bg = self.aqua, text = "Abrir ao entrar", variable = self.check, command = self.save_state)
+        self.ativar2.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
+        
         self.bt_add1min = Button(self.frame2wid2, text = "+1 minuto", cursor = "hand1", command = lambda: self.handle_minute("add"))
         self.bt_add1min.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15) #Adiciona 1 minuto ao cronômetro
 
@@ -502,7 +506,7 @@ class Interface():
         self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = self.aqua)
         self.timeout2.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
 
-        self.ativar2 = Checkbutton(self.frame1wid4, bg = self.aqua, text = "Abrir ao entrar", variable = self.check, command = self.save_state)
+        self.ativar2 = Checkbutton(self.frame1wid4, bg = self.aqua, text = "Abrir ao entrar", variable = self.check2, command = self.save_state2)
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
         
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
@@ -638,6 +642,7 @@ class Interface():
         self.milisseg = 0
         self.placarLocalSubs.set(0)
         self.contador = None
+        self.serial_Port()
 
     def pause(self, opcao, event = None):
         if opcao == 1: #Aqui vai pausar
@@ -705,6 +710,18 @@ class Interface():
                 self.check.set(estado)
         except FileNotFoundError:
             self.check.set(False)  # Define o estado padrão como desativado caso o arquivo não exista
+    
+    def save_state2(self):
+        with open("save_state2.pkl", "wb") as f:
+            pickle.dump(self.check2.get(), f)
+            
+    def load_state2(self):
+        try:
+            with open("save_state2.pkl", "rb") as f:
+                estado = pickle.load(f)
+                self.check2.set(estado)
+        except FileNotFoundError:
+            self.check2.set(False)  # Define o estado padrão como desativado caso o arquivo não exista
                 
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema azul
@@ -880,7 +897,7 @@ class Interface():
         try:
             if use_serial:
                 self.ser = serial.Serial(
-                    port = self.op.device, 
+                    port = self.op, 
                     baudrate = 115200, 
                     bytesize = 8, 
                     parity = "N", 
@@ -950,12 +967,31 @@ class Interface():
                 portas = serial.tools.list_ports.comports()
                 for porta in portas:
                     try:
+                        self.op = porta.device
+                        self.using_serial(True)
+                    except serial.SerialException:
+                        messagebox.showinfo("Erro", "Nenhuma porta serial encontrada")
+            else:
+                print("Checkbutton 1 não está marcado")  
+                messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
+                self.ser = None
+        except serial.SerialException:
+            print("Não foi possível abrir a porta serial😔")
+            messagebox.showerror("Erro", serial.SerialException)
+            self.ser = None
+            
+    def open_enter2(self):
+        try:
+            if self.check2.get():
+                portas = serial.tools.list_ports.comports()
+                for porta in portas:
+                    try:
                         self.op2 = porta.device
                         self.using_serial2(True)
                     except serial.SerialException:
                         messagebox.showinfo("Erro", "Nenhuma porta serial encontrada")
             else:
-                print("Checkbutton não está marcado")  
+                print("Checkbutton 2 não está marcado")  
                 messagebox.showinfo("FECHADA✘", "Sua porta serial está fechada✘")
                 self.ser2 = None
         except serial.SerialException:
