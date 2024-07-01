@@ -540,6 +540,19 @@ class Interface():
         self.ativar2 = Checkbutton(self.frame1wid4, bg = self.aqua, text = "Abrir ao entrar", variable = self.check2, command = self.save_state2)
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
         
+        #Botões da aba 5
+        self.enviar = Button(self.frame2wid5, text = "Enviar")
+        self.enviar.place(relx = 0.9, rely = 0.05, relwidth = 0.1, relheight = 0.35)
+        
+        self.limpar = Button(self.frame2wid5, text = "Limpar")
+        self.limpar.place(relx = 0.9, rely = 0.55, relwidth = 0.1, relheight = 0.35)
+        
+        self.enviar2 = Button(self.frame3wid5, text = "Enviar")
+        self.enviar2.place(relx = 0.9, rely = 0.05, relwidth = 0.1, relheight = 0.35)
+        
+        self.limpar2 = Button(self.frame3wid5, text = "Limpar")
+        self.limpar2.place(relx = 0.9, rely = 0.55, relwidth = 0.1, relheight = 0.35)
+        
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if self.esporte_validacao():
             if team == 1: 
