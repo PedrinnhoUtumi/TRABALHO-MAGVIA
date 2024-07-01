@@ -8,7 +8,7 @@ def calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim):
     while data <= data_fim:
         if data.weekday() in [0, 3, 4]:
             total_horas += horas_por_dia
-        data += timedelta(days=1)
+        data += timedelta(days = 1)
     return total_horas 
 
 horas_por_dia = 4
