@@ -541,16 +541,16 @@ class Interface():
         self.ativar2.place(relx = 0, rely = 0.25, relwidth = 0.5, relheight = 0.02)
         
         #Botões da aba 5
-        self.enviar = Button(self.frame2wid5, text = "Enviar")
+        self.enviar = Button(self.frame2wid5, text = "Enviar", cursor = "hand1")
         self.enviar.place(relx = 0.9, rely = 0.05, relwidth = 0.1, relheight = 0.35)
         
-        self.limpar = Button(self.frame2wid5, text = "Limpar")
+        self.limpar = Button(self.frame2wid5, text = "Limpar", cursor = "hand1")
         self.limpar.place(relx = 0.9, rely = 0.55, relwidth = 0.1, relheight = 0.35)
         
-        self.enviar2 = Button(self.frame3wid5, text = "Enviar")
+        self.enviar2 = Button(self.frame3wid5, text = "Enviar", cursor = "hand1")
         self.enviar2.place(relx = 0.9, rely = 0.05, relwidth = 0.1, relheight = 0.35)
         
-        self.limpar2 = Button(self.frame3wid5, text = "Limpar")
+        self.limpar2 = Button(self.frame3wid5, text = "Limpar", cursor = "hand1")
         self.limpar2.place(relx = 0.9, rely = 0.55, relwidth = 0.1, relheight = 0.35)
         
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
@@ -578,17 +578,19 @@ class Interface():
         self.serial_Port()
         
     def plus2(self, team): #Defiinindo a função que vai adicionar 2 pontos
-        if team == 1: 
-            self.placarLocal.set(self.placarLocal.get() + 2)
-        elif team == 2:
-            self.placarVisitante.set(self.placarVisitante.get() + 2)            
+        if self.esporte_validacao():
+            if team == 1: 
+                self.placarLocal.set(self.placarLocal.get() + 2)
+            elif team == 2:
+                self.placarVisitante.set(self.placarVisitante.get() + 2)            
         self.serial_Port()
         
     def plus3(self, team): #Defiinindo a função que vai adicionar 3 pontos
-        if team == 1: 
-            self.placarLocal.set(self.placarLocal.get() + 3)
-        elif team == 2:
-            self.placarVisitante.set(self.placarVisitante.get() + 3)
+        if self.esporte_validacao():
+            if team == 1: 
+                self.placarLocal.set(self.placarLocal.get() + 3)
+            elif team == 2:
+                self.placarVisitante.set(self.placarVisitante.get() + 3)
         self.serial_Port()
     
     def minus(self, team): #Definindo a função que vai tirar pontos, sets etc
@@ -854,19 +856,27 @@ class Interface():
     
     def esporte_validacao(self):
         esporte = self.esporte.get()
-        if self.placarTempo.get() > 9:
+        if self.placarTempo.get() >= 9:
             self.placarTempo.set(9)
             
         if esporte == "Tênis de Mesa":
-            if self.placarLocal.get() >= 11:
-                self.placarLocal.set(0)
-                self.placarVisitante.set(0)
-                return False
-            elif self.placarVisitante.get() >= 11:
-                self.placarVisitante.set(0)
-                self.placarLocal.set(0)
-                return False
-        
+            diferenca = abs(self.placarLocal.get() - self.placarVisitante.get())
+            if diferenca >= 2:
+                if self.placarLocal.get() >= 11:
+                    self.placarLocal.set(0)
+                    self.placarVisitante.set(0)
+                    return False
+                elif self.placarVisitante.get() >= 11:
+                    self.placarVisitante.set(0)
+                    self.placarLocal.set(0)
+                    return False
+            elif diferenca < 2:
+                if self.placarLocal.get() >= 10 and self.placarVisitante.get() >= 10:
+                    if diferenca >= 2:
+                        self.placarLocal.set(0)
+                        self.placarVisitante.set(0)
+                        return False        
+                    
         if esporte == "Futebol":
             if self.placarLocal.get() >= 99:
                 self.placarLocal.set(99)
@@ -886,6 +896,12 @@ class Interface():
                     self.placarVisitante.set(0)
                     self.placarLocal.set(0)
                     return False
+            elif diferenca < 2:
+                if self.placarLocal.get() >= 24 and self.placarVisitante.get() >= 24:
+                    if diferenca >= 2:
+                        self.placarLocal.set(0)
+                        self.placarVisitante.set(0)
+                        return False
         
         if esporte == "Basquetebol":
             if self.placarLocal.get() >= 99:
