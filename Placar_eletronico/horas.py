@@ -17,6 +17,6 @@ horas_devendo = 0
 data_inicio = "19/04/2024"
 data_fim = datetime.now().strftime('%d/%m/%Y')
 
-total_horas = calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim)
+total_horas = calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim)   
 
 print("O total de horas é:", total_horas - horas_feriado - horas_devendo)

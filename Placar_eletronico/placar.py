@@ -301,6 +301,38 @@ class Interface():
         self.framecronoframe1wid4 = Label(self.frame1wid4, bg = self.aqua, textvariable = self.cronometro, font = ("Courier New", 36, "bold"))
         self.framecronoframe1wid4.place(relx = 0.13, rely = 0.45, relwidth = 0.75, relheight = 0.2) #Cronometro
         
+        #Configura frames da aba 5
+        self.frame1wid5Label = Label(self.frame5wid, bg = self.purple, fg = self.white, text = "Mensagem", font = ("Courier New", 12, "bold"))
+        self.frame1wid5Label.place(relx = 0.05, rely = 0.01, relwidth = 0.5, relheight = 0.05)
+        
+        self.frame1wid5 = Text(self.frame5wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, wrap = "none", autoseparators = True)
+        self.frame1wid5.place(relx = 0.05, rely = 0.05, relwidth = 0.5, relheight = 0.65)
+        
+        self.frame2wid5Label = Label(self.frame5wid, bg = self.purple, fg = self.white, text = "Escalação Local", font = ("Courier New", 12, "bold"))
+        self.frame2wid5Label.place(relx = 0.05, rely = 0.7, relwidth = 0.5, relheight = 0.05)
+        
+        self.frame2wid5 = Label(self.frame5wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
+        self.frame2wid5.place(relx = 0.05, rely = 0.75, relwidth = 0.5, relheight = 0.05)
+        
+        self.frame1frame2wid5 = Text(self.frame2wid5, bg = self.white, wrap = "none")
+        self.frame1frame2wid5.place(relx = 0.05, rely = 0.05, relwidth = 0.8, relheight = 0.35)
+        
+        self.frame2frame2wid5 = Text(self.frame2wid5, bg = self.white, wrap = "none")
+        self.frame2frame2wid5.place(relx = 0.05, rely = 0.55, relwidth = 0.8, relheight = 0.35)
+        
+        self.frame3wid5Label = Label(self.frame5wid, bg = self.purple, fg = self.white, text = "Escalação Visitante", font = ("Courier New", 12, "bold"))
+        self.frame3wid5Label.place(relx = 0.05, rely = 0.8, relwidth = 0.5, relheight = 0.05)
+        
+        self.frame3wid5 = Label(self.frame5wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
+        self.frame3wid5.place(relx = 0.05, rely = 0.85, relwidth = 0.5, relheight = 0.05)
+        
+        self.frame1frame3wid5 = Text(self.frame3wid5, bg = self.white, wrap = "none")
+        self.frame1frame3wid5.place(relx = 0.05, rely = 0.05, relwidth = 0.8, relheight = 0.35)
+        
+        self.frame2frame3wid5 = Text(self.frame3wid5, bg = self.white, wrap = "none")
+        self.frame2frame3wid5.place(relx = 0.05, rely = 0.55, relwidth = 0.8, relheight = 0.35)
+        
+        
     def botao(self):
         #Botôes de controle
         self.bt_start = Button(self.frameLado, text = "Iniciar", cursor = "clock", command = self.start_timer)
