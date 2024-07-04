@@ -108,7 +108,7 @@ class Interface():
         self.frameLadoLabel = Label(self.frameLado, bg = self.aqua, font = ("Courier New", 12, "bold"), fg = self.black, text = "Funções")
         self.frameLadoLabel.place(relx = 0.14, rely = 0.05, relwidth = 0.7, relheight = 0.05)
         
-        self.frame1 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, textvariable = self.cronometro, font = ("Courier New", 48, "bold"))
+        self.frame1 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, textvariable = self.cronometro, font = ("Verdana", 48, "bold"))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
         
         self.frameFoto = Label(self.frame1, image = self.foto, bg = self.aqua)
@@ -146,7 +146,7 @@ class Interface():
         self.frameSet1.place(relx = 0.425, rely = 0.57, relwidth = 0.07, relheight = 0.05) #Placar dos sets do time da casa
         self.frameSet1.bind("<Button-1>", lambda event: self.plus(6)) #Função do placar dos sets do time da casa
         
-        self.set1Label = Label(self.frame1wid, text="Set", bg = self.purple, font=("Courier New", 10, "bold"), fg = self.white)
+        self.set1Label = Label(self.frame1wid, text="Set", bg = self.purple, font = ("Courier New", 10, "bold"), fg = self.white)
         self.set1Label.place(relx=0.43, rely=0.62, relwidth=0.05, relheight=0.03) #Texto escrito "Set"
         
         self.frameSet2 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set2, cursor = "hand1") 
@@ -222,13 +222,18 @@ class Interface():
         self.frame1wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Local Esquerda")
         self.frame1wid3Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
-        self.frame1wid3 = Label(self.frame3wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
+        
+        self.frame1wid3 = Text(self.frame3wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, height = 10, width = 40, wrap = "none", selectbackground = self.aqua, selectforeground = self.blue, tabstyle = "tabular")
         self.frame1wid3.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.75)
+        
+        scrollbar = Scrollbar(self.root, orient = "vertical")
+        
+        self.frame1wid3.configure(yscrollcommand = scrollbar.set)
         
         self.frame2wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Visitante Direita")
         self.frame2wid3Label.place(relx = 0.5, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
-        self.frame2wid3 = Label(self.frame3wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
+        self.frame2wid3 = Text(self.frame3wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
         
         #Configura os frames da aba 4
