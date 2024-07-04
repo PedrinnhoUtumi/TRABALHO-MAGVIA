@@ -1,0 +1,68 @@
+<!DOCTYPE HTML><html>
+    <head>
+      <meta name='viewport' content='width=device-width, initial-scale=1'>
+      <title>ESP32 Home Automation</title>
+      <style>
+      html { font-family: arial; display: inline-block; margin: 0px auto; text-align: center;}
+      .button {
+        background-color: mediumseagreen;
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 3px;
+      }
+      .button2 {
+        background-color: gray;
+        border: none;
+        color: white;
+        padding: 10px 15px;
+        text-decoration: none;
+        font-size: 24px;
+        cursor: pointer;
+        margin: 3px;
+      }
+      .button3 {
+        background-color: crimson;
+        border: none;
+        color: white;
+        padding: 5px 10px;
+        text-decoration: none;
+        font-size: 22px;
+        cursor: pointer;
+        margin: 2px;
+      }
+      </style>
+    </head>
+    <body>
+        <h1>ESP32 SMART Home!</h1>
+        <h3 style='color: red;'\>R LED State</h3>
+        <p><a href='/set?button_id=1'><button id='btn1' class='%btn1class%'>%btn1txt%</button></a></p>
+        <h3 style='color: green;'>G LED State</h3>
+        <p><a href='/set?button_id=2'><button id='btn2' class='%btn2class%'>%btn2txt%</button></a></p>
+        <h3 style='color: blue;'>B LED State</h3>
+        <p><a href='/set?button_id=3'><button id='btn3' class='%btn3class%'>%btn3txt%</button></a></p>
+        <h3 style='color: orange;'>Y LED State</h3>
+        <p><a href='/set?button_id=4'><button id='btn4' class='%btn4class%'>%btn4txt%</button></a></p>
+        <p><a href='/reset'><button class='button3'>Reset ALL</button></a></p>
+        <script>
+        if (!!window.EventSource) {
+          var source = new EventSource('/events');
+          source.addEventListener('toggleState', function(e) {
+            console.log(e.data);
+            let jsonData = JSON.parse(e.data);
+            const element = document.getElementById(jsonData.id);
+            if(jsonData.status == 1){
+              element.innerHTML = 'OFF';
+              element.className = "button2";    
+            }else{
+              element.innerHTML = 'ON';
+              element.className = "button";
+            }
+          }, false);
+        }
+  </script>
+  </body>
+  </html>

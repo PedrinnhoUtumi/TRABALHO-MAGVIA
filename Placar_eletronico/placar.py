@@ -903,7 +903,7 @@ class Interface():
                         self.placarVisitante.set(0)
                         return False
         
-        if esporte == "Basquetebol":
+        if esporte == "Basquete":
             if self.placarLocal.get() >= 99:
                 self.placarLocal.set(99)
                 return False
