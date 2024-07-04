@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter import ttk, messagebox
+from tkinter import ttk, messagebox, font
 from datetime import datetime, timedelta 
 import serial.tools.list_ports
 import threading
@@ -108,7 +108,7 @@ class Interface():
         self.frameLadoLabel = Label(self.frameLado, bg = self.aqua, font = ("Courier New", 12, "bold"), fg = self.black, text = "Funções")
         self.frameLadoLabel.place(relx = 0.14, rely = 0.05, relwidth = 0.7, relheight = 0.05)
         
-        self.frame1 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, textvariable = self.cronometro, font = ("Verdana", 48, "bold"))
+        self.frame1 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, textvariable = self.cronometro, font = ("Bahnschrift SemiBold Condensed", 48))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
         
         self.frameFoto = Label(self.frame1, image = self.foto, bg = self.aqua)
@@ -219,6 +219,9 @@ class Interface():
         self.frame6wid2.place(relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
         
         #Configura os frames da aba 3
+        self.frametecnico = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.frametecnico.place(relx = 0.3, rely = 0.01, relwidth = 0.15, relheight = 0.02)
+        
         self.frame1wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Local Esquerda")
         self.frame1wid3Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
