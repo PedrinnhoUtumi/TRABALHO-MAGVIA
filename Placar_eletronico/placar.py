@@ -34,7 +34,6 @@ class Interface():
         self.set2.set(0)
         self.placarVisitante = IntVar()
         self.placarVisitante.set(0)
-        self.tempo_correndo = False
         self.cronometro = StringVar()
         self.cronometro.set("0:00:00.0")
         self.texto_entry = StringVar()
@@ -219,25 +218,97 @@ class Interface():
         self.frame6wid2.place(relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
         
         #Configura os frames da aba 3
+        self.frametecnicoLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Técnico: ")
+        self.frametecnicoLabel.place(relx = 0.2, rely = 0.01, relwidth = 0.15, relheight = 0.02)
+        
         self.frametecnico = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frametecnico.place(relx = 0.3, rely = 0.01, relwidth = 0.15, relheight = 0.02)
         
         self.frame1wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Local Esquerda")
         self.frame1wid3Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
+        self.frame1wid3 = Text(self.frame3wid, wrap = "none", spacing1 = 5, spacing2 = 2, spacing3 = 5, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, selectbackground = self.aqua, selectforeground = self.blue)
+        self.frame1wid3.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.3)
         
-        self.frame1wid3 = Text(self.frame3wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, height = 10, width = 40, wrap = "none", selectbackground = self.aqua, selectforeground = self.blue, tabstyle = "tabular")
-        self.frame1wid3.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.75)
+        self.scrollbar = Scrollbar(self.frame3wid, command=self.frame1wid3.yview)
+        self.scrollbar.pack(side="right", fill="y")
+        self.frame1wid3.config(yscrollcommand = self.scrollbar.set)
         
-        scrollbar = Scrollbar(self.root, orient = "vertical")
+        texto = "\tNome\tPosição\tNúmero\n"
+        self.frame1wid3.insert(END, texto)
         
-        self.frame1wid3.configure(yscrollcommand = scrollbar.set)
+        self.frameJogadorLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
+        self.frameJogadorLabel.place(relx = 0.05, rely = 0.36, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameJogador = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.frameJogador.place(relx = 0.15, rely = 0.36, relwidth = 0.15, relheight = 0.02)
+        
+        self.framePosicaoLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Posição: ")
+        self.framePosicaoLabel.place(relx = 0.05, rely = 0.41, relwidth = 0.15, relheight = 0.02)
+        
+        self.framePosicao = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.framePosicao.place(relx = 0.15, rely = 0.41, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameNumeroLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Número: ")
+        self.frameNumeroLabel.place(relx = 0.05, rely = 0.46, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameNumero = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.frameNumero.place(relx = 0.15, rely = 0.46, relwidth = 0.15, relheight = 0.02)
+    
+        def inserir():
+            inserir = f"\t{self.frameJogador.get()}\t{self.framePosicao.get()}\t{self.frameNumero.get()}\n"
+            self.frame1wid3.insert(END, inserir)
+            
+        self.botaoinserir = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir)
+        self.botaoinserir.place(relx = 0.15, rely = 0.51, relwidth = 0.15, relheight = 0.02)
+    
+    
+    
+        
+        self.frametecnicoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Técnico: ")
+        self.frametecnicoLabel2.place(relx = 0.65, rely = 0.01, relwidth = 0.15, relheight = 0.02)
+        
+        self.frametecnico2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.frametecnico2.place(relx = 0.75, rely = 0.01, relwidth = 0.15, relheight = 0.02)
         
         self.frame2wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Visitante Direita")
         self.frame2wid3Label.place(relx = 0.5, rely = 0.01, relwidth = 0.15, relheight = 0.05)
         
-        self.frame2wid3 = Text(self.frame3wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
-        self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.75)
+        self.frame2wid3 = Text(self.frame3wid, state = "normal", wrap = "none", spacing1 = 5, spacing2 = 2, spacing3 = 5, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, selectbackground = self.aqua, selectforeground = self.blue)
+        self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.3)
+        
+        self.scrollbar2 = Scrollbar(self.frame3wid, command=self.frame2wid3.yview)
+        self.scrollbar2.pack(side="right", fill="y")
+        self.frame2wid3.config(yscrollcommand = self.scrollbar2.set)
+        
+        texto2 = "\tNome\tPosição\tNúmero\n"
+        self.frame2wid3.insert(END, texto2)
+        
+        self.frameJogadorLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
+        self.frameJogadorLabel2.place(relx = 0.5, rely = 0.36, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameJogador2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.frameJogador2.place(relx = 0.6, rely = 0.36, relwidth = 0.15, relheight = 0.02)
+        
+        self.framePosicaoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Posição: ")
+        self.framePosicaoLabel2.place(relx = 0.5, rely = 0.41, relwidth = 0.15, relheight = 0.02)
+        
+        self.framePosicao2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.framePosicao2.place(relx = 0.6, rely = 0.41, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameNumeroLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Número: ")
+        self.frameNumeroLabel2.place(relx = 0.5, rely = 0.46, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameNumero2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.frameNumero2.place(relx = 0.6, rely = 0.46, relwidth = 0.15, relheight = 0.02)
+        
+        
+        def inserir2():
+            inserir = f"\t{self.frameJogador2.get()}\t{self.framePosicao2.get()}\t{self.frameNumero2.get()}\n"
+            self.frame2wid3.insert(END, inserir)
+            
+        self.botaoinserir2 = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir2)
+        self.botaoinserir2.place(relx = 0.6, rely = 0.51, relwidth = 0.15, relheight = 0.02)
         
         #Configura os frames da aba 4
         self.frame1wid4Label = Label(self.frame4wid, bg = self.purple, fg = self.white, text = "Serial dos 24 seg")
