@@ -234,7 +234,7 @@ class Interface():
         self.scrollbar.pack(side="right", fill="y")
         self.frame1wid3.config(yscrollcommand = self.scrollbar.set)
         
-        texto = "\tNome\tPosição\tNúmero\n"
+        texto = "\tNome\tPosição\t\tNúmero\n"
         self.frame1wid3.insert(END, texto)
         
         self.frameJogadorLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
@@ -256,7 +256,7 @@ class Interface():
         self.frameNumero.place(relx = 0.15, rely = 0.46, relwidth = 0.15, relheight = 0.02)
     
         def inserir():
-            inserir = f"\t{self.frameJogador.get()}\t{self.framePosicao.get()}\t{self.frameNumero.get()}\n"
+            inserir = f"\t{self.frameJogador.get()}\t{self.framePosicao.get()}\t\t{self.frameNumero.get()}\n"
             self.frame1wid3.insert(END, inserir)
             
         self.botaoinserir = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir)
@@ -281,7 +281,7 @@ class Interface():
         self.scrollbar2.pack(side="right", fill="y")
         self.frame2wid3.config(yscrollcommand = self.scrollbar2.set)
         
-        texto2 = "\tNome\tPosição\tNúmero\n"
+        texto2 = "\tNome\tPosição\t\tNúmero\n"
         self.frame2wid3.insert(END, texto2)
         
         self.frameJogadorLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
@@ -304,7 +304,7 @@ class Interface():
         
         
         def inserir2():
-            inserir = f"\t{self.frameJogador2.get()}\t{self.framePosicao2.get()}\t{self.frameNumero2.get()}\n"
+            inserir = f"\t{self.frameJogador2.get()}\t{self.framePosicao2.get()}\t\t{self.frameNumero2.get()}\n"
             self.frame2wid3.insert(END, inserir)
             
         self.botaoinserir2 = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir2)
