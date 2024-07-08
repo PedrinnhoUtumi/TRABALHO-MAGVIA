@@ -97,9 +97,7 @@ class Interface():
         self.notebook.add(self.frame5wid, text = "Jornal")
         
         #Configura os frames na aba 1
-        imagem = Image.open("Placar_eletronico\magvia.png")
-        imagem_redimensionada = imagem.resize((100, 100), Image.LANCZOS)
-        self.foto = ImageTk.PhotoImage(imagem_redimensionada)
+        
         
         self.frameLado = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 48, "bold"))
         self.frameLado.place(relx = 0.01, rely = 0.05, relwidth = 0.12, relheight = 0.8)
@@ -110,8 +108,6 @@ class Interface():
         self.frame1 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, textvariable = self.cronometro, font = ("Bahnschrift SemiBold Condensed", 48))
         self.frame1.place(relx = 0.15, rely = 0.05, relwidth = 0.75, relheight = 0.2) #Cronometro
         
-        self.frameFoto = Label(self.frame1, image = self.foto, bg = self.aqua)
-        self.frameFoto.place(relx = 0.8, rely = 0.05, relwidth = 0.2, relheight = 0.5)
         
         self.entry_texto1 = Entry(self.frame1wid, textvariable=self.texto_entry, font=("Courier New", 12, "bold"), bg = self.purple, fg = self.white)
         self.entry_texto1.place(relx=0.15, rely=0.3, relwidth=0.2, relheight=0.05) #Nome do time da casa
@@ -178,6 +174,14 @@ class Interface():
         
         self.frame2 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
         self.frame2.place(relx = 0.15, rely = 0.65, relwidth = 0.75, relheight = 0.2) #Botões variados
+        
+        imagem = Image.open("Placar_eletronico\magvia.png")
+        imagem_redimensionada = imagem.resize((100, 100), Image.LANCZOS)
+        self.foto = ImageTk.PhotoImage(imagem_redimensionada)
+        
+        
+        self.frameFoto = Label(self.frame1, image = self.foto, bg = self.aqua)
+        self.frameFoto.place(relx = 0.8, rely = 0.05, relwidth = 0.2, relheight = 0.5)
         
         #Configura os frames na aba 2
         self.frame1wid2Label = Label(self.frame2wid, bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white, text = "Esporte")
@@ -604,7 +608,7 @@ class Interface():
         self.menu = Menu(self.bt_choose_serial, tearoff = 0)
         self.bt_choose_serial.config(menu = self.menu)
 
-        self.timeout = Spinbox(self.frame4wid2, from_ = 0, to = 1000, cursor = "hand1", background = self.aqua)
+        self.timeout = Spinbox(self.frame4wid2, from_ = 0, to = 1000, background = self.aqua)
         self.timeout.place(relx = 0.15, rely = 0.65, relwidth = 0.7, relheight = 0.15)
         
         self.ativar2 = Checkbutton(self.frame4wid2, bg = self.aqua, text = "Abrir ao entrar", variable = self.check, command = self.save_state)
@@ -700,7 +704,7 @@ class Interface():
         self.menu2 = Menu(self.bt_choose_serial2, tearoff = 0)
         self.bt_choose_serial2.config(menu = self.menu2)
 
-        self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, cursor = "hand1", background = self.aqua)
+        self.timeout2 = Spinbox(self.frame1wid4, from_ = 0, to = 1000, background = self.aqua)
         self.timeout2.place(relx = 0.575, rely = 0.15, relwidth = 0.2, relheight = 0.05)
 
         self.ativar2 = Checkbutton(self.frame1wid4, bg = self.aqua, text = "Abrir ao entrar", variable = self.check2, command = self.save_state2)
@@ -850,7 +854,7 @@ class Interface():
                 self.placarVisitanteSubs.set(self.placarVisitanteSubs.get() - 1)
         self.serial_Port()
         
-    def update(self): #Para que nosso cronômetro comece a rodar
+    def atualizar(self): #Para que nosso cronômetro comece a rodar
         if self.contador:
             tempo = datetime.now() - self.contador
             total_milliseg = int(tempo.total_seconds() * 10)
@@ -859,7 +863,7 @@ class Interface():
             seg, milisseg = divmod(resto, 10)
             self.cronometro.set(f"{int(hr):01}:{int(min):02}:{int(seg):02}.{int(milisseg):01}")
             self.root.after(100, self.serial_Port)
-            self.root.after(100, self.update)
+            self.root.after(100, self.atualizar)
             
     def handle_minute(self, opcao):
         tempo = self.cronometro.get()
@@ -884,17 +888,17 @@ class Interface():
                 self.hr = 0
                 self.min = 0   
         self.cronometro.set(f"{(self.hr):01}:{(self.min):02}:{(self.seg):02}.{(self.milisseg):01}")
-        self.update()
+        self.atualizar()
         
     def start_timer(self, event=None):
         if not self.contador:
             self.contador = datetime.now()
-            self.update()
+            self.atualizar()
             self.serial_Port()
             print("Iniciando...")
             if self.min != 0:
                 self.contador = datetime.now() - timedelta(minutes = self.min)
-                self.update()   
+                self.atualizar()   
                     
     def zero(self, event = None): #Definindo tudo para seu número/caractere inicial
         self.placarLocal.set(0)
@@ -929,7 +933,7 @@ class Interface():
         elif opcao == 3: #Continua o cronômetro se estiver pausado
             if self.contador_pause:
                 self.contador = datetime.now() - self.contador_pause
-                self.update()
+                self.atualizar()
                 self.contador_pause = None
         self.serial_Port()
             
@@ -1294,3 +1298,4 @@ if __name__ == "__main__": #Inicia o programa
     root = Tk()
     app = Interface(root)
     root.mainloop()
+    root.update()

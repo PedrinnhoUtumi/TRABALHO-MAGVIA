@@ -12,4 +12,4 @@ texto = "Texto pré-definido"
 # Inserindo o texto no Entry
 entry.insert(0, texto)
 
-root.mainloop()
+root.mainloop
