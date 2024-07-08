@@ -79,7 +79,7 @@ class Interface():
         
     def frames(self):  #Aqui é onde eu configuro frames e abas do app
         self.notebook = ttk.Notebook(self.root) #Cria abas
-        self.notebook.pack(fill=BOTH, expand=True)
+        self.notebook.pack(fill = BOTH, expand = True)
         
         self.frame1wid = Frame(self.notebook, bg = self.purple) #Configura aba 1
         self.notebook.add(self.frame1wid, text = "Placar")
@@ -416,6 +416,88 @@ class Interface():
         self.frame2frame3wid5 = Text(self.frame3wid5, bg = self.white, wrap = "none")
         self.frame2frame3wid5.place(relx = 0.05, rely = 0.55, relwidth = 0.8, relheight = 0.35)
         
+        self.frameFixaLabel = Label(self.frame5wid, bg = self.purple, fg = self.white, text = "Frases Fixas", font = ("Courier New", 12, "bold"))
+        self.frameFixaLabel.place(relx = 0.65, rely = 0.01, relwidth = 0.35, relheight = 0.03)
+        
+        self.fixa1 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa1.place(relx = 0.85, rely = 0.05, relwidth = 0.1, relheight = 0.02)
+        self.fixa1.insert(0, "fixa01")
+        
+        self.fixa2 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa2.place(relx = 0.85, rely = 0.08, relwidth = 0.1, relheight = 0.02)
+        self.fixa2.insert(0, "fixa02")
+        
+        self.fixa3 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa3.place(relx = 0.85, rely = 0.11, relwidth = 0.1, relheight = 0.02)
+        self.fixa3.insert(0, "fixa03")
+        
+        self.fixa4 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa4.place(relx = 0.85, rely = 0.14, relwidth = 0.1, relheight = 0.02)
+        self.fixa4.insert(0, "fixa04")
+                
+        self.fixa5 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa5.place(relx = 0.85, rely = 0.17, relwidth = 0.1, relheight = 0.02)
+        self.fixa5.insert(0, "fixa05")
+        
+        self.fixa6 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa6.place(relx = 0.85, rely = 0.2, relwidth = 0.1, relheight = 0.02)
+        self.fixa6.insert(0, "fixa06")
+        
+        self.fixa7 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa7.place(relx = 0.85, rely = 0.23, relwidth = 0.1, relheight = 0.02)
+        self.fixa7.insert(0, "fixa07")
+        
+        self.fixa8 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa8.place(relx = 0.85, rely = 0.26, relwidth = 0.1, relheight = 0.02)
+        self.fixa8.insert(0, "fixa08")
+        
+        self.fixa9 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa9.place(relx = 0.85, rely = 0.29, relwidth = 0.1, relheight = 0.02)
+        self.fixa9.insert(0, "fixa09")
+        
+        self.fixa10 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa10.place(relx = 0.85, rely = 0.32, relwidth = 0.1, relheight = 0.02)
+        self.fixa10.insert(0, "fixa10")
+        
+        self.fixa11 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa11.place(relx = 0.85, rely = 0.35, relwidth = 0.1, relheight = 0.02)
+        self.fixa11.insert(0, "fixa11")
+        
+        self.fixa12 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa12.place(relx = 0.85, rely = 0.38, relwidth = 0.1, relheight = 0.02)
+        self.fixa12.insert(0, "fixa12")
+        
+        self.fixa13 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa13.place(relx = 0.85, rely = 0.41, relwidth = 0.1, relheight = 0.02)
+        self.fixa13.insert(0, "fixa13")
+        
+        self.fixa14 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa14.place(relx = 0.85, rely = 0.44, relwidth = 0.1, relheight = 0.02)
+        self.fixa14.insert(0, "fixa14")
+        
+        self.fixa15 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa15.place(relx = 0.85, rely = 0.47, relwidth = 0.1, relheight = 0.02)
+        self.fixa15.insert(0, "fixa15")
+        
+        self.fixa16 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa16.place(relx = 0.85, rely = 0.5, relwidth = 0.1, relheight = 0.02)
+        self.fixa16.insert(0, "fixa16")
+        
+        self.fixa17 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa17.place(relx = 0.85, rely = 0.53, relwidth = 0.1, relheight = 0.02)
+        self.fixa17.insert(0, "fixa17")
+        
+        self.fixa18 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa18.place(relx = 0.85, rely = 0.56, relwidth = 0.1, relheight = 0.02)
+        self.fixa18.insert(0, "fixa18")
+        
+        self.fixa19 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa19.place(relx = 0.85, rely = 0.59, relwidth = 0.1, relheight = 0.02)
+        self.fixa19.insert(0, "fixa19")
+        
+        self.fixa20 = Entry(self.frame5wid, bg = self.white, fg = self.black)
+        self.fixa20.place(relx = 0.85, rely = 0.62, relwidth = 0.1, relheight = 0.02)
+        self.fixa20.insert(0, "fixa20")
         
     def botao(self):
         #Botôes de controle
@@ -636,6 +718,67 @@ class Interface():
         
         self.limpar2 = Button(self.frame3wid5, text = "Limpar", cursor = "hand1")
         self.limpar2.place(relx = 0.9, rely = 0.55, relwidth = 0.1, relheight = 0.35)
+        
+        self.fixa1Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa1Button.place(relx = 0.7, rely = 0.05, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa2Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa2Button.place(relx = 0.7, rely = 0.08, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa3Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa3Button.place(relx = 0.7, rely = 0.11, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa4Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa4Button.place(relx = 0.7, rely = 0.14, relwidth = 0.1, relheight = 0.02)
+                
+        self.fixa5Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa5Button.place(relx = 0.7, rely = 0.17, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa6Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa6Button.place(relx = 0.7, rely = 0.2, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa7Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa7Button.place(relx = 0.7, rely = 0.23, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa8Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa8Button.place(relx = 0.7, rely = 0.26, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa9Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa9Button.place(relx = 0.7, rely = 0.29, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa10Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa10Button.place(relx = 0.7, rely = 0.32, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa11Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa11Button.place(relx = 0.7, rely = 0.35, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa12Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa12Button.place(relx = 0.7, rely = 0.38, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa13Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa13Button.place(relx = 0.7, rely = 0.41, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa14Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa14Button.place(relx = 0.7, rely = 0.44, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa15Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa15Button.place(relx = 0.7, rely = 0.47, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa16Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa16Button.place(relx = 0.7, rely = 0.5, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa17Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa17Button.place(relx = 0.7, rely = 0.53, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa18Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa18Button.place(relx = 0.7, rely = 0.56, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa19Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa19Button.place(relx = 0.7, rely = 0.59, relwidth = 0.1, relheight = 0.02)
+        
+        self.fixa20Button = Button(self.frame5wid, text = "Enviar")
+        self.fixa20Button.place(relx = 0.7, rely = 0.62, relwidth = 0.1, relheight = 0.02)
+        
         
     def plus(self, team): #Definindo a função que vai adicionar os pontos, sets etc
         if self.esporte_validacao():
