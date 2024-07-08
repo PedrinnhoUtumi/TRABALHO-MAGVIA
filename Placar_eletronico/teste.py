@@ -1,25 +1,20 @@
 import tkinter as tk
 
-class App:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Exemplo de Entry com Limite de Caracteres")
+def clicar():
+    print("Botão clicado!")
 
-        # Variável de controle para o Entry
-        self.entry_text = tk.StringVar()
+root = tk.Tk()
 
-        # Configuração do Entry com validação
-        self.entry = tk.Entry(root, textvariable=self.entry_text, validate="key")
-        self.entry.pack(padx=20, pady=20)
+canvas = tk.Canvas(root, width=120, height=40, highlightthickness=0)
+canvas.pack()
 
-        # Limita o tamanho máximo de caracteres permitidos
-        self.entry['validatecommand'] = (self.root.register(self.validate_entry), '%P')
+# Coordenadas para desenhar um botão com cantos arredondados
+coordenadas = [10, 0, 110, 0, 120, 10, 120, 30, 110, 40, 10, 40, 0, 30, 0, 10]
 
-    def validate_entry(self, new_text):
-        # Função de validação que verifica se o texto excede o limite
-        return len(new_text) <= 10  # Limite de 10 caracteres
+# Criar o polígono no canvas
+button = canvas.create_polygon(coordenadas, fill="lightblue", outline="black", width=2)
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = App(root)
-    root.mainloop()
+# Associar um evento de clique ao polígono
+canvas.tag_bind(button, "<Button-1>", lambda event: clicar())
+
+root.mainloop()

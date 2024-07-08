@@ -169,7 +169,6 @@ class Interface():
         self.awaySubsText = Label(self.frame1wid, text="Subs", bg = self.purple, font=("Courier New", 12, "bold"), fg = self.white)
         self.awaySubsText.place(relx=0.637, rely=0.4, relwidth=0.05, relheight=0.02) #Texto escrito "Subs"
 
-        
         self.frameAwayFools = Label(self.frame1wid, textvariable = self.awayFools, bg = self.aqua, font = ("Courier New", 12, "bold"), highlightbackground = self.blue, highlightthickness = 2, cursor = "hand1")
         self.frameAwayFools.place(relx = 0.70, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time visitante
         self.frameAwayFools.bind("<Button-1>", lambda event: self.plus(5)) #Função do placar das faltas do time visitante
@@ -230,12 +229,10 @@ class Interface():
         self.frame1wid3 = Text(self.frame3wid, wrap = "none", spacing1 = 5, spacing2 = 2, spacing3 = 5, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, selectbackground = self.aqua, selectforeground = self.blue)
         self.frame1wid3.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.3)
         
-        self.scrollbar = Scrollbar(self.frame3wid, command=self.frame1wid3.yview)
-        self.scrollbar.pack(side="right", fill="y")
-        self.frame1wid3.config(yscrollcommand = self.scrollbar.set)
-        
-        texto = "\tNome\tPosição\t\tNúmero\n"
+        texto = "Nome\t\t\tPosição\t\tNúmero\n"
         self.frame1wid3.insert(END, texto)
+        
+        self.frame1wid3.config(state = "disabled")
         
         self.frameJogadorLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
         self.frameJogadorLabel.place(relx = 0.05, rely = 0.36, relwidth = 0.15, relheight = 0.02)
@@ -256,14 +253,18 @@ class Interface():
         self.frameNumero.place(relx = 0.15, rely = 0.46, relwidth = 0.15, relheight = 0.02)
     
         def inserir():
-            inserir = f"\t{self.frameJogador.get()}\t{self.framePosicao.get()}\t\t{self.frameNumero.get()}\n"
+            inserir = f"{self.frameJogador.get()}\t\t\t{self.framePosicao.get()}\t\t{self.frameNumero.get()}\n"
             self.frame1wid3.insert(END, inserir)
             
         self.botaoinserir = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir)
         self.botaoinserir.place(relx = 0.15, rely = 0.51, relwidth = 0.15, relheight = 0.02)
     
-    
-    
+        def activate():
+            self.frame1wid3.config(state = "normal")
+            
+        self.montarEscalacao = Button(self.frame3wid, text = "Montar escalação local", cursor = "hand1", command = activate)
+        self.montarEscalacao.place(relx = 0.15, rely = 0.56, relwidth = 0.15, relheight = 0.02)
+
         
         self.frametecnicoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Técnico: ")
         self.frametecnicoLabel2.place(relx = 0.65, rely = 0.01, relwidth = 0.15, relheight = 0.02)
@@ -277,12 +278,11 @@ class Interface():
         self.frame2wid3 = Text(self.frame3wid, state = "normal", wrap = "none", spacing1 = 5, spacing2 = 2, spacing3 = 5, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, selectbackground = self.aqua, selectforeground = self.blue)
         self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.3)
         
-        self.scrollbar2 = Scrollbar(self.frame3wid, command=self.frame2wid3.yview)
-        self.scrollbar2.pack(side="right", fill="y")
-        self.frame2wid3.config(yscrollcommand = self.scrollbar2.set)
-        
-        texto2 = "\tNome\tPosição\t\tNúmero\n"
+        texto2 = "Nome\t\t\tPosição\t\tNúmero\n"
         self.frame2wid3.insert(END, texto2)
+        
+        self.frame2wid3.config(state = "disabled")
+        
         
         self.frameJogadorLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
         self.frameJogadorLabel2.place(relx = 0.5, rely = 0.36, relwidth = 0.15, relheight = 0.02)
@@ -302,9 +302,14 @@ class Interface():
         self.frameNumero2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frameNumero2.place(relx = 0.6, rely = 0.46, relwidth = 0.15, relheight = 0.02)
         
+        def activate2():
+            self.frame2wid3.config(state = "normal")
+            
+        self.montarEscalacao2 = Button(self.frame3wid, text = "Montar escalação visitante", cursor = "hand1", command = activate2)
+        self.montarEscalacao2.place(relx = 0.6, rely = 0.56, relwidth = 0.15, relheight = 0.02)
         
         def inserir2():
-            inserir = f"\t{self.frameJogador2.get()}\t{self.framePosicao2.get()}\t\t{self.frameNumero2.get()}\n"
+            inserir = f"{self.frameJogador2.get()}\t\t\t{self.framePosicao2.get()}\t\t{self.frameNumero2.get()}\n"
             self.frame2wid3.insert(END, inserir)
             
         self.botaoinserir2 = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir2)
