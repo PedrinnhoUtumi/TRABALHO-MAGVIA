@@ -127,7 +127,7 @@ class Interface():
         self.frameLocalFools.place(relx = 0.15, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time da casa
         self.frameLocalFools.bind("<Button-1>", lambda event: self.plus(4)) #Função do placar das faltas
         
-        self.localFoolsText = Label(self.frame1wid, text = "Faltas", bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white)
+        self.localFoolsText = Label(self.frame1wid, text ="Faltas", bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white)
         self.localFoolsText.place(relx = 0.15, rely = 0.63, relwidth = 0.2, relheight = 0.02) #Texto escrito "Faltas"
         
         self.time = Label(self.frame1wid, text = "Tempo", bg = self.purple, font = ("Courier New", 24, "bold"), fg = self.white)
@@ -141,14 +141,14 @@ class Interface():
         self.frameSet1.place(relx = 0.425, rely = 0.57, relwidth = 0.07, relheight = 0.05) #Placar dos sets do time da casa
         self.frameSet1.bind("<Button-1>", lambda event: self.plus(6)) #Função do placar dos sets do time da casa
         
-        self.set1Label = Label(self.frame1wid, text = "Set", bg = self.purple, font = ("Courier New", 10, "bold"), fg = self.white)
+        self.set1Label = Label(self.frame1wid, text ="Set", bg = self.purple, font = ("Courier New", 10, "bold"), fg = self.white)
         self.set1Label.place(relx = 0.43, rely = 0.62, relwidth = 0.05, relheight = 0.03) #Texto escrito "Set"
         
         self.frameSet2 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, font = ("Courier New", 12, "bold"), textvariable = self.set2, cursor = "hand1") 
         self.frameSet2.place(relx = 0.555, rely = 0.57, relwidth = 0.07, relheight = 0.05) #Placar dos sets do time visitante
         self.frameSet2.bind("<Button-1>", lambda event: self.plus(7)) #Função do placar dos sets do time visitante
         
-        self.set2Label = Label(self.frame1wid, text = "Set", bg = self.purple, font = ("Courier New", 10, "bold"), fg = self.white)
+        self.set2Label = Label(self.frame1wid, text ="Set", bg = self.purple, font = ("Courier New", 10, "bold"), fg = self.white)
         self.set2Label.place(relx = 0.57, rely = 0.62, relwidth = 0.05, relheight = 0.03) #Texto escrito "Set"
         
         self.entry_texto = Entry(self.frame1wid, textvariable=self.texto_entry2, font = ("Courier New", 12, "bold"), bg = self.purple, fg = self.white)
@@ -162,14 +162,14 @@ class Interface():
         self.frameAwaySubs.place(relx = 0.637, rely = 0.35, relwidth = 0.05, relheight = 0.05) #Placar das substituições do time visitante
         self.frameAwaySubs.bind("<Button-1>", lambda event: self.plus(10)) #Função do placar das substituições
         
-        self.awaySubsText = Label(self.frame1wid, text = "Subs", bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white)
+        self.awaySubsText = Label(self.frame1wid, text ="Subs", bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white)
         self.awaySubsText.place(relx = 0.637, rely = 0.4, relwidth = 0.05, relheight = 0.02) #Texto escrito "Subs"
 
         self.frameAwayFools = Label(self.frame1wid, textvariable = self.awayFools, bg = self.aqua, font = ("Courier New", 12, "bold"), highlightbackground = self.blue, highlightthickness = 2, cursor = "hand1")
         self.frameAwayFools.place(relx = 0.70, rely = 0.57, relwidth = 0.2, relheight = 0.05) #Placar das faltas do time visitante
         self.frameAwayFools.bind("<Button-1>", lambda event: self.plus(5)) #Função do placar das faltas do time visitante
         
-        self.AwayFoolsText = Label(self.frame1wid, text = "Faltas", bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white)
+        self.AwayFoolsText = Label(self.frame1wid, text ="Faltas", bg = self.purple, font = ("Courier New", 12, "bold"), fg = self.white)
         self.AwayFoolsText.place(relx = 0.70, rely = 0.63, relwidth = 0.2, relheight = 0.02) #Texto escrito "Faltas"
         
         self.frame2 = Label(self.frame1wid, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2)
@@ -332,6 +332,11 @@ class Interface():
         self.frameJogador2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frameJogador2.place(relx = 0.6, rely = 0.41, relwidth = 0.15, relheight = 0.02)
         
+        def limita_jogador():
+            if len(self.frameJogador2.get()) > 16:
+                return False
+            return True
+        limita_jogador()
         self.framePosicaoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Posição: ")
         self.framePosicaoLabel2.place(relx = 0.5, rely = 0.44, relwidth = 0.15, relheight = 0.02)
         
