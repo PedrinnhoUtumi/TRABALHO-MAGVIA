@@ -55,7 +55,7 @@ class Interface():
         self.root.bind("<Control-p>", lambda event: self.using_serial(True))
         self.root.bind("<Control-l>", lambda event: self.using_serial(False))
         self.root.bind("<Control-m>", self.show_serial)
-        self.root.bind("<space>", self.start_timer)
+        self.root.bind("<Control-b>", self.start_timer)
         self.root.bind("0", self.zero)
         self.root.bind("<Control-u>", lambda event: self.pause(1))
         self.root.bind("<Control-i>", lambda event: self.pause(2))
@@ -227,47 +227,81 @@ class Interface():
         self.frametecnico = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frametecnico.place(relx = 0.3, rely = 0.01, relwidth = 0.15, relheight = 0.02)
         
+        self.frameequipeLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Equipe: ")
+        self.frameequipeLabel.place(relx = 0.2, rely = 0.04, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameequipe = Entry(self.frame3wid, textvariable = self.texto_entry, bg = self.white, fg = self.black)
+        self.frameequipe.place(relx = 0.3, rely = 0.04, relwidth = 0.15, relheight = 0.02) #Nome do time da casa
+        
         self.frame1wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Local Esquerda")
-        self.frame1wid3Label.place(relx = 0.05, rely = 0.01, relwidth = 0.15, relheight = 0.05)
+        self.frame1wid3Label.place(relx = 0.05, rely = 0.06, relwidth = 0.15, relheight = 0.05)
         
         self.frame1wid3 = Text(self.frame3wid, wrap = "none", spacing1 = 5, spacing2 = 2, spacing3 = 5, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, selectbackground = self.aqua, selectforeground = self.blue)
-        self.frame1wid3.place(relx = 0.05, rely = 0.05, relwidth = 0.4, relheight = 0.3)
+        self.frame1wid3.place(relx = 0.05, rely = 0.1, relwidth = 0.4, relheight = 0.3)
         
-        texto = "Nome\t\t\tPosição\t\tNúmero\n"
+        texto = "Nome\t\tPos.\tNúm.\tJoga\tPonto\tfalta\n"
         self.frame1wid3.insert(END, texto)
         
         self.frame1wid3.config(state = "disabled")
         
         self.frameJogadorLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
-        self.frameJogadorLabel.place(relx = 0.05, rely = 0.36, relwidth = 0.15, relheight = 0.02)
+        self.frameJogadorLabel.place(relx = 0.05, rely = 0.41, relwidth = 0.15, relheight = 0.02)
         
         self.frameJogador = Entry(self.frame3wid, bg = self.white, fg = self.black)
-        self.frameJogador.place(relx = 0.15, rely = 0.36, relwidth = 0.15, relheight = 0.02)
+        self.frameJogador.place(relx = 0.15, rely = 0.41, relwidth = 0.15, relheight = 0.02)
         
         self.framePosicaoLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Posição: ")
-        self.framePosicaoLabel.place(relx = 0.05, rely = 0.41, relwidth = 0.15, relheight = 0.02)
+        self.framePosicaoLabel.place(relx = 0.05, rely = 0.44, relwidth = 0.15, relheight = 0.02)
         
         self.framePosicao = Entry(self.frame3wid, bg = self.white, fg = self.black)
-        self.framePosicao.place(relx = 0.15, rely = 0.41, relwidth = 0.15, relheight = 0.02)
+        self.framePosicao.place(relx = 0.15, rely = 0.44, relwidth = 0.15, relheight = 0.02)
         
         self.frameNumeroLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Número: ")
-        self.frameNumeroLabel.place(relx = 0.05, rely = 0.46, relwidth = 0.15, relheight = 0.02)
+        self.frameNumeroLabel.place(relx = 0.05, rely = 0.47, relwidth = 0.15, relheight = 0.02)
         
         self.frameNumero = Entry(self.frame3wid, bg = self.white, fg = self.black)
-        self.frameNumero.place(relx = 0.15, rely = 0.46, relwidth = 0.15, relheight = 0.02)
+        self.frameNumero.place(relx = 0.15, rely = 0.47, relwidth = 0.15, relheight = 0.02)
+    
+        self.frameJogaLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Joga: ")
+        self.frameJogaLabel.place(relx = 0.05, rely = 0.50, relwidth = 0.15, relheight = 0.02)
+        
+        self.framejoga = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.framejoga.place(relx = 0.15, rely = 0.50, relwidth = 0.15, relheight = 0.02)
+        '''self.menuJoga = Menu(self.framejoga, tearoff = 0)
+        self.framejoga.config(menu = self.menuJoga)
+        self.menuJoga.add_command(label = "Sim")
+        self.menuJoga.add_command(label = "Não")
+        index = self.menuJoga.index(ACTIVE)
+        if index is not None and index >= 0:
+            # Obtém o texto do item selecionado no Menu
+            opcao = self.menuJoga.entrycget(index, "label")
+        else:
+            opcao = ""'''
+        self.framepontoLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Ponto: ")
+        self.framepontoLabel.place(relx = 0.05, rely = 0.53, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameponto = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.frameponto.place(relx = 0.15, rely = 0.53, relwidth = 0.15, relheight = 0.02)
+        
+        self.framefaltaLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Falta: ")
+        self.framefaltaLabel.place(relx = 0.05, rely = 0.56, relwidth = 0.15, relheight = 0.02)
+        
+        self.framefalta = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.framefalta.place(relx = 0.15, rely = 0.56, relwidth = 0.15, relheight = 0.02)
     
         def inserir():
-            inserir = f"{self.frameJogador.get()}\t\t\t{self.framePosicao.get()}\t\t{self.frameNumero.get()}\n"
+            inserir = f"{self.frameJogador.get()}\t\t{self.framePosicao.get()}\t{self.frameNumero.get()}\t{self.framejoga.get()}\t{self.frameponto.get()}\t{self.framefalta.get()}\n"
             self.frame1wid3.insert(END, inserir)
             
         self.botaoinserir = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir)
-        self.botaoinserir.place(relx = 0.15, rely = 0.51, relwidth = 0.15, relheight = 0.02)
+        self.botaoinserir.place(relx = 0.15, rely = 0.59, relwidth = 0.15, relheight = 0.02)
     
         def activate():
             self.frame1wid3.config(state = "normal")
             
         self.montarEscalacao = Button(self.frame3wid, text = "Montar escalação local", cursor = "hand1", command = activate)
-        self.montarEscalacao.place(relx = 0.15, rely = 0.56, relwidth = 0.15, relheight = 0.02)
+        self.montarEscalacao.place(relx = 0.15, rely = 0.62, relwidth = 0.15, relheight = 0.02)
+
 
         
         self.frametecnicoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Técnico: ")
@@ -276,48 +310,71 @@ class Interface():
         self.frametecnico2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frametecnico2.place(relx = 0.75, rely = 0.01, relwidth = 0.15, relheight = 0.02)
         
+        self.frameequipeLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Equipe: ")
+        self.frameequipeLabel2.place(relx = 0.65, rely = 0.04, relwidth = 0.15, relheight = 0.02)
+
+        self.frameequipe2 = Entry(self.frame3wid, textvariable = self.texto_entry2, bg = self.white, fg = self.black)
+        self.frameequipe2.place(relx = 0.75, rely = 0.04, relwidth = 0.15, relheight = 0.02) #Nome do time visitante
+        
         self.frame2wid3Label = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Time Visitante Direita")
-        self.frame2wid3Label.place(relx = 0.5, rely = 0.01, relwidth = 0.15, relheight = 0.05)
+        self.frame2wid3Label.place(relx = 0.5, rely = 0.06, relwidth = 0.15, relheight = 0.05)
         
         self.frame2wid3 = Text(self.frame3wid, state = "normal", wrap = "none", spacing1 = 5, spacing2 = 2, spacing3 = 5, bg = self.aqua, highlightbackground = self.blue, highlightthickness = 2, selectbackground = self.aqua, selectforeground = self.blue)
-        self.frame2wid3.place(relx = 0.5, rely = 0.05, relwidth = 0.4, relheight = 0.3)
+        self.frame2wid3.place(relx = 0.5, rely = 0.1, relwidth = 0.4, relheight = 0.3)
         
-        texto2 = "Nome\t\t\tPosição\t\tNúmero\n"
+        texto2 = "Nome\t\tPos.\tNúm.\tJoga\tPonto\tfalta\n"
         self.frame2wid3.insert(END, texto2)
         
         self.frame2wid3.config(state = "disabled")
         
-        
         self.frameJogadorLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
-        self.frameJogadorLabel2.place(relx = 0.5, rely = 0.36, relwidth = 0.15, relheight = 0.02)
+        self.frameJogadorLabel2.place(relx = 0.5, rely = 0.41, relwidth = 0.15, relheight = 0.02)
         
         self.frameJogador2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
-        self.frameJogador2.place(relx = 0.6, rely = 0.36, relwidth = 0.15, relheight = 0.02)
+        self.frameJogador2.place(relx = 0.6, rely = 0.41, relwidth = 0.15, relheight = 0.02)
         
         self.framePosicaoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Posição: ")
-        self.framePosicaoLabel2.place(relx = 0.5, rely = 0.41, relwidth = 0.15, relheight = 0.02)
+        self.framePosicaoLabel2.place(relx = 0.5, rely = 0.44, relwidth = 0.15, relheight = 0.02)
         
         self.framePosicao2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
-        self.framePosicao2.place(relx = 0.6, rely = 0.41, relwidth = 0.15, relheight = 0.02)
+        self.framePosicao2.place(relx = 0.6, rely = 0.44, relwidth = 0.15, relheight = 0.02)
         
         self.frameNumeroLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Número: ")
-        self.frameNumeroLabel2.place(relx = 0.5, rely = 0.46, relwidth = 0.15, relheight = 0.02)
+        self.frameNumeroLabel2.place(relx = 0.5, rely = 0.47, relwidth = 0.15, relheight = 0.02)
         
         self.frameNumero2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
-        self.frameNumero2.place(relx = 0.6, rely = 0.46, relwidth = 0.15, relheight = 0.02)
+        self.frameNumero2.place(relx = 0.6, rely = 0.47, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameJogaLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Joga: ")
+        self.frameJogaLabel2.place(relx = 0.5, rely = 0.5, relwidth = 0.15, relheight = 0.02)
+        
+        self.framejoga2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.framejoga2.place(relx = 0.6, rely = 0.5, relwidth = 0.15, relheight = 0.02)
+        
+        self.framepontoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Ponto: ")
+        self.framepontoLabel2.place(relx = 0.5, rely = 0.53, relwidth = 0.15, relheight = 0.02)
+        
+        self.frameponto2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.frameponto2.place(relx = 0.6, rely = 0.53, relwidth = 0.15, relheight = 0.02)
+        
+        self.framefaltaLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Falta: ")
+        self.framefaltaLabel2.place(relx = 0.5, rely = 0.56, relwidth = 0.15, relheight = 0.02)
+        
+        self.framefalta2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
+        self.framefalta2.place(relx = 0.6, rely = 0.56, relwidth = 0.15, relheight = 0.02)
+        
+        def inserir2():
+            inserir = f"{self.frameJogador2.get()}\t\t{self.framePosicao2.get()}\t{self.frameNumero2.get()}\t{self.framejoga2.get()}\t{self.frameponto2.get()}\t{self.framefalta2.get()}\n"
+            self.frame2wid3.insert(END, inserir)
+            
+        self.botaoinserir2 = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir2)
+        self.botaoinserir2.place(relx = 0.6, rely = 0.59, relwidth = 0.15, relheight = 0.02)
         
         def activate2():
             self.frame2wid3.config(state = "normal")
             
         self.montarEscalacao2 = Button(self.frame3wid, text = "Montar escalação visitante", cursor = "hand1", command = activate2)
-        self.montarEscalacao2.place(relx = 0.6, rely = 0.56, relwidth = 0.15, relheight = 0.02)
-        
-        def inserir2():
-            inserir = f"{self.frameJogador2.get()}\t\t\t{self.framePosicao2.get()}\t\t{self.frameNumero2.get()}\n"
-            self.frame2wid3.insert(END, inserir)
-            
-        self.botaoinserir2 = Button(self.frame3wid, text = "Inserir dados", cursor = "hand1", command = inserir2)
-        self.botaoinserir2.place(relx = 0.6, rely = 0.51, relwidth = 0.15, relheight = 0.02)
+        self.montarEscalacao2.place(relx = 0.6, rely = 0.62, relwidth = 0.15, relheight = 0.02)
         
         #Configura os frames da aba 4
         self.frame1wid4Label = Label(self.frame4wid, bg = self.purple, fg = self.white, text = "Serial dos 24 seg")
@@ -1191,7 +1248,7 @@ class Interface():
                 arr_by = bytes(array_bytes)
                 self.ser.write(arr_by)
                 print(arr_by)
-        thread = threading.Thread(target=send)
+        thread = threading.Thread(target = send)
         thread.start()
 
     def using_serial(self, use_serial = None):
