@@ -620,7 +620,7 @@ class Interface():
         self.bt_minus1min = Button(self.frame2wid2, text = "-1 minuto", cursor = "hand1", command = lambda: self.handle_minute("remove"))
         self.bt_minus1min.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15) #Remove 1 minuto ao cronômetro
         
-        self.entry_time = Entry (self.frame2wid2, cursor = "hand1")
+        self.entry_time = Entry (self.frame2wid2, takefocus = False)
         self.entry_time.place(relx = 0.15, rely = 0.45, relwidth = 0.7, relheight = 0.15)
 
         self.front = Button(self.frame2wid2, text = "Anda para frente ⏩", cursor = "hand1")
@@ -977,17 +977,22 @@ class Interface():
         return True
     
     def save_state(self):
+        check = self.check.get()
         with open("save_state.pkl", "wb") as f:
-            pickle.dump(self.check.get(), f)
-            
+            pickle.dump(check, f)
+                        
     def load_state(self):
         try:
             with open("save_state.pkl", "rb") as f:
-                estado = pickle.load(f)
-                self.check.set(estado)
+                check = pickle.load(f)
+            self.check.set(check)
         except FileNotFoundError:
             self.check.set(False)  # Define o estado padrão como desativado caso o arquivo não exista
-    
+        except EOFError:
+            print("Erro ao carregar dados: Ran out of input.")
+        except Exception as e:
+            print(f"Erro desconhecido ao carregar dados: {e}")
+
     def save_state2(self):
         with open("save_state2.pkl", "wb") as f:
             pickle.dump(self.check2.get(), f)
@@ -999,7 +1004,11 @@ class Interface():
                 self.check2.set(estado)
         except FileNotFoundError:
             self.check2.set(False)  # Define o estado padrão como desativado caso o arquivo não exista
-                
+        except EOFError:
+            print("Erro ao carregar dados: Ran out of input.")
+        except Exception as e:
+            print(f"Erro desconhecido ao carregar dados: {e}")
+            
     def change_theme(self, opcao): #Muda os temas
         if opcao == 1: #Tema azul
             cor1 = "#025959"
@@ -1156,10 +1165,7 @@ class Interface():
         tempo = self.cronometro.get()
         hr, min, seg_milisseg = tempo.split(':')
         seg, milisseg = seg_milisseg.split('.')
-        hr = int(hr)
-        min = int(min)
-        seg = int(seg)
-        milisseg = int(milisseg)
+        hr, min, seg, milisseg = int(hr), int(min), int(seg), int(milisseg)
         array_bytes = [
                     100,
                     40,
@@ -1264,6 +1270,9 @@ class Interface():
                     try:
                         self.op = porta
                         self.using_serial(True)
+                        if self.ser:
+                            break
+                            
                     except serial.SerialException:
                         messagebox.showinfo("Erro", "Nenhuma porta serial encontrada")
             else:
@@ -1283,6 +1292,9 @@ class Interface():
                     try:
                         self.op2 = porta
                         self.using_serial2(True)
+                        if self.ser2:
+                            break
+
                     except serial.SerialException:
                         messagebox.showinfo("Erro", "Nenhuma porta serial encontrada")
             else:
@@ -1297,5 +1309,6 @@ class Interface():
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
+    root.focus_force()
     root.mainloop()
-    root.update()
+    

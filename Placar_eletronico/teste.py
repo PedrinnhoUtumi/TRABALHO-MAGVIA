@@ -1,15 +1,13 @@
 import tkinter as tk
 
+def on_map(event):
+    print("Widget mapeado na tela")
+
 root = tk.Tk()
 
-# Criando um Entry
-entry = tk.Entry(root)
-entry.pack()
+label = tk.Label(root, text="Hello, World!")
+label.pack()
 
-# Texto a ser inserido no Entry
-texto = "Texto pré-definido"
+label.bind("<Map>", on_map)
 
-# Inserindo o texto no Entry
-entry.insert(0, texto)
-
-root.mainloop
+root.mainloop()
