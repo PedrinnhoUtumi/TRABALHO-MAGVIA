@@ -220,6 +220,33 @@ class Interface():
         self.frame6wid2.place(relx = 0.7, rely = 0.65, relwidth = 0.2, relheight = 0.2) 
         
         #Configura os frames da aba 3
+        def limita_jogador(event):
+            if len(self.frameJogador2.get()) > 16:
+                self.frameJogador2.delete(16, END)
+            if len(self.frameJogador.get()) > 16:
+                self.frameJogador.delete(16, END)
+            if len(self.framePosicao.get()) > 8:
+                self.framePosicao.delete(8, END)
+            if len(self.framePosicao2.get()) > 8:
+                self.framePosicao2.delete(8, END)
+            if len(self.frameNumero.get()) > 5:
+                self.frameNumero.delete(5, END)
+            if len(self.frameNumero2.get()) > 5:
+                self.frameNumero2.delete(5, END)
+            if len(self.framejoga.get()) > 3:
+                self.framejoga.delete(3, END)
+            if len(self.framejoga2.get()) > 3:
+                self.framejoga2.delete(3, END)
+            if len(self.frameponto.get()) > 4:
+                self.frameponto.delete(4, END)
+            if len(self.frameponto2.get()) > 4:
+                self.frameponto2.delete(4, END)
+            if len(self.framefalta.get()) > 4:
+                self.framefalta.delete(4, END)
+            if len(self.framefalta2.get()) > 4:
+                self.framefalta2.delete(4, END)
+            return True
+        
         self.frametecnicoLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Técnico: ")
         self.frametecnicoLabel.place(relx = 0.2, rely = 0.01, relwidth = 0.15, relheight = 0.02)
         
@@ -248,46 +275,43 @@ class Interface():
         
         self.frameJogador = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frameJogador.place(relx = 0.15, rely = 0.41, relwidth = 0.15, relheight = 0.02)
-        
+        self.frameJogador.bind("<KeyRelease>", limita_jogador)
+
         self.framePosicaoLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Posição: ")
         self.framePosicaoLabel.place(relx = 0.05, rely = 0.44, relwidth = 0.15, relheight = 0.02)
         
         self.framePosicao = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.framePosicao.place(relx = 0.15, rely = 0.44, relwidth = 0.15, relheight = 0.02)
+        self.framePosicao.bind("<KeyRelease>", limita_jogador)
         
         self.frameNumeroLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Número: ")
         self.frameNumeroLabel.place(relx = 0.05, rely = 0.47, relwidth = 0.15, relheight = 0.02)
         
         self.frameNumero = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frameNumero.place(relx = 0.15, rely = 0.47, relwidth = 0.15, relheight = 0.02)
-    
+        self.frameNumero.bind("<KeyRelease>", limita_jogador)
+
         self.frameJogaLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Joga: ")
         self.frameJogaLabel.place(relx = 0.05, rely = 0.50, relwidth = 0.15, relheight = 0.02)
         
         self.framejoga = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.framejoga.place(relx = 0.15, rely = 0.50, relwidth = 0.15, relheight = 0.02)
-        '''self.menuJoga = Menu(self.framejoga, tearoff = 0)
-        self.framejoga.config(menu = self.menuJoga)
-        self.menuJoga.add_command(label = "Sim")
-        self.menuJoga.add_command(label = "Não")
-        index = self.menuJoga.index(ACTIVE)
-        if index is not None and index >= 0:
-            # Obtém o texto do item selecionado no Menu
-            opcao = self.menuJoga.entrycget(index, "label")
-        else:
-            opcao = ""'''
+        self.framejoga.bind("<KeyRelease>", limita_jogador)
+        
         self.framepontoLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Ponto: ")
         self.framepontoLabel.place(relx = 0.05, rely = 0.53, relwidth = 0.15, relheight = 0.02)
         
         self.frameponto = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frameponto.place(relx = 0.15, rely = 0.53, relwidth = 0.15, relheight = 0.02)
+        self.frameponto.bind("<KeyRelease>", limita_jogador)
         
         self.framefaltaLabel = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Falta: ")
         self.framefaltaLabel.place(relx = 0.05, rely = 0.56, relwidth = 0.15, relheight = 0.02)
         
         self.framefalta = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.framefalta.place(relx = 0.15, rely = 0.56, relwidth = 0.15, relheight = 0.02)
-    
+        self.framefalta.bind("<KeyRelease>", limita_jogador)
+        
         def inserir():
             inserir = f"{self.frameJogador.get()}\t\t{self.framePosicao.get()}\t{self.frameNumero.get()}\t{self.framejoga.get()}\t{self.frameponto.get()}\t{self.framefalta.get()}\n"
             self.frame1wid3.insert(END, inserir)
@@ -328,44 +352,45 @@ class Interface():
         
         self.frameJogadorLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Jogador: ")
         self.frameJogadorLabel2.place(relx = 0.5, rely = 0.41, relwidth = 0.15, relheight = 0.02)
-        
+                
         self.frameJogador2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frameJogador2.place(relx = 0.6, rely = 0.41, relwidth = 0.15, relheight = 0.02)
-        
-        def limita_jogador():
-            if len(self.frameJogador2.get()) > 16:
-                return False
-            return True
-        limita_jogador()
+        self.frameJogador2.bind("<KeyRelease>", limita_jogador)
+
         self.framePosicaoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Posição: ")
         self.framePosicaoLabel2.place(relx = 0.5, rely = 0.44, relwidth = 0.15, relheight = 0.02)
         
         self.framePosicao2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.framePosicao2.place(relx = 0.6, rely = 0.44, relwidth = 0.15, relheight = 0.02)
+        self.framePosicao2.bind("<KeyRelease>", limita_jogador)
         
         self.frameNumeroLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Número: ")
         self.frameNumeroLabel2.place(relx = 0.5, rely = 0.47, relwidth = 0.15, relheight = 0.02)
         
         self.frameNumero2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frameNumero2.place(relx = 0.6, rely = 0.47, relwidth = 0.15, relheight = 0.02)
+        self.frameNumero2.bind("<KeyRelease>", limita_jogador)
         
         self.frameJogaLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Joga: ")
         self.frameJogaLabel2.place(relx = 0.5, rely = 0.5, relwidth = 0.15, relheight = 0.02)
         
         self.framejoga2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.framejoga2.place(relx = 0.6, rely = 0.5, relwidth = 0.15, relheight = 0.02)
+        self.framejoga2.bind("<KeyRelease>", limita_jogador)
         
         self.framepontoLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Ponto: ")
         self.framepontoLabel2.place(relx = 0.5, rely = 0.53, relwidth = 0.15, relheight = 0.02)
         
         self.frameponto2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.frameponto2.place(relx = 0.6, rely = 0.53, relwidth = 0.15, relheight = 0.02)
+        self.frameponto2.bind("<KeyRelease>", limita_jogador)
         
         self.framefaltaLabel2 = Label(self.frame3wid, bg = self.purple, fg = self.white, text = "Falta: ")
         self.framefaltaLabel2.place(relx = 0.5, rely = 0.56, relwidth = 0.15, relheight = 0.02)
         
         self.framefalta2 = Entry(self.frame3wid, bg = self.white, fg = self.black)
         self.framefalta2.place(relx = 0.6, rely = 0.56, relwidth = 0.15, relheight = 0.02)
+        self.framefalta2.bind("<KeyRelease>", limita_jogador)
         
         def inserir2():
             inserir = f"{self.frameJogador2.get()}\t\t{self.framePosicao2.get()}\t{self.frameNumero2.get()}\t{self.framejoga2.get()}\t{self.frameponto2.get()}\t{self.framefalta2.get()}\n"
