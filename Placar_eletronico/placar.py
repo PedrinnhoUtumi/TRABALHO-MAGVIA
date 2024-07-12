@@ -56,7 +56,7 @@ class Interface():
         self.root.bind("<Control-l>", lambda event: self.using_serial(False))
         self.root.bind("<Control-m>", self.show_serial)
         self.root.bind("<Control-b>", self.start_timer)
-        self.root.bind("0", self.zero)
+        self.root.bind("<Control-0>", self.zero)
         self.root.bind("<Control-u>", lambda event: self.pause(1))
         self.root.bind("<Control-i>", lambda event: self.pause(2))
         self.root.bind("<Control-o>", lambda event: self.pause(3))
@@ -1395,6 +1395,5 @@ class Interface():
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
-    root.focus_force()
+    root.update()
     root.mainloop()
-    
