@@ -79,7 +79,7 @@ class Interface():
         
     def frames(self):  #Aqui é onde eu configuro frames e abas do app
         self.notebook = ttk.Notebook(self.root) #Cria abas
-        self.notebook.pack(fill = BOTH, expand = True)
+        self.notebook.place(relx = 0, rely = 0, relwidth = 1, relheight = 1)
         
         self.frame1wid = Frame(self.notebook, bg = self.purple) #Configura aba 1
         self.notebook.add(self.frame1wid, text = "Placar")
@@ -730,10 +730,10 @@ class Interface():
         self.choose_game5 = Radiobutton(self.frame1wid2, cursor = "hand1", text = "Outros", bg = self.aqua, variable = self.esporte, value = "Outros")
         self.choose_game5.place(relx = 0.15, rely = 0.85, relwidth = 0.7, relheight = 0.15)
         
-        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "Espaço = Inicia")
+        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "Ctrl + b = Iniciar")
         self.controles.place(relx = 0.15, rely = 0.05, relwidth = 0.7, relheight = 0.15)
         
-        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "0 = Zerar")
+        self.controles = Label(self.frame5wid2, bg = self.aqua, text = "Ctrl + 0 = Zerar")
         self.controles.place(relx = 0.15, rely = 0.25, relwidth = 0.7, relheight = 0.15)
         
         self.controles = Label(self.frame5wid2, bg = self.aqua, text = "Ctrl + u = Pausar")
@@ -1392,8 +1392,11 @@ class Interface():
             messagebox.showerror("Erro", serial.SerialException)
             self.ser2 = None
 
+def redesenhar():
+    root.after(1000, root.focus)
+
 if __name__ == "__main__": #Inicia o programa 
     root = Tk()
     app = Interface(root)
-    root.update()
+    redesenhar()    
     root.mainloop()
