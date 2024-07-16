@@ -28,3 +28,7 @@ void main() {
 
 ### Declaração de variáveis
 Deve colocar o tipo da variável, logo em seguida o nome dela e o valor correspondente ao tipo da variável
+
+Variáveis devem ter nomes únicos dentro do escopo que estão. Ou seja, não podemos declarar duas variáveis chamadas numerosecreto.
+
+Se fizermos isso, por algum engano, o compilador reclamará e não nos gerará o executável do programa. 
