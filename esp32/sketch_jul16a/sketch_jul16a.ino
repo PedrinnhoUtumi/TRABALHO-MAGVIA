@@ -1,10 +1,17 @@
+#define PWM1 16 //R_PWM
+#define PWM2 15 //L_PWM
+#define PO 7    //L_EN
+
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(115200);
+  pinMode(PWM1, OUTPUT);
+  pinMode(PWM2, OUTPUT);
+  pinMode(PO, OUTPUT);
+  digitalWrite(PO, LOW);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  Serial.println(random(1, 10));
-  delay(100);
+  
+  analogWrite(PWM1, 255);
+  analogWrite(PWM2, 0);
+  delay(2000);
 }
