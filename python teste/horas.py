@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+
 def calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim):
     data_inicio = datetime.strptime(data_inicio, '%d/%m/%Y')
     data_fim = datetime.strptime(data_fim, '%d/%m/%Y')

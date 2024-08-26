@@ -33,19 +33,26 @@ h1 {
 
 }
 
-.quemSou, .linguagens, .redesSociais {
+.quemSou, .linguagens, .redesSociais, .ativExemplo {
     background-color: var(--cinzaClaro);
     width: 20vw;
     height: 50vh;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 5px 5px 15px var(--preto);
     display: flex;
     
 }
 
-p {
+img {
+    border-radius: 50%;
+    box-shadow: 5px 5px 15px var(--preto);
+    cursor: pointer;
+}
+
+.conteudo, #ativEx {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 5%;
 }
 
 .lista {
@@ -56,7 +63,11 @@ p {
     align-items: center;    
 }
 
-.quemSou > p {
-    margin: 10px;
-    text-align: justify;
+.header {
+    background-color: var(--preto);
+    padding: 5%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
 }

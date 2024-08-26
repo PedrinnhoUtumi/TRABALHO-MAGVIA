@@ -1,157 +1,130 @@
-#include <Arduino.h>
-#include <LiquidCrystal.h>
-#include "main.h"
+#include <iostream>
+#include <string>
+#include <list>
+#include <algorithm>
+using namespace std;
 
-#define LedPlate 17
-#define potentiometer 5
-#define Lpwm 1
-#define Rpwm 2
-#define enableL 16
-#define enableR 39
-#define tictac 4
-#define pedalInput 7
-#define pedalOutput 15
-#define limitSwitch 40
+/*1.
+Verificar se um número é primo
 
-#define RS 3
-#define E 46
-#define D4 9
-#define D5 35
-#define D6 45
-#define D7 37
-
-LiquidCrystal lcd(RS, E, D4, D5, D6, D7);
-
-// variaveis de configuração PWM
-const int channel = 1;      // uint8_t
-const int frequency = 1000; // uint32_t
-const int resolution = 12;  // uint8_t
-
-int direction;
-uint16_t turns = 0;
-int potentiometerValue;
-Tipo_MediaMovel mediaPotentiometer;
-
-int updateDirection()
+bool is_primo()
 {
-  pinMode(tictac, INPUT_PULLDOWN);
-  int button = digitalRead(tictac);
-  if (button == LOW)
-  {
-    direction = 1;
-  }
-  else
-  {
-    direction = 0;
-  }
-  return direction;
+    int n;
+    cout << "Enter a number: ";
+    cin >> n;
+    if (n == 1 && n == 2 && n % 2 == 0)
+    {
+        return false;
+    }
+    for (int i = 3; i * i <= n; i += 2)
+    {
+        if (n % i == 0)
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
-void updateScreen()
+int main()
 {
-  lcd.clear();
-  lcd.print("vel:");
+    cout << "O numero eh primo?: " << (is_primo() ? "Sim" : "Nao") << endl;
+    return 0;
+}
+*/
 
-  lcd.print(potentiometerValue * 100 / 4095);
-  lcd.print("%");
+/*2.
+Escreva um programa em Python que leia as notas da primeira prova dos N alunos
+de Algoritmos, descubra e imprima a maior nota. O valor N deve ser informado pelo
+usuário.
 
-  lcd.setCursor(9, 0);
-  if (!direction)
-  {
-    lcd.print("dir:AH");
-  }
-  else
-  {
-    lcd.print("dir:H");
-  }
+int main()
+{
+    int qntdeNotas = 0;
+    cout << "Quantas notas?: ";
+    cin >> qntdeNotas;
+    list<double> listaNotas;
+    for (int i = 0; i < qntdeNotas; i++)
+    {
+        double nota = 0;
+        cout << "Nota " << i + 1 << ": ";
+        cin >> nota;
 
-  lcd.setCursor(0, 1);
-  lcd.print("Voltas:");
-  int limitSwitchValue = digitalRead(limitSwitch);
-  if (limitSwitchValue == 1.)
-  {
-    turns++;
-  }
-  lcd.print(turns);
+        listaNotas.insert(listaNotas.begin(), nota);
+    }
+    double maiorValor = *max_element(listaNotas.begin(), listaNotas.end());
+    cout << "maior nota: " << maiorValor << endl;
+    return 0;
+}
+*/
+
+/*3.
+Fatorial de um número
+int fatorial = 1;
+
+int main()
+{
+    int numero;
+    cout << "Digite um numero: ";
+    cin >> numero;
+    for (int i = 1; i <= numero; i++)
+    {
+        fatorial *= i;
+    }
+    cout << "Fatorial do numero " << numero << " eh: " << fatorial << endl;
+    return fatorial;
+}
+*/
+
+/*4.
+Escreva um programa em C++ que leia um número inteiro e imprima o seu sucessor
+
+int main() {
+    int numero;
+    cout << "Digite um numero: ";
+    cin >> numero;
+    cout << "Sucessor do numero " << numero << " eh: " << numero + 1;
+    return 0;
+}
+*/
+
+/*5.
+Faça uma calculadora simples
+
+char trocaOp(double num1, double num2)
+{
+    char op;
+    cout << "Digite a operacao (+, -, *, /): ";
+    cin >> op;
+    switch (op)
+    {
+    case '+':
+        cout << "Soma: " << num1 + num2 << endl;
+        break;
+    case '-':
+        cout << "Subtracao: " << num1 - num2 << endl;
+        break;
+    case '*':
+        cout << "Multiplicacao: " << num1 * num2 << endl;
+        break;
+    case '/':
+        cout << "Divisao: " << num1 / num2 << endl;
+        break;
+    default:
+        cout << "Operacao invalida " << endl;
+        break;
+    }
+    return op;
 }
 
-uint16_t CalculaMediaMovel(Tipo_MediaMovel *pMediaMovel, uint16_t NovaAmostra)
+int main()
 {
-  pMediaMovel->Soma += NovaAmostra - pMediaMovel->Fila[pMediaMovel->IndexFila];
-  pMediaMovel->Fila[pMediaMovel->IndexFila] = NovaAmostra;
-  pMediaMovel->IndexFila++;
-  if (pMediaMovel->IndexFila >= Amostras)
-    pMediaMovel->IndexFila = 0;
+    double num1, num2;
+    cout << "entre com o num1: ";
+    cin >> num1;
 
-  return pMediaMovel->Soma / Amostras;
+    cout << "entre com o num2: ";
+    cin >> num2;
+    trocaOp(num1, num2);
 }
-
-void rotation()
-{
-  if (direction == 0)
-  {
-    ledcSetup(channel, frequency, resolution);
-    pinMode(enableL, OUTPUT);
-    pinMode(enableR, OUTPUT);
-    pinMode(Lpwm, OUTPUT);
-    pinMode(Rpwm, OUTPUT);
-    digitalWrite(enableR, LOW);
-    digitalWrite(enableL, HIGH);
-    digitalWrite(Rpwm, LOW);
-    digitalWrite(Lpwm, HIGH);
-    ledcAttachPin(Lpwm, channel);
-  }
-  else
-  {
-    ledcSetup(channel, frequency, resolution);
-    pinMode(enableL, OUTPUT);
-    pinMode(enableR, OUTPUT);
-    pinMode(Lpwm, OUTPUT);
-    pinMode(Rpwm, OUTPUT);
-    digitalWrite(enableL, LOW);
-    digitalWrite(enableR, HIGH);
-    digitalWrite(Lpwm, LOW);
-    digitalWrite(Rpwm, HIGH);
-    ledcAttachPin(Rpwm, channel);
-  }
-}
-
-void display()
-{
-  ledcWrite(channel, potentiometerValue);
-}
-
-void setup()
-{
-  Serial.begin(115200);
-  lcd.begin(16, 2);
-}
-
-void loop()
-{
-  potentiometerValue = CalculaMediaMovel(&mediaPotentiometer, analogRead(potentiometer));
-  display();
-  pinMode(7, INPUT_PULLDOWN);
-  pinMode(15, OUTPUT);
-  digitalWrite(15, HIGH);
-  int pedalValue = digitalRead(pedalInput);
-  updateDirection();
-  updateScreen();
-  rotation();
-  if (pedalValue == 1)
-  {
-    Serial.println(potentiometerValue);
-
-    // display();
-  }
-  else
-  {
-    pinMode(7, INPUT_PULLDOWN);
-    pinMode(15, OUTPUT);
-    digitalWrite(enableL, LOW);
-    digitalWrite(enableR, LOW);
-    digitalWrite(Lpwm, LOW);
-    digitalWrite(Rpwm, LOW);
-  }
-  delay(15);
-}
+*/
