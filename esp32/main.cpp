@@ -12,7 +12,7 @@ bool is_primo()
     int n;
     cout << "Enter a number: ";
     cin >> n;
-    if (n == 1 && n == 2 && n % 2 == 0)
+    if (n % 2 == 0 || n == 1 || n == 2)
     {
         return false;
     }
@@ -40,13 +40,13 @@ usuário.
 
 int main()
 {
-    int qntdeNotas = 0;
+    int qntdeNotas;
     cout << "Quantas notas?: ";
     cin >> qntdeNotas;
     list<double> listaNotas;
     for (int i = 0; i < qntdeNotas; i++)
     {
-        double nota = 0;
+        double nota;
         cout << "Nota " << i + 1 << ": ";
         cin >> nota;
 
@@ -54,12 +54,14 @@ int main()
     }
     double maiorValor = *max_element(listaNotas.begin(), listaNotas.end());
     cout << "maior nota: " << maiorValor << endl;
+    cout << "maior nota: " << *max_element(listaNotas.begin(), listaNotas.end()) << endl;
     return 0;
 }
 */
 
 /*3.
 Fatorial de um número
+
 int fatorial = 1;
 
 int main()
@@ -127,4 +129,84 @@ int main()
     cin >> num2;
     trocaOp(num1, num2);
 }
+
 */
+// int main() {
+//     int num = 10;
+//     cout << num << endl;
+//     int* ponteiro = &num;
+//     *ponteiro = 37;
+//     cout << ponteiro << endl;
+//     cout << &num << endl;
+//     cout << num << endl;
+//     return 0;
+// }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*Palindromo*/
+
+// string contrario(string palindromo) {
+//     string contrario = palindromo;
+//     reverse(contrario.begin(), contrario.end());
+//     return contrario;
+// }
+//
+// bool isPalindromo() {
+//     string palindromo;
+//     cout << "Entre com uma palavra: ";
+//     cin >> palindromo;
+//     if (contrario(palindromo) == palindromo) {
+//         cout << "eh palindromo" << endl;
+//     } else {
+//         cout << "nao eh palindromo" << endl;
+//     }
+// }
+//
+// int main() {
+//     isPalindromo();
+//     return 0;
+// }
+//
+// string lowCase(string Palindromo){
+//     string lowTipe = Palindromo;
+//     transform(lowTipe.begin(), lowTipe.end(), lowTipe.begin(), 
+//                 [](unsigned char c) { return tolower(c); });
+//     return lowTipe;
+// }
+//
+// bool reverser(string Palindromo){
+//     string contrario;
+//     contrario = Palindromo;
+//     reverse(contrario.begin(), contrario.end() );
+//     return contrario == Palindromo;
+// }
+//
+// bool isPalindromo(){
+//     string Palindromo;
+//     cout << "Entre com uma palavra: ";
+//     cin >> Palindromo;
+//     if (reverser(lowCase(Palindromo))) {
+//         cout << "Eh palindromo";
+//     } else {
+//         cout << "nao eh palindromo";
+//     }
+// }
+//
+// int main(){
+//     isPalindromo();
+//     return 0;
+// }
