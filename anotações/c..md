@@ -21,8 +21,9 @@ Um programa C típico consiste em funções que contêm declarações de variáv
 ```c
 #include <stdio.h>
 
-void main() {
+int main() {
     printf("Hello, World!\n");
+    return 0;
 }
 ```
 
