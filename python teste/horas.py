@@ -21,4 +21,7 @@ data_fim = datetime.now().strftime('%d/%m/%Y')
 
 total_horas = calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim)   
 
-print("O total de horas completadas hoje é:", total_horas - horas_feriado - horas_devendo + horas_adiantadas)
+quantidade_feita = total_horas - horas_feriado - horas_devendo + horas_adiantadas
+
+print(f"Você completou {quantidade_feita} horas hoje! Parabéns!")
+print(f"Faltam {400 - quantidade_feita} horaas para completar o estágio!")

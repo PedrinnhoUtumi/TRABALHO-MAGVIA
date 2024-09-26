@@ -18,7 +18,7 @@ A linguagem de programação C é uma das linguagens de programação mais antig
 
 Um programa C típico consiste em funções que contêm declarações de variáveis, instruções e chamadas de outras funções. Aqui está um exemplo simples de um programa C que imprime "Hello, World!":
 
-```c
+```
 #include <stdio.h>
 
 int main() {
