@@ -156,7 +156,6 @@ int main()
 
 
 
-
 /*Palindromo*/
 
 // string contrario(string palindromo) {
