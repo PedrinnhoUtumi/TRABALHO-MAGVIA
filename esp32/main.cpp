@@ -2,6 +2,7 @@
 #include <string>
 #include <list>
 #include <algorithm>
+#include <HtmlHelp.h>
 using namespace std;
 
 /*1.
@@ -209,3 +210,4 @@ int main()
 //     isPalindromo();
 //     return 0;
 // }
+
