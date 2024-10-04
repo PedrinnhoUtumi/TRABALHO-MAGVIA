@@ -146,6 +146,62 @@ int main()
 
 
 
+// #include <Arduino.h>
+// #include <UnicViewAD.h>
+
+// #define contaGiro 2
+
+// LCM Lcm(Serial2);
+
+// int girosNum;
+
+// int quantosGiros() {
+//   pinMode(contaGiro, INPUT_PULLDOWN);
+//   int giros = digitalRead(contaGiro);
+//   if(giros == HIGH) {
+//     girosNum += 1;    
+//   }
+//   return girosNum;
+// }
+
+// int direcao() {
+//   int asciiCode = Lcm.readVP(100);
+//   if(asciiCode == 26879) {
+//     Serial.print("Vp 100: Horario\n");
+
+//   } else if (asciiCode == 25087) {
+//     Serial.print("Vp 100: Anti Horario\n");
+  
+//   } else {
+//     Serial.print("Vp 100: Escolha apenas uma das opcoes\n");
+  
+//   }
+//   return asciiCode;
+// }
+
+// void setup() {
+//   Lcm.begin();
+//   Serial.begin(115200);
+//   Serial2.begin(115200, SERIAL_8N1, 42, 41, false, 100);
+// }
+
+// void loop() {
+//   Serial.print("Vp 80: ");
+//   Serial.println(Lcm.readVP(80));
+
+//   Serial.print("Vp 69: ");
+//   Lcm.writeVP(69, quantosGiros());
+//   Serial.println(Lcm.readVP(69));
+
+//   direcao();
+  
+//   delay(1000);
+
+// }
+
+
+
+
 
 
 
