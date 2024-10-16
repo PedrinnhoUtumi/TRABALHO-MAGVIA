@@ -13,7 +13,7 @@ def calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim):
     return total_horas 
 
 horas_por_dia = 4
-horas_feriado = 4
+horas_feriado = 8
 horas_devendo = 8
 horas_adiantadas = 0
 data_inicio = "19/04/2024"
