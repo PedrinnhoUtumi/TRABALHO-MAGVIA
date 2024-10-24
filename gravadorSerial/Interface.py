@@ -1,17 +1,19 @@
 from tkinter import *
 from tkinter import Tk
 from tkinter import ttk
-
+from GravadorSerial import GravadorSerial
 
 class Interface:
     def __init__(self, root):
         self.root = root
-        mandaSinal = MandaSinal(self)
+        self.mandaSinal = MandaSinal(self)
+        
         self.cores()
         self.configTela()
         self.criaAbas()
         self.configAba()
-        mandaSinal.configMandaSinal()
+        
+        self.mandaSinal.configMandaSinal()
         
     def cores(self):
         self.preto = "#0D0D0D"
@@ -39,6 +41,15 @@ class Interface:
 class MandaSinal:    
     def __init__(self, interface):
         self.interface = interface
+        self.gravadorSerial = GravadorSerial()
+        
+    def enviarBytes(self):
+        lote = self.interface.mandaSinal.numeroLote.get()
+        dia = self.interface.mandaSinal.numeroDia.get()
+        mes = self.interface.mandaSinal.numeroMes.get()
+        ano = self.interface.mandaSinal.numeroAno.get()
+        
+        self.gravadorSerial.mensagensParaEnviar(info = [lote, dia, mes, ano])
         
     def criarEntry(self, texto, numeroEntry, janela):
         frame = Frame(janela, bg=self.interface.cinza)
@@ -47,15 +58,8 @@ class MandaSinal:
         entry = Entry(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, textvariable=numeroEntry)
         entry.pack(pady=(0, 10)) 
         frame.pack(pady=5) 
-    
-    def criarLabel(self, texto, numeroEntry, janela):
-        frame = Frame(janela, bg=self.interface.cinza)
-        label = Label(frame, text=texto, bg=self.interface.cinza, fg=self.interface.branco)
-        label = Label(frame, textvariable=numeroEntry, bg=self.interface.cinza, fg=self.interface.branco)
-        label.pack(pady=(10, 0))
-        frame.pack(pady=5) 
         
-    def criarButton(self, texto, janela, comando = 0):
+    def criarButton(self, texto, janela, comando):
         frame = Frame(janela, bg=self.interface.cinza)
         button = Button(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, text=texto, command=comando)
         button.pack(pady=10) 
@@ -72,4 +76,5 @@ class MandaSinal:
         self.mes = self.criarEntry("Mês", self.numeroMes, self.interface.janelaMandaSinal)
         self.ano = self.criarEntry("Ano", self.numeroAno, self.interface.janelaMandaSinal)
         
-        self.enviar = self.criarButton("Enviar", self.interface.janelaMandaSinal)
+        
+        self.enviar = self.criarButton("Enviar", self.interface.janelaMandaSinal, self.enviarBytes)
