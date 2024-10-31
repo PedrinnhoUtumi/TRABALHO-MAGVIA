@@ -61,7 +61,7 @@ else:
 
 cmd = create_CheckSum(cmd)
 
-ser = serial.Serial("COM5", 115200,8,"N",1,0.5)
+ser = serial.Serial("COM3", 115200,8,"N",1,0.5)
 
 while True:
     time.sleep(0.5)

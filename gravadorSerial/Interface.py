@@ -1,20 +1,22 @@
 from tkinter import *
-from tkinter import Tk
 from tkinter import ttk
-from GravadorSerial import GravadorSerial
+from MandaSinal import MandaSinal
+from EscolheSerial import EscolheSerial
 
 class Interface:
     def __init__(self, root):
         self.root = root
         self.mandaSinal = MandaSinal(self)
+        self.escolheSerial = EscolheSerial(self)
         
         self.cores()
         self.configTela()
         self.criaAbas()
         self.configAba()
+        #self.configMsg()
         
         self.mandaSinal.configMandaSinal()
-        
+        self.escolheSerial.configMenuButton()
     def cores(self):
         self.preto = "#0D0D0D"
         self.cinzaEscuro = "#262626"
@@ -24,7 +26,7 @@ class Interface:
         
     def configTela(self):
         self.root.title("Interface")
-        self.root.geometry("400x400")
+        self.root.geometry("400x700")
         self.root.resizable(False, False)
         
     def criaAbas(self):
@@ -37,44 +39,5 @@ class Interface:
     def configAba(self):
         self.janelaMandaSinal = Frame(self.abas, bg=self.cinza) 
         self.abas.add(self.janelaMandaSinal, text="Config Serial")
-
-class MandaSinal:    
-    def __init__(self, interface):
-        self.interface = interface
-        self.gravadorSerial = GravadorSerial()
-        
-    def enviarBytes(self):
-        lote = self.interface.mandaSinal.numeroLote.get()
-        dia = self.interface.mandaSinal.numeroDia.get()
-        mes = self.interface.mandaSinal.numeroMes.get()
-        ano = self.interface.mandaSinal.numeroAno.get()
-        
-        self.gravadorSerial.mensagensParaEnviar(info = [lote, dia, mes, ano])
-        
-    def criarEntry(self, texto, numeroEntry, janela):
-        frame = Frame(janela, bg=self.interface.cinza)
-        label = Label(frame, text=texto, bg=self.interface.cinza, fg=self.interface.branco)
-        label.pack(pady=(10, 0))
-        entry = Entry(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, textvariable=numeroEntry)
-        entry.pack(pady=(0, 10)) 
-        frame.pack(pady=5) 
-        
-    def criarButton(self, texto, janela, comando):
-        frame = Frame(janela, bg=self.interface.cinza)
-        button = Button(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, text=texto, command=comando)
-        button.pack(pady=10) 
-        frame.pack(pady=5) 
-        
-    def configMandaSinal(self):
-        self.numeroLote = IntVar() 
-        self.numeroDia = IntVar()
-        self.numeroMes = IntVar()
-        self.numeroAno = IntVar()
-        
-        self.lote = self.criarEntry("Lote", self.numeroLote, self.interface.janelaMandaSinal)
-        self.dia = self.criarEntry("Dia", self.numeroDia, self.interface.janelaMandaSinal)
-        self.mes = self.criarEntry("Mês", self.numeroMes, self.interface.janelaMandaSinal)
-        self.ano = self.criarEntry("Ano", self.numeroAno, self.interface.janelaMandaSinal)
-        
-        
-        self.enviar = self.criarButton("Enviar", self.interface.janelaMandaSinal, self.enviarBytes)
+    
+    

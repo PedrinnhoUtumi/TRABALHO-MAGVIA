@@ -18,6 +18,8 @@ class GravadorSerial:
             msgBytes = bytes(info)
             self.ser.write(msgBytes)
             print(msgBytes)
-            
+
         thread = threading.Thread(target = enviarMensagem)
         thread.start()
+        
+    
