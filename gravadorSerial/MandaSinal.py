@@ -9,6 +9,12 @@ class MandaSinal:
     def __init__(self, interface):
         self.interface = interface
         self.gravadorSerial = GravadorSerial()
+        self.bobina = None
+        self.label_lote_data = None
+        
+    def atualizaBobina(self, bobina):
+        self.bobina = bobina
+        print(f"Bobina atualizada para: {bobina}")
         
     def enviarBytes(self):
         try:
@@ -19,15 +25,31 @@ class MandaSinal:
             mes = data.month
             ano = data.year % 100
 
+            if self.bobina == "Placa Potência":
+                bobinaByte = 0x01
+            elif self.bobina == "Placa Temperatura":
+                bobinaByte = 0x02
+            elif self.bobina == "Placa Bobina":
+                bobinaByte = 0x03
+            else:
+                messagebox.showerror("Erro", "Bobina não encontrada")
+            
             fill = [0x00] * 3
             
-            self.gravadorSerial.mensagensParaEnviar(info=[0xAA, 0xBB, 0x00, 0x09, 0x05] + fill + [self.lote, dia, mes, ano])
+            def checksum():
+                return sum(fill + [bobinaByte, 5, int(self.lote), dia, mes, ano, 170, 187])
+            print(checksum())
+            self.gravadorSerial.mensagensParaEnviar(info=[0xAA, 0xBB, 0x00, bobinaByte, 0x05] + fill + [self.lote, dia, mes, ano] + (fill * 16) + [0x00, 0x00] + [checksum() & 0x00FF] + [checksum() >> 8])
 
-            
-            frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinza)
-            label = Label(frame, text=f"lote: {self.lote} | dia: {dia} | mês: {mes} | ano: {ano}", bg=self.interface.cinzaClaro, fg=self.interface.branco)
-            label.pack(pady=(10, 0))
-            frame.pack(pady=5) 
+            if self.label_lote_data:
+                self.label_lote_data.config(text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}")
+                
+            else:
+                frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinza)
+                self.label_lote_data = Label(frame, text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}", bg=self.interface.cinzaClaro, fg=self.interface.branco)
+                self.label_lote_data.pack(pady=(10, 0))
+                frame.pack(pady=5)
+                
         except serial.SerialException:
             print("Erro ao conectar ao serial")
         

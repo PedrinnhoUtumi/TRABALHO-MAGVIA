@@ -1,33 +1,37 @@
 from tkinter import *
-from tkcalendar import DateEntry
 
 class Interface:
     def __init__(self, root):
         self.root = root
-        self.root.title("Seleção de Data")
-        self.root.geometry("300x200")
+        self.criar_menu_button()
 
-        self.criaFrame()
+    def criar_menu_button(self):
+        # Criando um frame e um Menubutton
+        self.frame = Frame(self.root)
+        self.frame.pack(pady=10)
 
-    def criaFrame(self):
-        frame = Frame(self.root)
-        frame.pack(pady=20)
+        self.menu_button = Menubutton(self.frame, text="Escolher Bobina", relief="raised")
+        self.menu_button.grid(padx=10, pady=10)
 
-        label = Label(frame, text="Escolha uma data:")
-        label.pack(pady=5)
+        menu = Menu(self.menu_button, tearoff=0)
+        self.menu_button.config(menu=menu)
 
-        # Adiciona o DateEntry
-        self.date_entry = DateEntry(frame, width=12, background='darkblue', foreground='white', borderwidth=2)
-        self.date_entry.pack(pady=5)
+        menu.add_command(label="Placa Potência", command=self.selecionar_bobina)
+        menu.add_command(label="Placa Temperatura", command=self.selecionar_bobina)
 
-        button = Button(frame, text="Confirmar", command=self.mostrar_data)
-        button.pack(pady=10)
+        # Botão para excluir o Menubutton
+        self.excluir_button = Button(self.frame, text="Excluir Menu", command=self.excluir_menu_button)
+        self.excluir_button.grid(pady=10)
 
-    def mostrar_data(self):
-        data_selecionada = self.date_entry.get()
-        print(f"Data selecionada: {data_selecionada}")
+    def selecionar_bobina(self):
+        print("Você selecionou uma bobina.")
 
-if __name__ == "__main__":
-    root = Tk()
-    app = Interface(root)
-    root.mainloop()
+    def excluir_menu_button(self):
+        # Excluindo o Menubutton
+        self.menu_button.destroy()  # Isso remove o Menubutton da interface
+        self.excluir_button.destroy()  # Opcionalmente, removemos o botão de excluir também
+
+# Criando a janela Tkinter
+root = Tk()
+interface = Interface(root)
+root.mainloop()

@@ -7,7 +7,7 @@ class Interface:
     def __init__(self, root):
         self.root = root
         self.mandaSinal = MandaSinal(self)
-        self.escolheSerial = EscolheSerial(self)
+        self.escolheSerial = EscolheSerial(self, self.mandaSinal)
         
         self.cores()
         self.configTela()
@@ -26,7 +26,7 @@ class Interface:
         
     def configTela(self):
         self.root.title("Interface")
-        self.root.geometry("400x700")
+        self.root.geometry("400x350")
         self.root.resizable(False, False)
         
     def criaAbas(self):
@@ -40,4 +40,5 @@ class Interface:
         self.janelaMandaSinal = Frame(self.abas, bg=self.cinza) 
         self.abas.add(self.janelaMandaSinal, text="Config Serial")
     
-    
+
+        
