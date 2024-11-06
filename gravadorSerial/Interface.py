@@ -26,7 +26,7 @@ class Interface:
         
     def configTela(self):
         self.root.title("Interface")
-        self.root.geometry("400x350")
+        self.root.geometry("400x450")
         self.root.resizable(False, False)
         
     def criaAbas(self):

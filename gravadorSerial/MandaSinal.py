@@ -10,7 +10,7 @@ class MandaSinal:
         self.interface = interface
         self.gravadorSerial = GravadorSerial()
         self.bobina = None
-        self.label_lote_data = None
+        self.labelLoteData = None
         
     def atualizaBobina(self, bobina):
         self.bobina = bobina
@@ -36,19 +36,26 @@ class MandaSinal:
             
             fill = [0x00] * 3
             
+            cabecalho = [0xAA, 0xBB, 0x00, bobinaByte, 0x05]
             def checksum():
                 return sum(fill + [bobinaByte, 5, int(self.lote), dia, mes, ano, 170, 187])
             print(checksum())
-            self.gravadorSerial.mensagensParaEnviar(info=[0xAA, 0xBB, 0x00, bobinaByte, 0x05] + fill + [self.lote, dia, mes, ano] + (fill * 16) + [0x00, 0x00] + [checksum() & 0x00FF] + [checksum() >> 8])
-
-            if self.label_lote_data:
-                self.label_lote_data.config(text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}")
+            self.gravadorSerial.mensagensParaEnviar(info = cabecalho + fill + [self.lote, dia, mes, ano] + (fill * 16) + [0x00, 0x00] + [checksum() & 0x00FF] + [checksum() >> 8])
+            if self.labelLoteData:
+                self.labelLoteData.config(text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}")
+                self.resposta.config(text=f"resposta: {self.gravadorSerial.msg}")
+                
                 
             else:
                 frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinza)
-                self.label_lote_data = Label(frame, text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}", bg=self.interface.cinzaClaro, fg=self.interface.branco)
-                self.label_lote_data.pack(pady=(10, 0))
+                self.labelLoteData = Label(frame, text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}", bg=self.interface.cinzaClaro, fg=self.interface.branco)
+                self.labelLoteData.pack(pady=(10, 0))
                 frame.pack(pady=5)
+                
+                frame2 = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinza)
+                self.resposta = Label(frame, text=f"resposta: {self.gravadorSerial.msg}", bg=self.interface.cinzaClaro, fg=self.interface.branco, wraplength=300)
+                self.resposta.pack(pady=(10, 0))
+                frame2.pack(pady=5)
                 
         except serial.SerialException:
             print("Erro ao conectar ao serial")
