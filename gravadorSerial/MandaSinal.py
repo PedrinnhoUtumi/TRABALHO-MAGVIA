@@ -19,7 +19,10 @@ class MandaSinal:
             mes = data.month
             ano = data.year % 100
 
-            self.gravadorSerial.mensagensParaEnviar(info = [self.lote, dia, mes, ano])
+            fill = [0x00] * 3
+            
+            self.gravadorSerial.mensagensParaEnviar(info=[0xAA, 0xBB, 0x00, 0x09, 0x05] + fill + [self.lote, dia, mes, ano])
+
             
             frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinza)
             label = Label(frame, text=f"lote: {self.lote} | dia: {dia} | mês: {mes} | ano: {ano}", bg=self.interface.cinzaClaro, fg=self.interface.branco)
