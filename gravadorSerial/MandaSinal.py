@@ -19,36 +19,48 @@ class MandaSinal:
     def enviarBytes(self):
         try:
             self.lote = self.numeroLote.get()
+            self.numeroVersao = self.versaoPlacaNumero.get()
             data = self.dateEntry.get_date()
 
+            if self.lote > 255 or self.numeroVersao > 255:
+                messagebox.showerror("Erro", "Coloque números referentes à 2 Bytes/2 Bits (0 à 255)")
+                print("Coloque números referentes à 2 Bytes/2 Bits (0 à 255)")
+                return
+            
             dia = data.day
             mes = data.month
             ano = data.year % 100
 
             if self.bobina == "Placa Potência":
-                bobinaByte = 0x01
+                placaByte = 0x01
             elif self.bobina == "Placa Temperatura":
-                bobinaByte = 0x02
+                placaByte = 0x02
             elif self.bobina == "Placa Bobina":
-                bobinaByte = 0x03
+                placaByte = 0x03
             else:
                 messagebox.showerror("Erro", "Bobina não encontrada")
             
             fill = [0x00] * 3
             
-            cabecalho = [0xAA, 0xBB, 0x00, bobinaByte, 0x05]
+            opcode = 5
+            
+            
+
+            cabecalho = [0xAA, 0xBB, 0x00, placaByte, opcode]
             def checksum():
-                return sum(fill + [bobinaByte, 5, int(self.lote), dia, mes, ano, 170, 187])
+                return sum(fill + [placaByte, 5, int(self.lote), dia, mes, ano, 170, 187, self.numeroVersao])
+            
             print(checksum())
-            self.gravadorSerial.mensagensParaEnviar(info = cabecalho + fill + [self.lote, dia, mes, ano] + (fill * 16) + [0x00, 0x00] + [checksum() & 0x00FF] + [checksum() >> 8])
+            
+            self.gravadorSerial.mensagensParaEnviar(info = cabecalho + fill + [self.lote, dia, mes, ano, self.numeroVersao] + (fill * 16) + [0x00] + [checksum() & 0x00FF] + [checksum() >> 8])
+            
             if self.labelLoteData:
                 self.labelLoteData.config(text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}")
-                self.resposta.config(text=f"resposta: {self.gravadorSerial.msg}")
-                
+                self.resposta.config(text=f"Resposta: {self.gravadorSerial.msg}")
                 
             else:
                 frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinza)
-                self.labelLoteData = Label(frame, text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}", bg=self.interface.cinzaClaro, fg=self.interface.branco)
+                self.labelLoteData = Label(frame, text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano} | Versão: {self.numeroVersao}", bg=self.interface.cinzaClaro, fg=self.interface.branco)
                 self.labelLoteData.pack(pady=(10, 0))
                 frame.pack(pady=5)
                 
@@ -64,8 +76,8 @@ class MandaSinal:
         frame = Frame(janela, bg=self.interface.cinza)
         label = Label(frame, text=texto, bg=self.interface.cinza, fg=self.interface.branco)
         label.pack(pady=(10, 0))
-        entry = Entry(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, textvariable=numeroEntry)
-        entry.pack(pady=(0, 10)) 
+        self.entry = Entry(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, textvariable=numeroEntry)
+        self.entry.pack(pady=(0, 10)) 
         frame.pack(pady=5) 
         
     def criarDateEntry(self, texto, janela):
@@ -84,8 +96,11 @@ class MandaSinal:
         
     def configMandaSinal(self):
         self.numeroLote = IntVar() 
-
+        self.versaoPlacaNumero = IntVar()
+        
+        
         self.lote = self.criarEntry("Lote", self.numeroLote, self.interface.janelaMandaSinal)
+        self.versaoPlaca = self.criarEntry("Versão da Placa", self.versaoPlacaNumero, self.interface.janelaMandaSinal)
         self.data = self.criarDateEntry("Data", self.interface.janelaMandaSinal)
         
         self.enviar = self.criarButton("Enviar", self.interface.janelaMandaSinal, self.enviarBytes)

@@ -13,6 +13,7 @@ class GravadorSerial:
                 timeout = 1
             )
         self.msg = None
+        self.msgEstruturada = None
         
     def mensagensParaEnviar(self, info = []):
         def enviarMensagem():
@@ -22,6 +23,14 @@ class GravadorSerial:
             
 
             self.msg = self.ser.read(64)
+            
+            self.msgEstruturada = """
+            
+            
+            
+            
+            """
+            
             print(self.msg)
     
         thread = threading.Thread(target = enviarMensagem)

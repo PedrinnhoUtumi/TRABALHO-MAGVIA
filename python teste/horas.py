@@ -28,7 +28,7 @@ agora = datetime.now()
 if agora.hour >= 17:
     print(f"Você completou {quantidade_feita} horas hoje! Parabéns!")
     print(f"Faltam {400 - quantidade_feita} horaas para completar o estágio!")
-else:
+else:                     
     print(f"Você completará {quantidade_feita} horas hoje! Parabéns!")
     print(f"Faltarão {400 - quantidade_feita} horaas para completar o estágio!")
     
