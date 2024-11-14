@@ -13,7 +13,6 @@ class Interface:
         self.configTela()
         self.criaAbas()
         self.configAba()
-        #self.configMsg()
         
         self.escolheSerial.configMenuButton()
         self.mandaSinal.configMandaSinal()
@@ -26,7 +25,7 @@ class Interface:
         
     def configTela(self):
         self.root.title("Gravador Serial")
-        self.root.geometry("400x500")
+        self.root.geometry("400x600")
         self.root.resizable(False, False)
         
     def criaAbas(self):

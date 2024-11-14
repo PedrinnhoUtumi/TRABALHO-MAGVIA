@@ -1,6 +1,7 @@
 import serial
 import serial.tools.list_ports
 import threading
+from queue import Queue
 
 class GravadorSerial:
     def __init__(self):
@@ -13,7 +14,6 @@ class GravadorSerial:
                 timeout = 1
             )
         self.msg = None
-        self.msgEstruturada = None
         
     def mensagensParaEnviar(self, info = []):
         def enviarMensagem():
@@ -21,20 +21,12 @@ class GravadorSerial:
             self.ser.write(msgBytes)
             print(msgBytes)
             
-
             self.msg = self.ser.read(64)
             
-            self.msgEstruturada = """
-            
-            
-            
-            
-            """
-            
             print(self.msg)
-    
         thread = threading.Thread(target = enviarMensagem)
         thread.start()
         thread.join()
         
+        return self.msg
     
