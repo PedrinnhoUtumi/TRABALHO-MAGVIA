@@ -18,9 +18,9 @@ class Interface:
         self.mandaSinal.configMandaSinal()
     def cores(self):
         self.preto = "#0D0D0D"
-        self.cinzaEscuro = "#262626"
-        self.cinza = "#404040"
-        self.cinzaClaro = "#737373"
+        self.cinzaEscuro = "#a8e6cf"
+        self.cinza = "#1e3a8a"
+        self.cinzaClaro = "#ff7f32"
         self.branco = "#ffffff"
         
     def configTela(self):
