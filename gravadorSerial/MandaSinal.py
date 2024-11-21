@@ -13,17 +13,17 @@ class MandaSinal:
         self.labelLoteData = None
         self.msgEstruturada = None
         self.placaByte = None
+        self.interface.root.bind("<Return>", self.enviarBytes)
+        
         
     def atualizaBobina(self, bobina):
         self.bobina = bobina
-        print(f"Bobina atualizada para: {bobina}")
+        print(f"Bobina atualizada para: {self.bobina}")
         
-    def enviarBytes(self):
+    def enviarBytes(self, event = None):
         try:
-            pedirStatus = 0x00
-            definirStatus = 0x05
+            definirSerial = 0x05
             
-            # Obtendo os dados do formulário
             self.lote = self.numeroLote.get()
             self.numeroVersao = self.versaoPlacaNumero.get()
             data = self.dateEntry.get_date()
@@ -36,7 +36,6 @@ class MandaSinal:
             mes = data.month
             ano = data.year % 100
 
-            # Determina o tipo de placa (bobina)
             if self.bobina == "Placa Potência":
                 self.placaByte = 0x01
             elif self.bobina == "Placa Temperatura":
@@ -48,29 +47,20 @@ class MandaSinal:
                 return
 
             fill = [0x00] 
-            opcode = definirStatus
+            opcode = definirSerial
 
-            # Envio do comando, depende do opcode
-            if opcode == definirStatus:
+            if opcode == definirSerial:
                 cabecalho = [0xAA, 0xBB, 0x00, self.placaByte, opcode]
                 def checksum():
                     return sum(fill + [self.placaByte, 5, int(self.lote), dia, mes, ano, 170, 187, self.numeroVersao])
 
-                # Envia os dados
                 self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 3) + [self.lote, dia, mes, ano, self.numeroVersao] + (fill * 49) + [checksum() & 0x00FF] + [checksum() >> 8])
 
-            elif opcode == pedirStatus:
-                cabecalho = [0xAA, 0xBB, 0x00, self.placaByte, opcode]
-                def checksum():
-                    return sum(fill + [self.placaByte, opcode, 170, 187])
 
-                # Envia os dados
-                self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 57) + [checksum() & 0x00FF] + [checksum() >> 8])
 
             else:
                 messagebox.showerror("Erro", "Algo está errado")
             
-            # Atualiza a mensagem estruturada
             self.msgEstruturada = f"""
     Cabeçalho: {self.gravadorSerial.msg[:4]}  
     Lote: {self.gravadorSerial.msg[20]} 
@@ -82,76 +72,94 @@ class MandaSinal:
     qmtdPulsos: {int.from_bytes(self.gravadorSerial.msg[16:20], byteorder="little")}
             """
             
-            # Certifique-se de que a labelLoteData e a resposta estão sendo criadas e atualizadas corretamente
+            if len(self.gravadorSerial.msg) != 0:
+                self.criarResposta = self.criarLabel("Report", "Ok", self.interface.janelaMandaSinal)
+
             if self.labelLoteData:
                 self.labelLoteData.config(text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano}")
                 
-                # Habilita o Text para edição antes de atualizar
                 self.resposta.config(state=NORMAL)
                 
-                # Limpa e insere o novo texto
                 self.resposta.delete(1.0, END)
-                self.resposta.insert(END, f"{'bobina' if self.placaByte == 0x03 else 'Temperatura' if self.placaByte == 0x02 else 'Potência'}: {self.msgEstruturada}")
+                self.resposta.insert(END, f"{'Placa: Bobina' if self.placaByte == 0x03 else 'Placa: Temperatura' if self.placaByte == 0x02 else 'Placa: Potência'}: {self.msgEstruturada}")
                 
-                # Volta o estado do Text para DISABLED
-                self.resposta.config(state=DISABLED)
             else:
-                frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinza)
-                self.labelLoteData = Label(frame, text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano} | Versão: {self.numeroVersao}", bg=self.interface.cinzaClaro, fg=self.interface.branco)
+                frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
+                self.labelLoteData = Label(frame, text=f"Lote: {self.lote} | Dia: {dia} | Mês: {mes} | Ano: {ano} | Versão: {self.numeroVersao}", bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco)
                 self.labelLoteData.pack(pady=(10, 0))
                 frame.pack(pady=5)
 
-                frame2 = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinza)
+                frame2 = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
                 frame2.pack(pady=5, fill="both", expand=True)
 
                 scrollbar = Scrollbar(frame2)
                 scrollbar.pack(side="right", fill="y")
 
-                self.resposta = Text(frame2, bg=self.interface.cinzaClaro, fg=self.interface.branco, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
+                self.resposta = Text(frame2, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
                 self.resposta.pack(side="left", fill="both", expand=True)
 
                 scrollbar.config(command=self.resposta.yview)
 
-                # Habilita o Text para edição antes de atualizar
                 self.resposta.config(state=NORMAL)
 
-                # Insere o texto
                 self.resposta.insert(END, f"{'Placa: Bobina' if self.placaByte == 0x03 else 'Placa: Temperatura' if self.placaByte == 0x02 else 'Placa: Potência'}: {self.msgEstruturada}")
-
-                # Volta o estado para DISABLED
-                self.resposta.config(state=DISABLED)
 
         except serial.SerialException:
             print("Erro ao conectar ao serial")
 
+    def lerSerial(self):
+        pedirStatus = 0
+        opcode = pedirStatus
+        fill = [0x00]
+        self.placaByte = 1
         
+        for i in range(1, 4):
+            if opcode == pedirStatus:
+                cabecalho = [0xAA, 0xBB, 0x00, self.placaByte, opcode]
+                def checksum():
+                    return sum(fill + [self.placaByte, opcode, 170, 187])
+
+                self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 57) + [checksum() & 0x00FF] + [checksum() >> 8])
+                if len(self.gravadorSerial.msg) != 0:
+                    if i == 1:
+                        messagebox.showinfo("Placa ", f"Placa: Potência")
+                    elif i == 2:
+                        messagebox.showinfo("Placa ", f"Placa: Temperatura")
+                    elif i == 3:
+                        messagebox.showinfo("Placa ", f"Placa: Bobina")
+                    else:
+                        messagebox.showinfo("Placa ", f"Placa: Erro ao encontrar placa")
+                    
+            self.placaByte += 1  
+            
+          
     def criarEntry(self, texto, numeroEntry, janela):
-        frame = Frame(janela, bg=self.interface.cinza)
-        label = Label(frame, text=texto, bg=self.interface.cinza, fg=self.interface.branco)
+        frame = Frame(janela, bg=self.interface.cinzaOliva)
+        label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
         label.pack(pady=(10, 0))
-        self.entry = Entry(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, textvariable=numeroEntry)
+        self.entry = Entry(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, textvariable=numeroEntry)
         self.entry.pack(pady=(0, 10)) 
         frame.pack(pady=5) 
         
     def criarDateEntry(self, texto, janela):
-        frame = Frame(janela, bg=self.interface.cinza)
-        label = Label(frame, text=texto, bg=self.interface.cinza, fg=self.interface.branco)
+        frame = Frame(janela, bg=self.interface.cinzaOliva)
+        label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
         label.pack(pady=(10, 0))
-        self.dateEntry = DateEntry(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, width = 12, borderwidth = 2)
+        self.dateEntry = DateEntry(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2)
         self.dateEntry.pack(pady=(0, 10)) 
         frame.pack(pady=5) 
         
     def criarLabel(self, texto, resposta, janela):
-        frame = Frame(janela, bg=self.interface.cinza)
-        label = Label(frame, text=texto, bg=self.interface.cinza, fg=self.interface.branco)
+        frame = Frame(janela, bg=self.interface.cinzaOliva)
+        label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
         label.pack(pady=(10, 0))
-        label2 = Label(frame, text=resposta,bg=self.interface.cinzaClaro, fg=self.interface.branco, width = 12, borderwidth = 2)
+        label2 = Label(frame, text=resposta,bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2)
         label2.pack(pady=(0, 10)) 
         frame.pack(pady=5) 
         
     def criarButton(self, texto, janela, comando):
-        frame = Frame(janela, bg=self.interface.cinza)
-        button = Button(frame, bg=self.interface.cinzaClaro, fg=self.interface.branco, text=texto, command=comando)
+        frame = Frame(janela, bg=self.interface.cinzaOliva)
+        button = Button(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, text=texto, command=comando)
         button.pack(pady=10) 
         frame.pack(pady=5) 
         
@@ -163,6 +171,5 @@ class MandaSinal:
         self.versaoPlaca = self.criarEntry("Versão da Placa", self.versaoPlacaNumero, self.interface.janelaMandaSinal)
         self.data = self.criarDateEntry("Data", self.interface.janelaMandaSinal)
         
+        self.ler = self.criarButton("Ler/Ident", self.interface.janelaMandaSinal, self.lerSerial)
         self.enviar = self.criarButton("Enviar", self.interface.janelaMandaSinal, self.enviarBytes)
-
-        self.report = self.criarLabel("Report", "Ok", self.interface.janelaMandaSinal)

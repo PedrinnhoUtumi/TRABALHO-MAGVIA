@@ -7,9 +7,9 @@ class EscolheSerial:
         self.guardaBobina = None
         
     def criarMenuButton(self, texto, janela):
-        frame = Frame(janela, bg=self.interface.cinza)
+        frame = Frame(janela, bg=self.interface.cinzaOliva)
         
-        self.menuButton = Menubutton(frame, text=texto, bg=self.interface.cinzaClaro, fg=self.interface.branco)
+        self.menuButton = Menubutton(frame, text=texto, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco)
         self.menuButton.pack(pady=10)  
         
         menu = Menu(self.menuButton, tearoff=0)
