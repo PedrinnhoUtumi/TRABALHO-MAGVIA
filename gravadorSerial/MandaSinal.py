@@ -125,6 +125,9 @@ class MandaSinal:
         opcode = pedirStatus
         fill = [0x00]
         self.placaByte = 1
+        def atualizaTextoBotao():
+            if self.escolheSerial.menuButton:
+                self.escolheSerial.menuButton.config(text=self.placaNome)
         for i in range(1, 4):
             if opcode == pedirStatus:
                 cabecalho = [0xAA, 0xBB, 0x00, self.placaByte, opcode]
@@ -150,13 +153,13 @@ class MandaSinal:
                         messagebox.showinfo("Placa ", "Placa: Erro ao encontrar placa")
                         break
                     if self.escolheSerial.menuButton:
-                        self.escolheSerial.menuButton.config(text=self.placaNome)
+                        print("====================================================================")
+                        self.escolheSerial.menuButton.after(0, atualizaTextoBotao)
                         
                     self.criaTabelaComInformacoes()
                     
                     
             self.placaByte += 1  
-        print(self.escolheSerial.menuButton)
           
     def criarEntry(self, texto, numeroEntry, janela):
         frame = Frame(janela, bg=self.interface.cinzaOliva)

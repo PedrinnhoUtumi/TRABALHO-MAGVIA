@@ -5,7 +5,7 @@ class EscolheSerial:
         self.interface = interface
         self.mandaSinal = mandaSinal
         self.guardaBobina = None
-        self.menuButton = None  
+        self.menuButton = Menubutton()  
         
     def criarMenuButton(self, texto, janela):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
