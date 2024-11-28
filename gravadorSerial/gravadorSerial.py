@@ -30,7 +30,7 @@ class GravadorSerial:
         thread.join()
         
         return self.msg
-
+    
     
 # import serial
 # import serial.tools.list_ports

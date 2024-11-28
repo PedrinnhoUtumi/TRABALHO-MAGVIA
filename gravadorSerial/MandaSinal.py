@@ -28,6 +28,40 @@ class MandaSinal:
         self.bobina = bobina
         print(f"Bobina atualizada para: {self.bobina}")
         
+    def criaTabelaComInformacoes(self):
+        if self.labelLoteData:
+            self.labelLoteData.config(text=f"Lote: {self.lote} | Dia: {self.dia} | Mês: {self.mes} | Ano: {self.ano} | Versão: {self.numeroVersao}")
+            
+            self.resposta.config(state=NORMAL)
+            
+            self.resposta.delete(1.0, END)
+            self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
+            
+            self.resposta.config(state=DISABLED)
+            
+        else:
+            frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
+            self.labelLoteData = Label(frame, text=f"Lote: {self.lote} | Dia: {self.dia} | Mês: {self.mes} | Ano: {self.ano} | Versão: {self.numeroVersao}", bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco)
+            self.labelLoteData.pack(pady=(10, 0))
+            frame.pack(pady=5)
+
+            frame2 = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
+            frame2.pack(pady=5, fill="both", expand=True)
+
+            scrollbar = Scrollbar(frame2)
+            scrollbar.pack(side="right", fill="y")
+
+            self.resposta = Text(frame2, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
+            self.resposta.pack(side="left", fill="both", expand=True)
+
+            scrollbar.config(command=self.resposta.yview)
+
+            self.resposta.config(state=NORMAL)
+
+            self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
+            self.resposta.config(state=DISABLED)
+        print(self.placaNome)
+        
     def enviarBytes(self, event = None): 
         try:
             definirSerial = 0x05
@@ -44,6 +78,7 @@ class MandaSinal:
             self.mes = data.month
             self.ano = data.year % 100
             epochAno = abs(data.year - 1970)
+            
             if self.bobina == "Placa Potência":
                 self.placaByte = 0x01
             elif self.bobina == "Placa Temperatura":
@@ -80,49 +115,7 @@ class MandaSinal:
     qmtdPulsos: {int.from_bytes(self.gravadorSerial.msg[16:20], byteorder="little")}
             """
             
-            if len(self.gravadorSerial.msg) != 0:
-                if hasattr(self, 'criarRespostaErrada'):
-                    self.criarRespostaErrada.config(text="Ok") 
-                else:
-                    self.criarRespostaCerta = self.criarLabel("Report", "Ok", self.interface.janelaMandaSinal)
-
-            else:
-                if hasattr(self, 'criarRespostaCerta'):
-                    self.criarRespostaCerta.config(text="Error")  # Atualiza o texto para "Error"
-                else:
-                    self.criarRespostaErrada = self.criarLabel("Report", "Error", self.interface.janelaMandaSinal)
-
-            if self.labelLoteData:
-                self.labelLoteData.config(text=f"Lote: {self.lote} | Dia: {self.dia} | Mês: {self.mes} | Ano: {self.ano} | Versão: {self.numeroVersao}")
-                
-                self.resposta.config(state=NORMAL)
-                
-                self.resposta.delete(1.0, END)
-                self.resposta.insert(END, f"{'Placa: Bobina' if self.placaByte == 0x03 else 'Placa: Temperatura' if self.placaByte == 0x02 else 'Placa: Potência'}: {self.msgEstruturada}")
-                
-                self.resposta.config(state=DISABLED)
-            else:
-                frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
-                self.labelLoteData = Label(frame, text=f"Lote: {self.lote} | Dia: {self.dia} | Mês: {self.mes} | Ano: {self.ano} | Versão: {self.numeroVersao}", bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco)
-                self.labelLoteData.pack(pady=(10, 0))
-                frame.pack(pady=5)
-
-                frame2 = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
-                frame2.pack(pady=5, fill="both", expand=True)
-
-                scrollbar = Scrollbar(frame2)
-                scrollbar.pack(side="right", fill="y")
-
-                self.resposta = Text(frame2, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
-                self.resposta.pack(side="left", fill="both", expand=True)
-
-                scrollbar.config(command=self.resposta.yview)
-
-                self.resposta.config(state=NORMAL)
-
-                self.resposta.insert(END, f"{'Placa: Bobina' if self.placaByte == 0x03 else 'Placa: Temperatura' if self.placaByte == 0x02 else 'Placa: Potência'}: {self.msgEstruturada}")
-                self.resposta.config(state=DISABLED)
-                
+            self.criaTabelaComInformacoes()
 
         except serial.SerialException:
             print("Erro ao conectar ao serial")
@@ -132,7 +125,6 @@ class MandaSinal:
         opcode = pedirStatus
         fill = [0x00]
         self.placaByte = 1
-        
         for i in range(1, 4):
             if opcode == pedirStatus:
                 cabecalho = [0xAA, 0xBB, 0x00, self.placaByte, opcode]
@@ -144,41 +136,27 @@ class MandaSinal:
                     
                     if i == 1:
                         messagebox.showinfo("Placa ", "Placa: Potência")
-                        self.placaNome = "Placa: Potência"
+                        self.placaNome = "Placa Potência"
+
                     elif i == 2:
                         messagebox.showinfo("Placa ", "Placa: Temperatura")
-                        self.placaNome = "Placa: Temperatura"
+                        self.placaNome = "Placa Temperatura"
+
                     elif i == 3:
                         messagebox.showinfo("Placa ", "Placa: Bobina")
-                        self.placaNome = "Placa: Bobina"
+                        self.placaNome = "Placa Bobina"
+
                     else:
                         messagebox.showinfo("Placa ", "Placa: Erro ao encontrar placa")
                         break
+                    if self.escolheSerial.menuButton:
+                        self.escolheSerial.menuButton.config(text=self.placaNome)
                         
-                    frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
-                    self.labelLoteData = Label(frame, text=f"Lote: {self.lote} | Dia: {self.dia} | Mês: {self.mes} | Ano: {self.ano} | Versão: {self.numeroVersao}", bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco)
-                    self.labelLoteData.pack(pady=(10, 0))
-                    frame.pack(pady=5)
-
-                    frame2 = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
-                    frame2.pack(pady=5, fill="both", expand=True)
-
-                    scrollbar = Scrollbar(frame2)
-                    scrollbar.pack(side="right", fill="y")
-
-                    self.resposta = Text(frame2, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
-                    self.resposta.pack(side="left", fill="both", expand=True)
-
-                    scrollbar.config(command=self.resposta.yview)
-
-                    self.resposta.config(state=NORMAL)
-
-                    self.resposta.insert(END, f"{self.placaNome}: {self.msgEstruturada}")
-                    self.resposta.config(state=DISABLED)
-                    self.escolheSerial.menuButton.config(text=self.placaNome)
+                    self.criaTabelaComInformacoes()
+                    
                     
             self.placaByte += 1  
-            
+        print(self.escolheSerial.menuButton)
           
     def criarEntry(self, texto, numeroEntry, janela):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
@@ -218,5 +196,5 @@ class MandaSinal:
         self.versaoPlaca = self.criarEntry("Versão da Placa", self.versaoPlacaNumero, self.interface.janelaMandaSinal)
         self.data = self.criarDateEntry("Data", self.interface.janelaMandaSinal)
         
-        self.ler = self.criarButton("Ler/Ident", self.interface.janelaMandaSinal, self.lerSerial)
-        self.enviar = self.criarButton("Enviar", self.interface.janelaMandaSinal, self.enviarBytes)
+        self.ler = self.criarButton("Identificar Placa", self.interface.janelaMandaSinal, self.lerSerial)
+        self.enviar = self.criarButton("Gravar Dados", self.interface.janelaMandaSinal, self.enviarBytes)
