@@ -18,6 +18,7 @@ horas_devendo = 4
 horas_adiantadas = 0
 data_inicio = "19/04/2024"
 data_fim = datetime.now().strftime('%d/%m/%Y')
+# data_fim = "10/12/2024"
 
 total_horas = calcular_horas_por_semana(horas_por_dia, data_inicio, data_fim)   
 

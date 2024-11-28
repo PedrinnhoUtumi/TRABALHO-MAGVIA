@@ -5,6 +5,7 @@ class EscolheSerial:
         self.interface = interface
         self.mandaSinal = mandaSinal
         self.guardaBobina = None
+        self.menuButton = Menubutton()
         
     def criarMenuButton(self, texto, janela):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
@@ -15,16 +16,17 @@ class EscolheSerial:
         menu = Menu(self.menuButton, tearoff=0)
         self.menuButton.config(menu=menu)
         
-        menu.add_command(label="Placa Potência", command=lambda: self.selecionar_bobina("Placa Potência"))
-        menu.add_command(label="Placa Temperatura", command=lambda: self.selecionar_bobina("Placa Temperatura"))
-        menu.add_command(label="Placa Bobina", command=lambda: self.selecionar_bobina("Placa Bobina"))
+        menu.add_command(label="Placa Potência", command=lambda: self.selecionarBobina("Placa Potência"))
+        menu.add_command(label="Placa Temperatura", command=lambda: self.selecionarBobina("Placa Temperatura"))
+        menu.add_command(label="Placa Bobina", command=lambda: self.selecionarBobina("Placa Bobina"))
         
         frame.pack(pady=5) 
         
     def configMenuButton(self):
         self.bobina1 = self.criarMenuButton("Escolher Placa", self.interface.janelaMandaSinal)
     
-    def selecionar_bobina(self, bobina):
+    def selecionarBobina(self, bobina):
+        
         if bobina == "Placa Potência":
             self.menuButton.config(text="Placa Potência")  
             print("Você selecionou a Placa Potência")
