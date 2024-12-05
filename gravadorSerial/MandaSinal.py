@@ -118,6 +118,7 @@ class MandaSinal:
     Dia: {self.gravadorSerial.msg[21]} 
     Mês: {self.gravadorSerial.msg[22]} 
     Ano: {(self.gravadorSerial.msg[23] + 1970)} 
+    Ano unix: {(self.gravadorSerial.msg[23])} 
     Versão: {int.from_bytes(self.gravadorSerial.msg[24:26], byteorder="little")} 
     FirmWare: {int.from_bytes(self.gravadorSerial.msg[26:28], byteorder="little")} 
     qmtdPulsos: {int.from_bytes(self.gravadorSerial.msg[16:20], byteorder="little")}
@@ -173,7 +174,7 @@ class MandaSinal:
         frame = Frame(janela, bg=self.interface.cinzaOliva)
         label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
         label.pack(pady=(10, 0))
-        self.dateEntry = Calendar(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2, mindate=datetime.date(1970, 1, 1), maxdate=datetime.date(9999, 12, 31), selectmode='day', date_pattern='dd/mm/yyyy')
+        self.dateEntry = Calendar(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2, mindate=datetime.date(1970, 1, 1), maxdate=datetime.date(2225, 12, 31), selectmode='day', date_pattern='dd/mm/yyyy')
         self.dateEntry.pack(pady=(0, 10)) 
         frame.pack(pady=5) 
         
