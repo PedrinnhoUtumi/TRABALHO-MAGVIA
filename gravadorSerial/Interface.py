@@ -16,6 +16,7 @@ class Interface:
         
         self.escolheSerial.configMenuButton()
         self.mandaSinal.configMandaSinal()
+        
     def cores(self):
         self.pretoOliva = "#0D0B07"       
         self.carvao = "#262118"  
@@ -26,7 +27,7 @@ class Interface:
         
     def configTela(self):
         self.root.title("Gravador Serial")
-        self.root.geometry("550x700")
+        self.root.geometry("550x800")
         self.root.resizable(False, False)
         
     def criaAbas(self):
@@ -40,5 +41,3 @@ class Interface:
         self.janelaMandaSinal = Frame(self.abas, bg=self.cinzaOliva) 
         self.abas.add(self.janelaMandaSinal, text="Gravador serial")
     
-
-        

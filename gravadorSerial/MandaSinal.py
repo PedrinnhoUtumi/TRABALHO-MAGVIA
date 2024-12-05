@@ -1,15 +1,16 @@
 from tkinter import *
 from tkinter import messagebox
-from tkcalendar import DateEntry
+from tkcalendar import DateEntry, Calendar
 from EscolheSerial import EscolheSerial
 from GravadorSerial import GravadorSerial
+import datetime
 import serial
 
-class MandaSinal:    
+class MandaSinal:
     def __init__(self, interface):
         self.interface = interface
         self.gravadorSerial = GravadorSerial()
-        self.escolheSerial = EscolheSerial(interface, None)
+        self.escolheSerial = EscolheSerial(interface, self) 
         self.bobina = None
         self.labelLoteData = None
         self.msgEstruturada = None
@@ -23,10 +24,13 @@ class MandaSinal:
         self.criarRespostaCerta = Label()
         self.interface.root.bind("<Return>", self.enviarBytes)
         
-        
     def atualizaBobina(self, bobina):
         self.bobina = bobina
-        print(f"Bobina atualizada para: {self.bobina}")
+        print(f"Placa Atual: {bobina}")
+        
+    def atualizarMenuButton(self, placaNome):
+        self.escolheSerial.menuButton.config(text=placaNome)
+        self.bobina = placaNome
         
     def criaTabelaComInformacoes(self):
         if self.labelLoteData:
@@ -60,8 +64,7 @@ class MandaSinal:
 
             self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
             self.resposta.config(state=DISABLED)
-        print(self.placaNome)
-        
+                    
     def enviarBytes(self, event = None): 
         try:
             definirSerial = 0x05
@@ -73,11 +76,19 @@ class MandaSinal:
             if self.lote > 255 or self.numeroVersao > 255:
                 messagebox.showerror("Erro", "Coloque números referentes à 2 Bytes/2 Bits (0 à 255)")
                 return
+            
+            dia, mes, ano = map(int, data.split('/'))
+            print(f"Data Selecionada: {data}")
 
-            self.dia = data.day
-            self.mes = data.month
-            self.ano = data.year % 100
-            epochAno = abs(data.year - 1970)
+            ano = int(ano)
+            mes = int(mes)
+            dia = int(dia)
+            
+            self.dia = dia
+            self.mes = mes
+            self.ano = ano % 100
+            
+            epochAno = ano - 1970
             
             if self.bobina == "Placa Potência":
                 self.placaByte = 0x01
@@ -99,8 +110,6 @@ class MandaSinal:
 
                 self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 3) + [self.lote, self.dia, self.mes, epochAno, self.numeroVersao] + (fill * 49) + [checksum() & 0x00FF] + [checksum() >> 8])
 
-
-
             else:
                 messagebox.showerror("Erro", "Algo está errado")
             
@@ -108,8 +117,7 @@ class MandaSinal:
     Lote: {self.gravadorSerial.msg[20]} 
     Dia: {self.gravadorSerial.msg[21]} 
     Mês: {self.gravadorSerial.msg[22]} 
-    Ano: {(self.gravadorSerial.msg[23] + 70) % 100} 
-    Ano unix epoch: {self.gravadorSerial.msg[23]} 
+    Ano: {(self.gravadorSerial.msg[23] + 1970)} 
     Versão: {int.from_bytes(self.gravadorSerial.msg[24:26], byteorder="little")} 
     FirmWare: {int.from_bytes(self.gravadorSerial.msg[26:28], byteorder="little")} 
     qmtdPulsos: {int.from_bytes(self.gravadorSerial.msg[16:20], byteorder="little")}
@@ -125,42 +133,34 @@ class MandaSinal:
         opcode = pedirStatus
         fill = [0x00]
         self.placaByte = 1
-        def atualizaTextoBotao():
-            if self.escolheSerial.menuButton:
-                self.escolheSerial.menuButton.config(text=self.placaNome)
+
         for i in range(1, 4):
             if opcode == pedirStatus:
                 cabecalho = [0xAA, 0xBB, 0x00, self.placaByte, opcode]
                 def checksum():
                     return sum(fill + [self.placaByte, opcode, 170, 187])
 
-                self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 57) + [checksum() & 0x00FF] + [checksum() >> 8])
+                self.gravadorSerial.mensagensParaEnviar(info=cabecalho + (fill * 57) + [checksum() & 0x00FF] + [checksum() >> 8])
                 if len(self.gravadorSerial.msg) != 0:
-                    
                     if i == 1:
-                        messagebox.showinfo("Placa ", "Placa: Potência")
+                        messagebox.showinfo("Placa ", "Placa mudada para: Placa Potência")
                         self.placaNome = "Placa Potência"
-
                     elif i == 2:
-                        messagebox.showinfo("Placa ", "Placa: Temperatura")
+                        messagebox.showinfo("Placa ", "Placa mudada para: Placa Temperatura")
                         self.placaNome = "Placa Temperatura"
-
                     elif i == 3:
-                        messagebox.showinfo("Placa ", "Placa: Bobina")
+                        messagebox.showinfo("Placa ", "Placa mudada para: Placa Bobina")
                         self.placaNome = "Placa Bobina"
-
                     else:
-                        messagebox.showinfo("Placa ", "Placa: Erro ao encontrar placa")
+                        messagebox.showerror("Placa ", "Placa: Erro ao encontrar placa")
                         break
-                    if self.escolheSerial.menuButton:
-                        print("====================================================================")
-                        self.escolheSerial.menuButton.after(0, atualizaTextoBotao)
-                        
+                    
+                    self.atualizarMenuButton(self.placaNome)
+                    
                     self.criaTabelaComInformacoes()
-                    
-                    
-            self.placaByte += 1  
-          
+
+            self.placaByte += 1
+
     def criarEntry(self, texto, numeroEntry, janela):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
         label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
@@ -173,7 +173,7 @@ class MandaSinal:
         frame = Frame(janela, bg=self.interface.cinzaOliva)
         label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
         label.pack(pady=(10, 0))
-        self.dateEntry = DateEntry(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2)
+        self.dateEntry = Calendar(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2, mindate=datetime.date(1970, 1, 1), maxdate=datetime.date(9999, 12, 31), selectmode='day', date_pattern='dd/mm/yyyy')
         self.dateEntry.pack(pady=(0, 10)) 
         frame.pack(pady=5) 
         
