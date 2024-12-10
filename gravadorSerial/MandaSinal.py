@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import messagebox
 from tkcalendar import Calendar, Calendar
-# from EscolheSerial import EscolheSerial
 from GravadorSerial import GravadorSerial
 import datetime
 import serial
@@ -10,7 +9,6 @@ class MandaSinal:
     def __init__(self, interface):
         self.interface = interface
         self.gravadorSerial = GravadorSerial()
-        # self.escolheSerial = EscolheSerial(interface, self) 
         self.bobina = None
         self.resposta = None
         self.msgEstruturada = None
