@@ -26,7 +26,7 @@ class Interface:
         
     def configTela(self):
         self.root.title("Gravador Serial")
-        self.root.geometry("550x700")
+        self.root.geometry("550x750")
         self.root.resizable(False, False)
         
     def criaAbas(self):
