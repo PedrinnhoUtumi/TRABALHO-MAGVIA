@@ -1,20 +1,19 @@
 from tkinter import *
 from tkinter import ttk
 from MandaSinal import MandaSinal
-from EscolheSerial import EscolheSerial
+# from EscolheSerial import EscolheSerial
 
 class Interface:
     def __init__(self, root):
         self.root = root
         self.mandaSinal = MandaSinal(self)
-        self.escolheSerial = EscolheSerial(self, self.mandaSinal)
+        # self.escolheSerial = EscolheSerial(self, self.mandaSinal)
         
         self.cores()
         self.configTela()
         self.criaAbas()
         self.configAba()
         
-        self.escolheSerial.configMenuButton()
         self.mandaSinal.configMandaSinal()
         
     def cores(self):
@@ -27,7 +26,7 @@ class Interface:
         
     def configTela(self):
         self.root.title("Gravador Serial")
-        self.root.geometry("550x800")
+        self.root.geometry("550x700")
         self.root.resizable(False, False)
         
     def criaAbas(self):

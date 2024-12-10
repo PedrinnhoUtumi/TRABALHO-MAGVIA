@@ -25,7 +25,7 @@ class GravadorSerial:
         if self.ser and self.ser.is_open:
             print("A porta serial já está aberta.")
         else:
-            self.ser = serial.Serial(port=porta, baudrate=115200, bytesize=8, parity="N", stopbits=1, timeout=1)
+            self.ser = serial.Serial(port=porta, baudrate=115200, bytesize=8, parity="N", stopbits=1, timeout=0.2)
             if self.ser.is_open:
                 print(f"Porta {porta} aberta com sucesso.")
 
