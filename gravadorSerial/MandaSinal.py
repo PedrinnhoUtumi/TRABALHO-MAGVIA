@@ -17,6 +17,7 @@ class MandaSinal:
         self.ano = None
         self.lote = None
         self.numeroVersao = None
+        self.numeroVersao2 = None
         self.placaByte = None
         self.placaNome = ""
         self.criarRespostaCerta = Label()
@@ -80,9 +81,10 @@ class MandaSinal:
             
             self.lote = self.numeroLote.get()
             self.numeroVersao = self.versaoPlacaNumero.get()
+            self.numeroVersao2 = self.versaoPlacaNumero2.get()
             data = self.calendar.get_date()
 
-            if self.lote > 255 or self.numeroVersao > 255:
+            if self.lote > 255 or self.numeroVersao > 255 or self.numeroVersao2 > 255:
                 messagebox.showerror("Erro", "Coloque números referentes à 2 Bytes/2 Bits (0 à 255)")
                 return
             
@@ -115,10 +117,9 @@ class MandaSinal:
             if opcode == definirSerial:
                 cabecalho = [0xAA, 0xBB, 0x00, self.placaByte, opcode]
                 def checksum():
-                    return sum(fill + [self.placaByte, 5, int(self.lote), self.dia, self.mes, epochAno, 170, 187, self.numeroVersao])
+                    return sum(fill + [self.placaByte, 5, int(self.lote), self.dia, self.mes, epochAno, 170, 187, self.numeroVersao, self.numeroVersao2])
                 
-
-                self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 3) + [self.lote, self.dia, self.mes, epochAno, self.numeroVersao] + (fill * 49) + [checksum() & 0x00FF] + [checksum() >> 8])
+                self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 3) + [self.lote, self.dia, self.mes, epochAno, self.numeroVersao, self.numeroVersao2] + (fill * 48) + [checksum() & 0x00FF] + [checksum() >> 8])
 
             else:
                 messagebox.showerror("Erro", "Algo está errado")
@@ -128,6 +129,7 @@ class MandaSinal:
 
         except serial.SerialException:
             print("Erro ao conectar ao serial")
+
 
     def leOqueTemDentroDaSerial(self):
         pedirStatus = 0
@@ -197,9 +199,11 @@ class MandaSinal:
     def configMandaSinal(self):
         self.numeroLote = IntVar() 
         self.versaoPlacaNumero = IntVar()
+        self.versaoPlacaNumero2 = IntVar()
         
         self.lote = self.criaEntry("Lote", self.numeroLote, self.interface.janelaMandaSinal)
         self.versaoPlaca = self.criaEntry("Versão da Placa", self.versaoPlacaNumero, self.interface.janelaMandaSinal)
+        self.versaoPlaca2 = self.criaEntry("Versão da Placa", self.versaoPlacaNumero2, self.interface.janelaMandaSinal)
         self.data = self.criaCalendar("Data", self.interface.janelaMandaSinal)
         
         self.ler = self.criaButton("Identificar Placa", self.interface.janelaMandaSinal, self.leOqueTemDentroDaSerial)

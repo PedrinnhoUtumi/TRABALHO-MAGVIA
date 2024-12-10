@@ -11,10 +11,8 @@ class GravadorSerial:
     def listaPortas(self):
         portas = serial.tools.list_ports.comports()
         if portas:
-            print("Portas seriais disponíveis:")
             for porta in portas:
                 if "USB" in porta.description or "ttyUSB" in porta.device or "ttyACM" in porta.device:
-                    print(f"{porta.device}: {porta.description}")
                     self.portasUSB.append(porta.device)
             return [self.portasUSB]
         else:
@@ -23,12 +21,11 @@ class GravadorSerial:
 
     def abrirPorta(self, porta):
         if self.ser and self.ser.is_open:
-            print("A porta serial já está aberta.")
+            return
         else:
             self.ser = serial.Serial(port=porta, baudrate=115200, bytesize=8, parity="N", stopbits=1, timeout=0.2)
             if self.ser.is_open:
-                print(f"Porta {porta} aberta com sucesso.")
-
+                return
     def mensagensParaEnviar(self, info=[]):
         
         self.listaPortas()
@@ -36,21 +33,21 @@ class GravadorSerial:
             porta = self.portasUSB[0]
             self.abrirPorta(porta)
 
-            def enviarMensagem():
+            def enviaMensagem():
                 msgBytes = bytes(info)
                 self.ser.write(msgBytes)
                 print("=========================================================================================================================================================================================================")
-                print(" MINHA MENSAGEM:")  
+                print(" MINHA MENSAGEM:\n")  
                 print(msgBytes)
                 print("=========================================================================================================================================================================================================")
                               
                 self.msg = self.ser.read(64)
                 
                 print("=========================================================================================================================================================================================================")
-                print(" RESPOSTA:")  
+                print(" RESPOSTA:\n")  
                 print(self.msg)
                 print("=========================================================================================================================================================================================================")
-            thread = threading.Thread(target=enviarMensagem)
+            thread = threading.Thread(target=enviaMensagem)
             thread.start()
             thread.join()  
 
