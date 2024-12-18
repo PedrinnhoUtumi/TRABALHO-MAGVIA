@@ -8,7 +8,7 @@ class GravadorSerial:
         self.msg = None
         self.portasUSB = []
 
-    def listaPortas(self):
+    def __listaPortas(self):
         portas = serial.tools.list_ports.comports()
         if portas:
             for porta in portas:
@@ -19,7 +19,7 @@ class GravadorSerial:
             print("Nenhuma porta serial encontrada.")
             return []
 
-    def abrePorta(self, porta):
+    def __abrePorta(self, porta):
         if self.ser and self.ser.is_open:
             return
         else:
@@ -29,11 +29,10 @@ class GravadorSerial:
     
     def mensagensParaEnviar(self, info=[]):
         
-        self.listaPortas()
+        self.__listaPortas()
         if self.portasUSB:
             porta = self.portasUSB[0]
-            self.abrePorta(porta)
-
+            self.__abrePorta(porta)
             def enviaMensagem():
                 msgBytes = bytes(info)
                 self.ser.write(msgBytes)

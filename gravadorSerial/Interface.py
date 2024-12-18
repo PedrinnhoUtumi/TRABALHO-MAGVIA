@@ -24,8 +24,8 @@ class Interface:
         
     def configTela(self):
         self.root.title("Gravador Serial")
-        self.root.geometry("500x500")
-        self.root.resizable(False, True)
+        self.root.geometry("500x550")
+        self.root.resizable(False, False)
         
     def criaAbas(self):
         self.abas = ttk.Notebook(self.root) 
