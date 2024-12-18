@@ -19,19 +19,20 @@ class GravadorSerial:
             print("Nenhuma porta serial encontrada.")
             return []
 
-    def abrirPorta(self, porta):
+    def abrePorta(self, porta):
         if self.ser and self.ser.is_open:
             return
         else:
             self.ser = serial.Serial(port=porta, baudrate=115200, bytesize=8, parity="N", stopbits=1, timeout=0.2)
             if self.ser.is_open:
                 return
+    
     def mensagensParaEnviar(self, info=[]):
         
         self.listaPortas()
         if self.portasUSB:
             porta = self.portasUSB[0]
-            self.abrirPorta(porta)
+            self.abrePorta(porta)
 
             def enviaMensagem():
                 msgBytes = bytes(info)

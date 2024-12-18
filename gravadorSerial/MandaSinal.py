@@ -20,13 +20,13 @@ class MandaSinal:
         self.numeroVersao2 = None
         self.placaByte = None
         self.placaNome = ""
-        self.criarRespostaCerta = Label()
+        self.label = None
         self.interface.root.bind("<Return>", self.gravaBytesNaSerial)
         
     def nomeDaPlaca(self, placaNome):
         self.bobina = placaNome
         
-    def criaTabelaComInformacoes(self): 
+    def criaTabelaComInformacoes(self):
         self.leRespostaDaSerial()
         if self.resposta:
             self.resposta.config(state=NORMAL)
@@ -37,13 +37,14 @@ class MandaSinal:
             
             self.resposta.config(state=DISABLED)
         else:
-            frame2 = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
-            frame2.pack(pady=5, fill="both", expand=True)
+            frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
+            frame.pack(pady=5, fill="both", expand=True)
+            # frame.place(relx=0
 
-            scrollbar = Scrollbar(frame2)
+            scrollbar = Scrollbar(frame)
             scrollbar.pack(side="right", fill="y")
 
-            self.resposta = Text(frame2, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
+            self.resposta = Text(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
             self.resposta.pack(side="left", fill="both", expand=True)
 
             scrollbar.config(command=self.resposta.yview)
@@ -66,10 +67,9 @@ class MandaSinal:
     Dia: {self.gravadorSerial.msg[21]} 
     Mês: {self.gravadorSerial.msg[22]} 
     Ano: {(self.gravadorSerial.msg[23] + 1970)} 
-    Ano unix: {(self.gravadorSerial.msg[23])} 
     Versão: {int.from_bytes(self.gravadorSerial.msg[24:26], byteorder="little")} 
     FirmWare: {int.from_bytes(self.gravadorSerial.msg[26:28], byteorder="little")} 
-    qmtdPulsos: {int.from_bytes(self.gravadorSerial.msg[16:20], byteorder="little")}
+    qntdPulsos: {int.from_bytes(self.gravadorSerial.msg[16:20], byteorder="little")}
                 """
         
         else:
@@ -108,7 +108,7 @@ class MandaSinal:
             elif self.bobina == "Placa Bobina":
                 self.placaByte = 0x03
             else:
-                messagebox.showerror("Erro", "Placa não encontrada")
+                self.criaLabel("Report", "Erro", self.interface.janelaMandaSinal)
                 return
 
             fill = [0x00] 
@@ -122,16 +122,19 @@ class MandaSinal:
                 self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 3) + [self.lote, self.dia, self.mes, epochAno, self.numeroVersao, self.numeroVersao2] + (fill * 48) + [checksum() & 0x00FF] + [checksum() >> 8])
 
             else:
-                messagebox.showerror("Erro", "Algo está errado")
+                self.criaLabel("Report", "Erro", self.interface.janelaMandaSinal)
             
             self.leRespostaDaSerial()
+            self.criaLabel("Report", "Ok", self.interface.janelaMandaSinal)
+            
             self.criaTabelaComInformacoes()
 
         except serial.SerialException:
+            self.criaLabel("Report", "Erro", self.interface.janelaMandaSinal)
             print("Erro ao conectar ao serial")
 
-
     def leOqueTemDentroDaSerial(self):
+        
         pedirStatus = 0
         opcode = pedirStatus
         fill = [0x00]
@@ -146,13 +149,13 @@ class MandaSinal:
                 self.gravadorSerial.mensagensParaEnviar(info=cabecalho + (fill * 57) + [checksum() & 0x00FF] + [checksum() >> 8])
                 if len(self.gravadorSerial.msg) != 0:
                     if i == 1:
-                        messagebox.showinfo("Placa ", "Placa mudada para: Placa Potência")
+                        messagebox.showinfo("Placa ", "Placa identificada: Placa Potência")
                         self.placaNome = "Placa Potência"
                     elif i == 2:
-                        messagebox.showinfo("Placa ", "Placa mudada para: Placa Temperatura")
+                        messagebox.showinfo("Placa ", "Placa identificada: Placa Temperatura")
                         self.placaNome = "Placa Temperatura"
                     elif i == 3:
-                        messagebox.showinfo("Placa ", "Placa mudada para: Placa Bobina")
+                        messagebox.showinfo("Placa ", "Placa identificada: Placa Bobina")
                         self.placaNome = "Placa Bobina"
                         
                     else:
@@ -161,50 +164,101 @@ class MandaSinal:
                     
                     self.nomeDaPlaca(self.placaNome)
                     
+                    self.criaLabel("Report", "Ok", self.interface.janelaMandaSinal)
+                    
                     self.criaTabelaComInformacoes()
+                else:
+                    self.criaLabel("Report", "Error", self.interface.janelaMandaSinal)
+                    
 
             self.placaByte += 1
         self.leRespostaDaSerial()
+        
     
     def criaEntry(self, texto, numeroEntry, janela):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
         label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
-        label.pack(pady=(10, 0))
-        self.entry = Entry(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, textvariable=numeroEntry)
-        self.entry.pack(pady=(0, 10)) 
-        frame.pack(pady=5) 
+        label.pack(pady=(5, 0), padx=10)
+        
+        self.entry = Entry(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, textvariable=numeroEntry, width = 16)
+        self.entry.pack(pady=(0, 10), padx=10) 
+        frame.pack(pady=5, side=TOP, anchor="e") 
         
     def criaCalendar(self, texto, janela):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
         label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
-        label.pack(pady=(10, 0))
+        label.pack(pady=(10, 0), padx=10)
         self.calendar = Calendar(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2, mindate=datetime.date(1970, 1, 1), maxdate=datetime.date(2225, 12, 31), selectmode='day', date_pattern='dd/mm/yyyy')
-        self.calendar.pack(pady=(0, 10)) 
-        frame.pack(pady=5) 
+        self.calendar.pack(pady=(0, 10), padx=10) 
+        frame.pack(pady=5, side=TOP, anchor="nw") 
         
     def criaLabel(self, texto, resposta, janela):
-        frame = Frame(janela, bg=self.interface.cinzaOliva)
-        label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
-        label.pack(pady=(10, 0))
-        label2 = Label(frame, text=resposta,bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2)
-        label2.pack(pady=(0, 10)) 
-        frame.pack(pady=5) 
+        if self.label:
+            self.label.config(text=resposta) 
+        else:
+            frame = Frame(janela, bg=self.interface.cinzaOliva)
+            label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
+            label.pack(pady=(10, 0))
+            self.label = Label(frame, text=resposta, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width=12, borderwidth=2)
+            self.label.pack(pady=(0, 10))
+            frame.pack(pady=5)  
+
         
-    def criaButton(self, texto, janela, comando):
+    def criaButton(self, texto, janela, comando, tamanho):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
-        button = Button(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, text=texto, command=comando)
-        button.pack(pady=10) 
-        frame.pack(pady=5) 
+        button = Button(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, text=texto, command=comando, width = tamanho)
+        button.pack(pady=(0, 10), padx=10) 
+        frame.pack(pady=6, side=TOP, anchor="center") 
         
+    # def configMandaSinal(self):
+    #     self.numeroLote = IntVar() 
+    #     self.versaoPlacaNumero = IntVar()
+    #     self.versaoPlacaNumero2 = IntVar()
+        
+    #     self.lote = self.criaEntry("Lote", self.numeroLote, self.interface.janelaMandaSinal)
+    #     self.versaoPlaca = self.criaEntry("Versão da Placa", self.versaoPlacaNumero, self.interface.janelaMandaSinal)
+    #     self.versaoPlaca2 = self.criaEntry("Versão da Placa", self.versaoPlacaNumero2, self.interface.janelaMandaSinal)
+        
+    #     self.data = self.criaCalendar("Data", self.interface.janelaMandaSinal)
+        
+    #     self.ler = self.criaButton("Identificar Placa", self.interface.janelaMandaSinal, self.leOqueTemDentroDaSerial)
+    #     self.enviar = self.criaButton("Gravar Dados", self.interface.janelaMandaSinal, self.gravaBytesNaSerial)
+    
     def configMandaSinal(self):
         self.numeroLote = IntVar() 
         self.versaoPlacaNumero = IntVar()
         self.versaoPlacaNumero2 = IntVar()
+
+        framePrincipal = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
+        framePrincipal.pack(pady=10, padx=10)
+
+        frameEsquerda = Frame(framePrincipal, bg=self.interface.cinzaOliva)
+        frameEsquerda.pack(side="left", padx=10)
+
+        self.ler = self.criaButton("Identificar Placa", frameEsquerda, self.leOqueTemDentroDaSerial, tamanho = 12)
+        self.data = self.criaCalendar("Data", frameEsquerda)
+
+        frameDireita = Frame(framePrincipal, bg=self.interface.cinzaOliva)
+        frameDireita.pack(side="left", padx=10)
+
+        self.lote = self.criaEntry("Lote", self.numeroLote, frameDireita)
+        self.versaoPlaca = self.criaEntry("Versão da Placa", self.versaoPlacaNumero, frameDireita)
+        self.versaoPlaca2 = self.criaEntry("Versão da Placa", self.versaoPlacaNumero2, frameDireita)
+        self.enviar = self.criaButton("Gravar Dados", frameDireita, self.gravaBytesNaSerial, tamanho = 12)
+
+    
+    
+    # def configMandaSinal(self):
+    #     self.numeroLote = IntVar() 
+    #     self.versaoPlacaNumero = IntVar()
+    #     self.versaoPlacaNumero2 = IntVar()
         
-        self.lote = self.criaEntry("Lote", self.numeroLote, self.interface.janelaMandaSinal)
-        self.versaoPlaca = self.criaEntry("Versão da Placa", self.versaoPlacaNumero, self.interface.janelaMandaSinal)
-        self.versaoPlaca2 = self.criaEntry("Versão da Placa", self.versaoPlacaNumero2, self.interface.janelaMandaSinal)
-        self.data = self.criaCalendar("Data", self.interface.janelaMandaSinal)
+    #     self.lote = self.criaEntry("Lote", self.numeroLote, self.interface.janelaMandaSinal)
+    #     self.versaoPlaca = self.criaEntry("Versão da Placa", self.versaoPlacaNumero, self.interface.janelaMandaSinal)
+    #     self.versaoPlaca2 = self.criaEntry("Versão da Placa", self.versaoPlacaNumero2, self.interface.janelaMandaSinal)
         
-        self.ler = self.criaButton("Identificar Placa", self.interface.janelaMandaSinal, self.leOqueTemDentroDaSerial)
-        self.enviar = self.criaButton("Gravar Dados", self.interface.janelaMandaSinal, self.gravaBytesNaSerial)
+    #     self.data = self.criaCalendar("Data", self.interface.janelaMandaSinal)
+        
+    #     self.ler = self.criaButton("Identificar Placa", self.interface.janelaMandaSinal, self.leOqueTemDentroDaSerial)
+    #     self.enviar = self.criaButton("Gravar Dados", self.interface.janelaMandaSinal, self.gravaBytesNaSerial)
+    

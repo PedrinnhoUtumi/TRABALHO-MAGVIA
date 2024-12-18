@@ -1,13 +1,11 @@
 from tkinter import *
 from tkinter import ttk
 from MandaSinal import MandaSinal
-# from EscolheSerial import EscolheSerial
 
 class Interface:
     def __init__(self, root):
         self.root = root
         self.mandaSinal = MandaSinal(self)
-        # self.escolheSerial = EscolheSerial(self, self.mandaSinal)
         
         self.cores()
         self.configTela()
@@ -26,8 +24,8 @@ class Interface:
         
     def configTela(self):
         self.root.title("Gravador Serial")
-        self.root.geometry("550x750")
-        self.root.resizable(False, False)
+        self.root.geometry("500x500")
+        self.root.resizable(False, True)
         
     def criaAbas(self):
         self.abas = ttk.Notebook(self.root) 
