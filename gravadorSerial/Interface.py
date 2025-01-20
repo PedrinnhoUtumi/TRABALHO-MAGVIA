@@ -20,7 +20,8 @@ class Interface:
         self.cinzaOliva = "#595856"        
         self.cinzaOlivaClaro = "#8C8B88"  
         self.branco = "#ffffff"       
-        self.cinzaClaro = "#BFBFBD"       
+        self.cinzaClaro = "#BFBFBD"
+        self.preto = "#090909"
         
     def configTela(self):
         self.root.title("Gravador Serial")

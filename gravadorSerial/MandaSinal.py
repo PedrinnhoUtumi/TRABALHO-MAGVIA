@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 from tkcalendar import Calendar, Calendar
-from GravadorSerial import GravadorSerial
+from gravadorSerial import GravadorSerial
 import datetime
 import serial
 
@@ -43,7 +43,7 @@ class MandaSinal:
             scrollbar = Scrollbar(frame)
             scrollbar.pack(side="right", fill="y")
 
-            self.resposta = Text(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
+            self.resposta = Text(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
             self.resposta.pack(side="left", fill="both", expand=True)
 
             scrollbar.config(command=self.resposta.yview)
@@ -179,7 +179,7 @@ class MandaSinal:
         label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
         label.pack(pady=(5, 0), padx=10)
         
-        self.entry = Entry(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, textvariable=numeroEntry, width = 16)
+        self.entry = Entry(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, textvariable=numeroEntry, width = 16)
         self.entry.pack(pady=(0, 10), padx=10) 
         frame.pack(pady=5, side=TOP, anchor="e") 
         
@@ -187,7 +187,7 @@ class MandaSinal:
         frame = Frame(janela, bg=self.interface.cinzaOliva)
         label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
         label.pack(pady=(10, 0), padx=10)
-        self.calendar = Calendar(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width = 12, borderwidth = 2, mindate=datetime.date(1970, 1, 1), maxdate=datetime.date(2225, 12, 31), selectmode='day', date_pattern='dd/mm/yyyy')
+        self.calendar = Calendar(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, width = 12, borderwidth = 2, mindate=datetime.date(1970, 1, 1), maxdate=datetime.date(2225, 12, 31), selectmode='day', date_pattern='dd/mm/yyyy')
         self.calendar.pack(pady=(0, 10), padx=10) 
         frame.pack(pady=5, side=TOP, anchor="nw") 
         
@@ -198,14 +198,14 @@ class MandaSinal:
             frame = Frame(janela, bg=self.interface.cinzaOliva)
             label = Label(frame, text=texto, bg=self.interface.cinzaOliva, fg=self.interface.branco)
             label.pack(pady=(10, 0))
-            self.label = Label(frame, text=resposta, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, width=12, borderwidth=2)
+            self.label = Label(frame, text=resposta, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, width=12, borderwidth=2)
             self.label.pack(pady=(0, 10))
             frame.pack(pady=5)  
 
         
     def __criaButton(self, texto, janela, comando, tamanho):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
-        button = Button(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.branco, text=texto, command=comando, width = tamanho)
+        button = Button(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, text=texto, command=comando, width = tamanho)
         button.pack(pady=(0, 10), padx=10) 
         frame.pack(pady=6, side=TOP, anchor="center") 
         
