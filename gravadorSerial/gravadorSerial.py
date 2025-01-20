@@ -2,18 +2,23 @@ import serial
 import serial.tools.list_ports
 import threading
 
+
 class GravadorSerial:
     def __init__(self):
         self.ser = None  
         self.msg = None
         self.portasUSB = []
 
-    def __listaPortas(self):
+    def listaPortas(self):
         portas = serial.tools.list_ports.comports()
+        
+
         if portas:
             for porta in portas:
                 if "USB" in porta.description or "ttyUSB" in porta.device or "ttyACM" in porta.device:
                     self.portasUSB.append(porta.device)
+                    
+            
             return [self.portasUSB]
         else:
             print("Nenhuma porta serial encontrada.")

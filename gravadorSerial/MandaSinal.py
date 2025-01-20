@@ -9,6 +9,7 @@ class MandaSinal:
     def __init__(self, interface):
         self.interface = interface
         self.gravadorSerial = GravadorSerial()
+        self.abrirPorta = None
         self.bobina = None
         self.resposta = None
         self.msgEstruturada = None
@@ -209,6 +210,20 @@ class MandaSinal:
         button.pack(pady=(0, 10), padx=10) 
         frame.pack(pady=6, side=TOP, anchor="center") 
         
+    def __criaMenubutton(self, janela):
+        self.opcoes = Menubutton(janela, text = "Escolha Serial", cursor = "hand1", relief = "ridge")
+        self.opcoes.pack(pady=(0, 10), padx=10)
+        self.menu = Menu(self.opcoes, tearoff = 0)
+        self.opcoes.config(menu = self.menu)
+        
+        self.portas = self.gravadorSerial.listaPortas()
+        for self.porta in self.portas:
+            self.menu.add_command(label = str(self.porta), command = lambda porta = self.porta: self.selecionaSerial(porta))
+        
+    def selecionaSerial(self, porta):
+        self.abrirPorta = porta
+        return self.abrirPorta
+        
     def configMandaSinal(self):
         self.numeroLote = IntVar() 
         self.versaoPlacaNumero = IntVar()
@@ -229,4 +244,6 @@ class MandaSinal:
         self.lote = self.__criaEntry("Lote", self.numeroLote, frameDireita)
         self.versaoPlaca = self.__criaEntry("Versão da Placa", self.versaoPlacaNumero, frameDireita)
         self.versaoPlaca2 = self.__criaEntry("Versão da Placa", self.versaoPlacaNumero2, frameDireita)
+        self.escolheSerial = self.__criaMenubutton(frameDireita)
         self.enviar = self.__criaButton("Gravar Dados", frameDireita, self.__gravaBytesNaSerial, tamanho = 12)
+        
