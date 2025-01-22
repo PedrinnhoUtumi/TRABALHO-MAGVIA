@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
-from tkcalendar import Calendar, Calendar
-from gravadorSerial import GravadorSerial
+from tkcalendar import Calendar
+from GravadorSerial import GravadorSerial
 import datetime
 import serial
 
@@ -119,7 +119,7 @@ class MandaSinal:
                 def __checksum():
                     return sum(fill + [self.placaByte, 5, int(self.lote), self.dia, self.mes, epochAno, 170, 187, self.numeroVersao, self.numeroVersao2])
                 
-                self.gravadorSerial.mensagensParaEnviar(info = cabecalho + (fill * 3) + [self.lote, self.dia, self.mes, epochAno, self.numeroVersao, self.numeroVersao2] + (fill * 48) + [__checksum() & 0x00FF] + [__checksum() >> 8])
+                self.gravadorSerial.mensagensParaEnviar(porta = self.abrirPorta, info = cabecalho + (fill * 3) + [self.lote, self.dia, self.mes, epochAno, self.numeroVersao, self.numeroVersao2] + (fill * 48) + [__checksum() & 0x00FF] + [__checksum() >> 8])
 
             else:
                 self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
@@ -146,28 +146,33 @@ class MandaSinal:
                 def __checksum():
                     return sum(fill + [self.placaByte, opcode, 170, 187])
 
-                self.gravadorSerial.mensagensParaEnviar(info=cabecalho + (fill * 57) + [__checksum() & 0x00FF] + [__checksum() >> 8])
-                if len(self.gravadorSerial.msg) != 0:
-                    if i == 1:
-                        messagebox.showinfo("Placa ", "Placa identificada: Placa Potência")
-                        self.placaNome = "Placa Potência"
-                    elif i == 2:
-                        messagebox.showinfo("Placa ", "Placa identificada: Placa Temperatura")
-                        self.placaNome = "Placa Temperatura"
-                    elif i == 3:
-                        messagebox.showinfo("Placa ", "Placa identificada: Placa Bobina")
-                        self.placaNome = "Placa Bobina"
-                        
+                self.gravadorSerial.mensagensParaEnviar(porta = self.abrirPorta, info=cabecalho + (fill * 57) + [__checksum() & 0x00FF] + [__checksum() >> 8])
+                try:
+                    if self.gravadorSerial.ser.is_open:
+                        if len(self.gravadorSerial.msg) != 0:
+                            if i == 1:
+                                messagebox.showinfo("Placa ", "Placa identificada: Placa Potência")
+                                self.placaNome = "Placa Potência"
+                            elif i == 2:
+                                messagebox.showinfo("Placa ", "Placa identificada: Placa Temperatura")
+                                self.placaNome = "Placa Temperatura"
+                            elif i == 3:
+                                messagebox.showinfo("Placa ", "Placa identificada: Placa Bobina")
+                                self.placaNome = "Placa Bobina"
+                            else:
+                                messagebox.showerror("Placa ", "Placa: Erro ao encontrar placa")
+                                break
+                            
+                            self.__nomeDaPlaca(self.placaNome)
+                            
+                            self.__criaLabel("Report", "Ok", self.interface.janelaMandaSinal)
+                            
+                            self.__criaTabelaComInformacoes()
+                        else:
+                            self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
                     else:
-                        messagebox.showerror("Placa ", "Placa: Error ao encontrar placa")
-                        break
-                    
-                    self.__nomeDaPlaca(self.placaNome)
-                    
-                    self.__criaLabel("Report", "Ok", self.interface.janelaMandaSinal)
-                    
-                    self.__criaTabelaComInformacoes()
-                else:
+                        self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
+                except serial.SerialException:
                     self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
                     
 
@@ -211,14 +216,18 @@ class MandaSinal:
         frame.pack(pady=6, side=TOP, anchor="center") 
         
     def __criaMenubutton(self, janela):
-        self.opcoes = Menubutton(janela, text = "Escolha Serial", cursor = "hand1", relief = "ridge")
+        self.opcoes = Menubutton(janela, text="Escolha Serial", cursor="hand1", relief="ridge")
         self.opcoes.pack(pady=(0, 10), padx=10)
-        self.menu = Menu(self.opcoes, tearoff = 0)
-        self.opcoes.config(menu = self.menu)
+        self.menu = Menu(self.opcoes, tearoff=0)
+        self.opcoes.config(menu=self.menu)
         
         self.portas = self.gravadorSerial.listaPortas()
-        for self.porta in self.portas:
-            self.menu.add_command(label = str(self.porta), command = lambda porta = self.porta: self.selecionaSerial(porta))
+        print("Portas abertas:", self.portas)  
+
+        for porta in self.portas:
+            self.menu.add_command(label=str(porta), command=lambda porta=porta: self.selecionaSerial(porta))
+
+        self.portas = []
         
     def selecionaSerial(self, porta):
         self.abrirPorta = porta

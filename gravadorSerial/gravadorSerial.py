@@ -19,7 +19,7 @@ class GravadorSerial:
                     self.portasUSB.append(porta.device)
                     
             
-            return [self.portasUSB]
+            return self.portasUSB
         else:
             print("Nenhuma porta serial encontrada.")
             return []
@@ -32,11 +32,11 @@ class GravadorSerial:
             if self.ser.is_open:
                 return
     
-    def mensagensParaEnviar(self, info=[]):
+    def mensagensParaEnviar(self, porta, info=[]):
         
-        self.__listaPortas()
+        self.listaPortas()
         if self.portasUSB:
-            porta = self.portasUSB[0]
+            porta = porta
             self.__abrePorta(porta)
             def enviaMensagem():
                 msgBytes = bytes(info)
