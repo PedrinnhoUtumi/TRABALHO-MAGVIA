@@ -140,14 +140,19 @@ class MandaSinal:
         fill = [0x00]
         self.placaByte = 1
 
+        if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
+            messagebox.showerror("Erro", "A porta serial não está aberta ou foi desconectada.")
+            self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
+            return  
+
         for i in range(1, 4):
             if opcode == pedirStatus:
                 cabecalho = [0xAA, 0xBB, 0x00, self.placaByte, opcode]
                 def __checksum():
                     return sum(fill + [self.placaByte, opcode, 170, 187])
 
-                self.gravadorSerial.mensagensParaEnviar(porta = self.abrirPorta, info=cabecalho + (fill * 57) + [__checksum() & 0x00FF] + [__checksum() >> 8])
                 try:
+                    self.gravadorSerial.mensagensParaEnviar(porta = self.abrirPorta, info=cabecalho + (fill * 57) + [__checksum() & 0x00FF] + [__checksum() >> 8])
                     if self.gravadorSerial.ser.is_open:
                         if len(self.gravadorSerial.msg) != 0:
                             if i == 1:
@@ -172,7 +177,8 @@ class MandaSinal:
                             self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
                     else:
                         self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
-                except serial.SerialException:
+                except serial.SerialException as e:
+                    messagebox.showerror("Erro", f"Erro ao acessar a porta serial: {e}")
                     self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
                     
 
@@ -209,29 +215,38 @@ class MandaSinal:
             frame.pack(pady=5)  
 
         
-    def __criaButton(self, texto, janela, comando, tamanho):
+    def __criaButton(self, texto, janela, comando, tamanho, cursor):
         frame = Frame(janela, bg=self.interface.cinzaOliva)
-        button = Button(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, text=texto, command=comando, width = tamanho)
+        button = Button(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, text=texto, command=comando, width=tamanho, cursor=cursor)
         button.pack(pady=(0, 10), padx=10) 
         frame.pack(pady=6, side=TOP, anchor="center") 
         
     def __criaMenubutton(self, janela):
-        self.opcoes = Menubutton(janela, text="Escolha Serial", cursor="hand1", relief="ridge")
+        self.opcoes = Menubutton(janela, text="Escolha Serial", cursor="hand1", relief="ridge", bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto)
         self.opcoes.pack(pady=(0, 10), padx=10)
         self.menu = Menu(self.opcoes, tearoff=0)
         self.opcoes.config(menu=self.menu)
         
         self.portas = self.gravadorSerial.listaPortas()
-        print("Portas abertas:", self.portas)  
 
         for porta in self.portas:
-            self.menu.add_command(label=str(porta), command=lambda porta=porta: self.selecionaSerial(porta))
+            self.menu.add_command(label=str(porta), command=lambda porta=porta: self.__selecionaSerial(porta))
 
         self.portas = []
-        
-    def selecionaSerial(self, porta):
-        self.abrirPorta = porta
-        return self.abrirPorta
+    
+    def __selecionaSerial(self, porta):
+        try:
+            self.abrirPorta = porta
+            
+            self.gravadorSerial.ser = serial.Serial(self.abrirPorta, baudrate=115200, bytesize=8, parity="N", stopbits=1, timeout=0.2) 
+            if self.gravadorSerial.ser.is_open:
+                pass
+            else:
+                self.gravadorSerial.ser = None 
+
+        except serial.SerialException as e:
+            messagebox.showerror("Erro", f"Erro ao abrir a porta serial: {e}")
+            self.gravadorSerial.ser = None 
         
     def configMandaSinal(self):
         self.numeroLote = IntVar() 
@@ -244,7 +259,7 @@ class MandaSinal:
         frameEsquerda = Frame(framePrincipal, bg=self.interface.cinzaOliva)
         frameEsquerda.pack(side="left", padx=10)
 
-        self.ler = self.__criaButton("Identificar Placa", frameEsquerda, self.__leOqueTemDentroDaSerial, tamanho = 12)
+        self.ler = self.__criaButton("Identificar Placa", frameEsquerda, self.__leOqueTemDentroDaSerial, tamanho = 12, cursor = "hand1")
         self.data = self.__criaCalendar("Data", frameEsquerda)
 
         frameDireita = Frame(framePrincipal, bg=self.interface.cinzaOliva)
@@ -254,5 +269,5 @@ class MandaSinal:
         self.versaoPlaca = self.__criaEntry("Versão da Placa", self.versaoPlacaNumero, frameDireita)
         self.versaoPlaca2 = self.__criaEntry("Versão da Placa", self.versaoPlacaNumero2, frameDireita)
         self.escolheSerial = self.__criaMenubutton(frameDireita)
-        self.enviar = self.__criaButton("Gravar Dados", frameDireita, self.__gravaBytesNaSerial, tamanho = 12)
+        self.enviar = self.__criaButton("Gravar Dados", frameDireita, self.__gravaBytesNaSerial, tamanho = 12, cursor = "hand1")
         

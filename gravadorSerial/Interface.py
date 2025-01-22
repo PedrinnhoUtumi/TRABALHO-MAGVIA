@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import ttk
 from MandaSinal import MandaSinal
+import random
 
 class Interface:
     def __init__(self, root):
@@ -14,6 +15,14 @@ class Interface:
         
         self.mandaSinal.configMandaSinal()
         
+        self.atualizarInterface()
+
+    def atualizarInterface(self):
+        self.label = Label(self.root)
+        valor = random.randint(0, 100)
+        self.label.config(text=f"Valor: {valor}")
+        self.root.after(500, self.atualizarInterface)
+
     def cores(self):
         self.pretoOliva = "#0D0B07"       
         self.carvao = "#262118"  
