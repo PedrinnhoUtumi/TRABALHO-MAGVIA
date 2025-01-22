@@ -164,23 +164,21 @@ class MandaSinal:
                             elif i == 3:
                                 messagebox.showinfo("Placa ", "Placa identificada: Placa Bobina")
                                 self.placaNome = "Placa Bobina"
-                            else:
-                                messagebox.showerror("Placa ", "Placa: Erro ao encontrar placa")
-                                break
                             
                             self.__nomeDaPlaca(self.placaNome)
                             
                             self.__criaLabel("Report", "Ok", self.interface.janelaMandaSinal)
                             
                             self.__criaTabelaComInformacoes()
+                            break
                         else:
                             self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
+                            raise serial.SerialException
                     else:
                         self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
+                        raise serial.SerialException
                 except serial.SerialException as e:
-                    messagebox.showerror("Erro", f"Erro ao acessar a porta serial: {e}")
                     self.__criaLabel("Report", "Error", self.interface.janelaMandaSinal)
-                    
 
             self.placaByte += 1
         self.__leRespostaDaSerial()
