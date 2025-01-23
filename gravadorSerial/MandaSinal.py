@@ -144,6 +144,7 @@ class MandaSinal:
 
         if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
             self.__editaLabel("A porta serial não está aberta ou foi desconectada.", [self.report])
+            self.conectadoOuNao == self.__editaLabel("Desconectado", [self.conectadoOuNao])
             return  
 
         for i in range(1, 4):
@@ -183,6 +184,8 @@ class MandaSinal:
                         raise serial.SerialException
                 except serial.SerialException as e:
                     self.__editaLabel(f"ocorreu um erro: {e}", [self.report])
+                    self.conectadoOuNao == self.__editaLabel("Desconectado", [self.conectadoOuNao])
+                    
 
             self.placaByte += 1
         self.__leRespostaDaSerial()      
