@@ -18,6 +18,7 @@ class Interface:
         self.atualizarInterface()
 
     def atualizarInterface(self):
+        self.mandaSinal.gravadorSerial.listaPortas()
         self.label = Label(self.root)
         valor = random.randint(0, 100)
         self.label.config(text=f"Valor: {valor}")

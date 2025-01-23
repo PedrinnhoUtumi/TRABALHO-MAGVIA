@@ -22,6 +22,7 @@ class MandaSinal:
         self.placaByte = None
         self.placaNome = ""
         self.label = None
+        self.portas = self.gravadorSerial.listaPortas()
         self.interface.root.bind("<Return>", self.__gravaBytesNaSerial)
         
     def __nomeDaPlaca(self, placaNome):
@@ -85,7 +86,7 @@ class MandaSinal:
             data = self.calendar.get_date()
 
             if self.lote > 255 or self.numeroVersao > 255 or self.numeroVersao2 > 255:
-                messagebox.showerror("Error", "Coloque números referentes à 2 Bytes/2 Bits (0 à 255)")
+                messagebox.showerror("Error", "Coloque números referentes à 2 Bytes/16 Bits (0 à 255)")
                 return
             
             dia, mes, ano = map(int, data.split('/'))
@@ -219,19 +220,17 @@ class MandaSinal:
         button.pack(pady=(0, 10), padx=10) 
         frame.pack(pady=6, side=TOP, anchor="center") 
         
-    def __criaMenubutton(self, janela):
+    def criaMenuComOpcoesDePortas(self, janela = None):
         self.opcoes = Menubutton(janela, text="Escolha Serial", cursor="hand1", relief="ridge", bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto)
         self.opcoes.pack(pady=(0, 10), padx=10)
         self.menu = Menu(self.opcoes, tearoff=0)
         self.opcoes.config(menu=self.menu)
         
-        self.portas = self.gravadorSerial.listaPortas()
 
         for porta in self.portas:
             self.menu.add_command(label=str(porta), command=lambda porta=porta: self.__selecionaSerial(porta))
 
-        self.portas = []
-    
+                        
     def __selecionaSerial(self, porta):
         try:
             self.abrirPorta = porta
@@ -242,8 +241,8 @@ class MandaSinal:
             else:
                 self.gravadorSerial.ser = None 
 
-        except serial.SerialException as e:
-            messagebox.showerror("Erro", f"Erro ao abrir a porta serial: {e}")
+        except serial.SerialException:
+            messagebox.showerror("Erro", f"Erro ao abrir a porta serial")
             self.gravadorSerial.ser = None 
         
     def configMandaSinal(self):
@@ -266,6 +265,6 @@ class MandaSinal:
         self.lote = self.__criaEntry("Lote", self.numeroLote, frameDireita)
         self.versaoPlaca = self.__criaEntry("Versão da Placa", self.versaoPlacaNumero, frameDireita)
         self.versaoPlaca2 = self.__criaEntry("Versão da Placa", self.versaoPlacaNumero2, frameDireita)
-        self.escolheSerial = self.__criaMenubutton(frameDireita)
+        self.escolheSerial = self.criaMenuComOpcoesDePortas(frameDireita)
         self.enviar = self.__criaButton("Gravar Dados", frameDireita, self.__gravaBytesNaSerial, tamanho = 12, cursor = "hand1")
         

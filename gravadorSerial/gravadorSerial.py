@@ -17,11 +17,9 @@ class GravadorSerial:
             for porta in portas:
                 if "USB" in porta.description or "ttyUSB" in porta.device or "ttyACM" in porta.device:
                     self.portasUSB.append(porta.device)
-                    
-            
+
             return self.portasUSB
         else:
-            print("Nenhuma porta serial encontrada.")
             return []
 
     def __abrePorta(self, porta):
