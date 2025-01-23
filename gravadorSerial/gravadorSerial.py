@@ -11,13 +11,11 @@ class GravadorSerial:
 
     def listaPortas(self):
         portas = serial.tools.list_ports.comports()
-        
-
+        self.portasUSB = []
         if portas:
             for porta in portas:
                 if "USB" in porta.description or "ttyUSB" in porta.device or "ttyACM" in porta.device:
                     self.portasUSB.append(porta.device)
-
             return self.portasUSB
         else:
             return []

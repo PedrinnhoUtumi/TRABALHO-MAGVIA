@@ -19,10 +19,11 @@ class Interface:
 
     def atualizarInterface(self):
         self.mandaSinal.gravadorSerial.listaPortas()
+        self.mandaSinal.atualizaMenuPortas()
         self.label = Label(self.root)
         valor = random.randint(0, 100)
-        self.label.config(text=f"Valor: {valor}")
-        self.root.after(500, self.atualizarInterface)
+        self.label.config(text=valor)
+        self.root.after(1000, self.atualizarInterface)
 
     def cores(self):
         self.pretoOliva = "#0D0B07"       
@@ -35,7 +36,7 @@ class Interface:
         
     def configTela(self):
         self.root.title("Gravador Serial")
-        self.root.geometry("500x550")
+        self.root.geometry("500x620")
         self.root.resizable(False, False)
         
     def criaAbas(self):
