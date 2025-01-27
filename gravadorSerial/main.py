@@ -5,4 +5,3 @@ if __name__ == "__main__":
     root = Tk()
     interface = Interface(root)
     root.mainloop()
-    

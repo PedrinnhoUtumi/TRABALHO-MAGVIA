@@ -28,39 +28,62 @@ class MandaSinal:
     def __nomeDaPlaca(self, placaNome):
         self.bobina = placaNome
         
-    def __criaTabelaComInformacoes(self):
-        self.__leRespostaDaSerial()
-        if self.resposta:
-            self.resposta.config(state=NORMAL)
-            
-            self.resposta.delete(1.0, END) 
-            
-            self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
-            
-            self.resposta.config(state=DISABLED)
-        else:
+    def __criaTabelaComInformacoes(self, status):
+        if status == TRUE:
+            self.__leRespostaDaSerial()
+            if self.resposta:
+                self.resposta.config(state=NORMAL)
+
+                self.resposta.delete(1.0, END) 
+
+                self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
+
+                self.resposta.config(state=DISABLED)
             frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
             frame.pack(pady=5, fill="both", expand=True)
-
-            scrollbar = Scrollbar(frame)
-            scrollbar.pack(side="right", fill="y")
-
-            self.resposta = Text(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, wrap=WORD, yscrollcommand=scrollbar.set, height=10, width=40)
+            
+            self.scrollbar = Scrollbar(frame)
+            self.scrollbar.pack(side="right", fill="y")
+            
+            self.resposta = Text(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, wrap=WORD, yscrollcommand=self.scrollbar.set, height=10, width=40)
             self.resposta.pack(side="left", fill="both", expand=True)
 
-            scrollbar.config(command=self.resposta.yview)
+            self.scrollbar.config(command=self.resposta.yview)
 
             self.resposta.config(state=NORMAL)
-            
+
             self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
             self.resposta.config(state=DISABLED)
-    
+        else:
+            if self.resposta:
+                self.resposta.pack_forget()  
+                self.scrollbar.pack_forget() 
+                self.resposta = None
+                self.scrollbar = None
+            else:
+                return
+      
     def __leRespostaDaSerial(self):
         if self.placaByte == 1:
-            return
+            self.msgEstruturada = f"""
+    Lote: {self.gravadorSerial.msg[54]} 
+    Dia: {self.gravadorSerial.msg[55]} 
+    Mês: {self.gravadorSerial.msg[56]} 
+    Ano: {(self.gravadorSerial.msg[57] + 1970)} 
+    Versão: {int.from_bytes(self.gravadorSerial.msg[58:60], byteorder="little")} 
+    FirmWare: {int.from_bytes(self.gravadorSerial.msg[60:62], byteorder="little")} 
+                """
+ 
         
         elif self.placaByte == 2:
-            return
+            self.msgEstruturada = f"""
+    Lote: {self.gravadorSerial.msg[54]} 
+    Dia: {self.gravadorSerial.msg[55]} 
+    Mês: {self.gravadorSerial.msg[56]} 
+    Ano: {(self.gravadorSerial.msg[57] + 1970)} 
+    Versão: {int.from_bytes(self.gravadorSerial.msg[58:60], byteorder="little")} 
+    FirmWare: {int.from_bytes(self.gravadorSerial.msg[60:62], byteorder="little")} 
+                """
         
         elif self.placaByte == 3:
             self.msgEstruturada = f"""
@@ -77,6 +100,17 @@ class MandaSinal:
             return    
            
     def __gravaBytesNaSerial(self, event = None):
+        if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
+            self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
+            self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            self.__criaTabelaComInformacoes(FALSE)
+            return  
+        else:
+            self.gravadorSerial.ser.close()
+            self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
+            self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            
+        
         try:
             definirSerial = 0x05
             
@@ -87,6 +121,7 @@ class MandaSinal:
 
             if self.lote > 255 or self.numeroVersao > 255 or self.numeroVersao2 > 255:
                 self.__editaLabel("Erro: Coloque números referentes à 2 Bytes(0 à 255)", [self.report])
+                self.__criaTabelaComInformacoes(FALSE)
                 return
             
             dia, mes, ano = map(int, data.split('/'))
@@ -108,7 +143,8 @@ class MandaSinal:
             elif self.bobina == "Placa Bobina":
                 self.placaByte = 0x03
             else:
-                self.__editaLabel("Error", [self.report])
+                self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
+                self.__criaTabelaComInformacoes(FALSE)
                 return
 
             fill = [0x00] 
@@ -122,24 +158,29 @@ class MandaSinal:
                 self.gravadorSerial.mensagensParaEnviar(porta = self.abrirPorta, info = cabecalho + (fill * 3) + [self.lote, self.dia, self.mes, epochAno, self.numeroVersao, self.numeroVersao2] + (fill * 48) + [__checksum() & 0x00FF] + [__checksum() >> 8])
 
             else:
-                self.__editaLabel("Error", [self.report])
+                self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
+                self.__criaTabelaComInformacoes(FALSE)
+                
             
             
             if self.gravadorSerial.msg != 0:
                 self.__leRespostaDaSerial()
-                self.__editaLabel("Ok")
-                
-                self.__criaTabelaComInformacoes()
+                self.__editaLabel("Informações gravadas com sucesso✔", [self.report])
+                self.__editaLabel("Conectado", [self.conectadoOuNao])
+                self.__criaTabelaComInformacoes(TRUE)
             else:
-                self.__editaLabel("Impossível de gravar: serial desconectada", [self.report])
+                self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
+                self.__criaTabelaComInformacoes(FALSE)
                 
         except serial.SerialException:
-            self.__editaLabel("Impossível de gravar: serial desconectada", [self.report])
+            self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
+            self.__criaTabelaComInformacoes(FALSE)
 
     def __leOqueTemDentroDaSerial(self):
         if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
-            self.__editaLabel("A porta serial não está aberta ou foi desconectada.", [self.report])
+            self.__editaLabel("Impossível de ler: serial desconectada✘", [self.report])
             self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            self.__criaTabelaComInformacoes(FALSE)
             return  
         else:
             self.gravadorSerial.ser.close()
@@ -160,7 +201,8 @@ class MandaSinal:
                     self.gravadorSerial.mensagensParaEnviar(porta = self.abrirPorta, info=cabecalho + (fill * 57) + [__checksum() & 0x00FF] + [__checksum() >> 8])
                     if self.gravadorSerial.ser.is_open:
                         if not self.gravadorSerial.portasUSB:
-                            self.__editaLabel("Error", [self.report])
+                            self.__editaLabel("Impossível de ler: serial desconectada✘", [self.report])
+                            self.__criaTabelaComInformacoes(FALSE)
                             raise serial.SerialException
                         elif len(self.gravadorSerial.msg) != 0 and self.gravadorSerial.portasUSB != []:
                             if i == 1:
@@ -171,20 +213,22 @@ class MandaSinal:
                                 self.placaNome = "Placa Bobina"
                             
                             self.__nomeDaPlaca(self.placaNome)
-                            self.__editaLabel("Ok", [self.report])
+                            self.__editaLabel("Placa identificada com sucesso✔", [self.report])
                             self.__editaLabel("Conectado", [self.conectadoOuNao])
-                            self.__criaTabelaComInformacoes()
+                            self.__criaTabelaComInformacoes(TRUE)
                             break
                         else:
-                            self.__editaLabel("Error", [self.report])
+                            self.__editaLabel("Impossível de ler: serial desconectada✘", [self.report])
+                            self.__criaTabelaComInformacoes(FALSE)
                             raise serial.SerialException
                     else:
-                        self.__editaLabel("Error", [self.report])
+                        self.__editaLabel("Impossível de ler: serial desconectada✘", [self.report])
+                        self.__criaTabelaComInformacoes(FALSE)
                         raise serial.SerialException
                 except serial.SerialException as e:
-                    self.__editaLabel(f"Impossível de ler: serial desconectada", [self.report])
+                    self.__editaLabel(f"Impossível de ler: serial desconectada✘", [self.report])
                     self.__editaLabel("Desconectado", [self.conectadoOuNao])
-                    
+                    self.__criaTabelaComInformacoes(FALSE)
 
             self.placaByte += 1
         self.__leRespostaDaSerial()      
@@ -274,8 +318,8 @@ class MandaSinal:
         frameEsquerda = Frame(framePrincipal, bg=self.interface.cinzaOliva)
         frameEsquerda.pack(side="left", padx=10)
 
-        self.ler = self.__criaButton("Identificar Placa", frameEsquerda, self.__leOqueTemDentroDaSerial, tamanho = 12, cursor = "hand1")
         self.escolheSerial = self.__criaMenuComOpcoesDePortas(frameEsquerda)
+        self.ler = self.__criaButton("Identificar Placa", frameEsquerda, self.__leOqueTemDentroDaSerial, tamanho = 12, cursor = "hand1")
         self.conectadoOuNao = self.__criaLabel("Conectado ou desconectado?", "Desconectado", frameEsquerda, 12)
         self.data = self.__criaCalendar("Data", frameEsquerda)
 
