@@ -1,5 +1,4 @@
 from tkinter import *
-from tkinter import messagebox
 from tkcalendar import Calendar
 from GravadorSerial import GravadorSerial
 import datetime
@@ -87,11 +86,10 @@ class MandaSinal:
             data = self.calendar.get_date()
 
             if self.lote > 255 or self.numeroVersao > 255 or self.numeroVersao2 > 255:
-                messagebox.showerror("Error", "Coloque números referentes à 2 Bytes/16 Bits (0 à 255)")
+                self.__editaLabel("Erro: Coloque números referentes à 2 Bytes(0 à 255)", [self.report])
                 return
             
             dia, mes, ano = map(int, data.split('/'))
-            print(f"Data Selecionada: {data}")
 
             ano = int(ano)
             mes = int(mes)
@@ -126,26 +124,31 @@ class MandaSinal:
             else:
                 self.__editaLabel("Error", [self.report])
             
-            self.__leRespostaDaSerial()
-            self.__editaLabel("Ok")
             
-            self.__criaTabelaComInformacoes()
-
+            if self.gravadorSerial.msg != 0:
+                self.__leRespostaDaSerial()
+                self.__editaLabel("Ok")
+                
+                self.__criaTabelaComInformacoes()
+            else:
+                self.__editaLabel("Impossível de gravar: serial desconectada", [self.report])
+                
         except serial.SerialException:
-            self.__editaLabel("Error", [self.report])
-            print("Erro ao conectar ao serial")
+            self.__editaLabel("Impossível de gravar: serial desconectada", [self.report])
 
     def __leOqueTemDentroDaSerial(self):
-        
+        if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
+            self.__editaLabel("A porta serial não está aberta ou foi desconectada.", [self.report])
+            self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            return  
+        else:
+            self.gravadorSerial.ser.close()
+
         pedirStatus = 0
         opcode = pedirStatus
         fill = [0x00]
         self.placaByte = 1
 
-        if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
-            self.__editaLabel("A porta serial não está aberta ou foi desconectada.", [self.report])
-            self.conectadoOuNao = self.__editaLabel("Desconectado", [self.conectadoOuNao])
-            return  
 
         for i in range(1, 4):
             if opcode == pedirStatus:
@@ -159,21 +162,17 @@ class MandaSinal:
                         if not self.gravadorSerial.portasUSB:
                             self.__editaLabel("Error", [self.report])
                             raise serial.SerialException
-                        elif len(self.gravadorSerial.msg) != 0:
+                        elif len(self.gravadorSerial.msg) != 0 and self.gravadorSerial.portasUSB != []:
                             if i == 1:
-                                messagebox.showinfo("Placa ", "Placa identificada: Placa Potência")
                                 self.placaNome = "Placa Potência"
                             elif i == 2:
-                                messagebox.showinfo("Placa ", "Placa identificada: Placa Temperatura")
                                 self.placaNome = "Placa Temperatura"
                             elif i == 3:
-                                messagebox.showinfo("Placa ", "Placa identificada: Placa Bobina")
                                 self.placaNome = "Placa Bobina"
                             
                             self.__nomeDaPlaca(self.placaNome)
-                            
                             self.__editaLabel("Ok", [self.report])
-                            
+                            self.__editaLabel("Conectado", [self.conectadoOuNao])
                             self.__criaTabelaComInformacoes()
                             break
                         else:
@@ -183,8 +182,8 @@ class MandaSinal:
                         self.__editaLabel("Error", [self.report])
                         raise serial.SerialException
                 except serial.SerialException as e:
-                    self.__editaLabel(f"ocorreu um erro: {e}", [self.report])
-                    self.conectadoOuNao = self.__editaLabel("Desconectado", [self.conectadoOuNao])
+                    self.__editaLabel(f"Impossível de ler: serial desconectada", [self.report])
+                    self.__editaLabel("Desconectado", [self.conectadoOuNao])
                     
 
             self.placaByte += 1
@@ -218,8 +217,6 @@ class MandaSinal:
     
     def __editaLabel(self, resposta, labels = []):
         for label in labels:
-            print(labels)
-            print(label)
             label.config(text=resposta) 
     
     def __criaButton(self, texto, janela, comando, tamanho, cursor):
@@ -247,15 +244,14 @@ class MandaSinal:
                 self.menu.add_command(label=str(porta), command=lambda porta=porta: self.__selecionaSerial(porta))
                 portasAdicionadas.add(porta)
         if not self.gravadorSerial.portasUSB:
-            self.conectadoOuNao = self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            self.__editaLabel("Desconectado", [self.conectadoOuNao])
             return 
                         
     def __selecionaSerial(self, porta):
         try:
             self.abrirPorta = porta
-            print(type(self.conectadoOuNao))
-            print(self.conectadoOuNao)
-            self.conectadoOuNao = self.__editaLabel("Conectado", [self.conectadoOuNao])
+
+            self.__editaLabel("Conectado", [self.conectadoOuNao])
             self.gravadorSerial.ser = serial.Serial(self.abrirPorta, baudrate=115200, bytesize=8, parity="N", stopbits=1, timeout=0.2) 
             if self.gravadorSerial.ser.is_open:
                 pass
@@ -263,8 +259,8 @@ class MandaSinal:
                 self.gravadorSerial.ser = None 
 
         except serial.SerialException:
-            self.conectadoOuNao = self.__editaLabel("Desconectado", [self.conectadoOuNao])
-            messagebox.showerror("Erro", f"Erro ao abrir a porta serial")
+            self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            self.__editaLabel("Erro ao abrir a porta serial", [self.report])
             self.gravadorSerial.ser = None 
         
     def configMandaSinal(self):

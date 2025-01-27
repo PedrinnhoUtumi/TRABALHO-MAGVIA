@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import ttk
 from MandaSinal import MandaSinal
-import random
 
 class Interface:
     def __init__(self, root):
@@ -20,9 +19,6 @@ class Interface:
     def atualizarInterface(self):
         self.mandaSinal.gravadorSerial.listaPortas()
         self.mandaSinal.atualizaMenuPortas()
-        self.label = Label(self.root)
-        valor = random.randint(0, 100)
-        self.label.config(text=valor)
         self.root.after(1000, self.atualizarInterface)
 
     def cores(self):
