@@ -77,7 +77,7 @@ class MandaSinal:
         else:
             return    
            
-    def __gravaBytesNaSerial(self, event = None): 
+    def __gravaBytesNaSerial(self, event = None):
         try:
             definirSerial = 0x05
             
@@ -144,7 +144,7 @@ class MandaSinal:
 
         if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
             self.__editaLabel("A porta serial não está aberta ou foi desconectada.", [self.report])
-            self.conectadoOuNao == self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            self.conectadoOuNao = self.__editaLabel("Desconectado", [self.conectadoOuNao])
             return  
 
         for i in range(1, 4):
@@ -184,7 +184,7 @@ class MandaSinal:
                         raise serial.SerialException
                 except serial.SerialException as e:
                     self.__editaLabel(f"ocorreu um erro: {e}", [self.report])
-                    self.conectadoOuNao == self.__editaLabel("Desconectado", [self.conectadoOuNao])
+                    self.conectadoOuNao = self.__editaLabel("Desconectado", [self.conectadoOuNao])
                     
 
             self.placaByte += 1
@@ -218,6 +218,8 @@ class MandaSinal:
     
     def __editaLabel(self, resposta, labels = []):
         for label in labels:
+            print(labels)
+            print(label)
             label.config(text=resposta) 
     
     def __criaButton(self, texto, janela, comando, tamanho, cursor):
@@ -226,7 +228,7 @@ class MandaSinal:
         button.pack(pady=(0, 10), padx=10) 
         frame.pack(pady=6, side=TOP, anchor="center") 
         
-    def criaMenuComOpcoesDePortas(self, janela):
+    def __criaMenuComOpcoesDePortas(self, janela):
         self.opcoes = Menubutton(janela, text="Escolha Serial", cursor="hand1", relief="ridge", bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto)
         self.opcoes.pack(pady=(0, 10), padx=10)
         self.menu = Menu(self.opcoes, tearoff=0)
@@ -245,7 +247,8 @@ class MandaSinal:
                 self.menu.add_command(label=str(porta), command=lambda porta=porta: self.__selecionaSerial(porta))
                 portasAdicionadas.add(porta)
         if not self.gravadorSerial.portasUSB:
-            return self.conectadoOuNao == self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            self.conectadoOuNao = self.__editaLabel("Desconectado", [self.conectadoOuNao])
+            return 
                         
     def __selecionaSerial(self, porta):
         try:
@@ -276,7 +279,7 @@ class MandaSinal:
         frameEsquerda.pack(side="left", padx=10)
 
         self.ler = self.__criaButton("Identificar Placa", frameEsquerda, self.__leOqueTemDentroDaSerial, tamanho = 12, cursor = "hand1")
-        self.escolheSerial = self.criaMenuComOpcoesDePortas(frameEsquerda)
+        self.escolheSerial = self.__criaMenuComOpcoesDePortas(frameEsquerda)
         self.conectadoOuNao = self.__criaLabel("Conectado ou desconectado?", "Desconectado", frameEsquerda, 12)
         self.data = self.__criaCalendar("Data", frameEsquerda)
 
@@ -289,4 +292,3 @@ class MandaSinal:
         self.enviar = self.__criaButton("Gravar Dados", frameDireita, self.__gravaBytesNaSerial, tamanho = 12, cursor = "hand1")
         
         self.report = self.__criaLabel("Report", "", self.interface.janelaMandaSinal, 60)
-        
