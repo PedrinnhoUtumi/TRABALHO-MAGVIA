@@ -29,6 +29,9 @@ class Interface:
         self.branco = "#ffffff"       
         self.cinzaClaro = "#BFBFBD"
         self.preto = "#090909"
+        self.verde = "#4CAF50"
+        self.vermelho = "#D32F2F"
+        self.amarelo = "#FFD700"
         
     def configTela(self):
         self.root.title("Gravador Serial")
@@ -46,4 +49,3 @@ class Interface:
         self.janelaMandaSinal = Frame(self.abas, bg=self.cinzaOliva) 
         self.abas.add(self.janelaMandaSinal, text="Gravador serial")
         
-        self.janelaMandaSinal.update_idletasks()
