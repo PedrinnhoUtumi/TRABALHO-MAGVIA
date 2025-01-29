@@ -1,3 +1,4 @@
-byte_sequence = b'{{'  # ou [0x7B, 0x7B]
-number = int.from_bytes(byte_sequence, byteorder='big')  # 'big' pois o primeiro byte é mais significativo
-print(number)  # Saída: 31611
+import os
+
+caminho_imagem = os.path.join("C:", "Users", "magvi", "OneDrive", "Documentos", "TRABALHO-MAGVIA", "magvia.png")
+print(caminho_imagem)

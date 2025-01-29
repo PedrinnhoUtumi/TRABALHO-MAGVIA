@@ -4,11 +4,17 @@ from GravadorSerial import GravadorSerial
 import datetime
 import time
 import serial
+import threading
+
 
 class MandaSinal:
     def __init__(self, interface):
         self.interface = interface
         self.gravadorSerial = GravadorSerial()
+        self.POTENCIA = 0x01
+        self.TEMPERATURA = 0x02
+        self.BOBINA = 0x03
+        self.TAMANHODARESPOSTA = 64
         self.abrirPorta = None
         self.placa = None
         self.resposta = None
@@ -25,10 +31,6 @@ class MandaSinal:
         self.menu = None
         self.portas = self.gravadorSerial.listaPortas()
         self.interface.root.bind("<Return>", self.__gravaBytesNaSerial)
-        self.POTENCIA = 0x01
-        self.TEMPERATURA = 0x02
-        self.BOBINA = 0x03
-        self.TAMANHODARESPOSTA = 64
         
     def __nomeDaPlaca(self, placaNome):
         self.placa = placaNome
@@ -72,7 +74,6 @@ class MandaSinal:
                 return
       
     def __leRespostaDaSerial(self):
-
         if self.placaByte == self.POTENCIA:
             if len(self.gravadorSerial.msg) == self.TAMANHODARESPOSTA:
                 self.msgEstruturada = f"""
@@ -85,7 +86,6 @@ class MandaSinal:
                 """
             else:
                 return
- 
         
         elif self.placaByte == self.TEMPERATURA:
             if len(self.gravadorSerial.msg) == self.TAMANHODARESPOSTA:
@@ -171,7 +171,6 @@ class MandaSinal:
             else:
                 self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
                 self.__criaTabelaComInformacoes(False)
-            
             
             if len(self.gravadorSerial.msg) == self.TAMANHODARESPOSTA:
                 self.__leRespostaDaSerial()
@@ -285,7 +284,7 @@ class MandaSinal:
         frame.pack(pady=6, side=TOP, anchor="center") 
         
     def __criaMenuComOpcoesDePortas(self, janela):
-        self.opcoes = Menubutton(janela, text="Escolha Serial", cursor="hand1", relief="ridge", bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto)
+        self.opcoes = Menubutton(janela, text="Escolha Serial", cursor="hand1", relief="flat", bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto)
         self.opcoes.pack(pady=(0, 10), padx=10)
         self.menu = Menu(self.opcoes, tearoff=0)
         self.opcoes.config(menu=self.menu)
@@ -308,26 +307,28 @@ class MandaSinal:
             return 
                         
     def __selecionaSerial(self, porta):
-        try:
-            self.__editaLabel("Conectando...", [self.conectadoOuNao], novaCorBG=self.interface.amarelo, novaCorFG=self.interface.preto)
-            self.abrirPorta = porta
-            if self.gravadorSerial.ser and self.gravadorSerial.ser.is_open:
-                self.gravadorSerial.ser.close()
-                time.sleep(0.5)
-            
+        def conexao():    
+            try:
+                self.abrirPorta = porta
+                if self.gravadorSerial.ser and self.gravadorSerial.ser.is_open:
+                    self.gravadorSerial.ser.close()
+                    time.sleep(1)    
+                        
+                self.__editaLabel("Conectando...", [self.conectadoOuNao], novaCorBG=self.interface.amarelo, novaCorFG=self.interface.preto)
+                self.gravadorSerial.ser = serial.Serial(self.abrirPorta, baudrate=115200, bytesize=8, parity="N", stopbits=1, timeout=0.2) 
+                if self.gravadorSerial.ser.is_open:
+                    self.__editaLabel("Conectado", [self.conectadoOuNao], novaCorBG=self.interface.verde, novaCorFG=self.interface.preto)
+                                
+                else:
+                    self.__editaLabel("Desconectado", [self.conectadoOuNao], novaCorBG=self.interface.vermelho, novaCorFG=self.interface.branco)
 
-            self.__editaLabel("Conectado", [self.conectadoOuNao], novaCorBG=self.interface.verde, novaCorFG=self.interface.preto)
-            self.gravadorSerial.ser = serial.Serial(self.abrirPorta, baudrate=115200, bytesize=8, parity="N", stopbits=1, timeout=0.2) 
-            if self.gravadorSerial.ser.is_open:
-                pass
-            else:
+            except serial.SerialException:
+                self.__editaLabel("Desconectado", [self.conectadoOuNao], novaCorBG=self.interface.vermelho, novaCorFG=self.interface.branco)
+                self.__editaLabel("Erro ao abrir a porta serial", [self.report])
+                self.__criaTabelaComInformacoes(False)
                 self.gravadorSerial.ser = None 
-
-        except serial.SerialException:
-            self.__editaLabel("Desconectado", [self.conectadoOuNao], novaCorBG=self.interface.vermelho, novaCorFG=self.interface.branco)
-            self.__editaLabel("Erro ao abrir a porta serial", [self.report])
-            self.__criaTabelaComInformacoes(False)
-            self.gravadorSerial.ser = None 
+        threading.Thread(target=conexao, daemon=True).start()
+        
         
     def configMandaSinal(self):
         self.numeroLote = IntVar() 
@@ -353,4 +354,5 @@ class MandaSinal:
         self.versaoPlaca2 = self.__criaEntry("Versão da Placa 2", self.versaoPlacaNumero2, frameDireita)
         self.enviar = self.__criaButton("Gravar Dados", frameDireita, self.__gravaBytesNaSerial, tamanho = 12, cursor = "hand1")
         
-        self.report = self.__criaLabel("", self.interface.janelaMandaSinal, 60, self.interface.cinzaOlivaClaro, self.interface.preto, corFGTitulo=self.interface.branco , corBGTitulo=self.interface.cinzaOliva, texto="Report", semTitulo=False)
+        self.report = self.__criaLabel("", self.interface.janelaMandaSinal, 60, self.interface.cinzaOlivaClaro, self.interface.preto, corFGTitulo=self.interface.branco , corBGTitulo=self.interface.cinzaOliva, texto="Relatório", semTitulo=False)
+        
