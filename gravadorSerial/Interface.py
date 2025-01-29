@@ -45,3 +45,5 @@ class Interface:
     def configAba(self):
         self.janelaMandaSinal = Frame(self.abas, bg=self.cinzaOliva) 
         self.abas.add(self.janelaMandaSinal, text="Gravador serial")
+        
+        self.janelaMandaSinal.update_idletasks()

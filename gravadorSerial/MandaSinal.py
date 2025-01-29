@@ -28,40 +28,29 @@ class MandaSinal:
     def __nomeDaPlaca(self, placaNome):
         self.bobina = placaNome
         
-    def __criaTabelaComInformacoes(self, status):
-        if status == TRUE:
-            self.__leRespostaDaSerial()
-            if self.resposta:
-                self.resposta.config(state=NORMAL)
-
-                self.resposta.delete(1.0, END) 
-
-                self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
-
-                self.resposta.config(state=DISABLED)
-            frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
-            frame.pack(pady=5, fill="both", expand=True)
-            
-            self.scrollbar = Scrollbar(frame)
-            self.scrollbar.pack(side="right", fill="y")
-            
-            self.resposta = Text(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, wrap=WORD, yscrollcommand=self.scrollbar.set, height=10, width=40)
-            self.resposta.pack(side="left", fill="both", expand=True)
-
-            self.scrollbar.config(command=self.resposta.yview)
-
+    def __criaTabelaComInformacoes(self):
+        self.__leRespostaDaSerial()    
+        if self.resposta:            
             self.resposta.config(state=NORMAL)
-
+            self.resposta.delete(1.0, END) 
             self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
             self.resposta.config(state=DISABLED)
-        else:
-            if self.resposta:
-                self.resposta.pack_forget()  
-                self.scrollbar.pack_forget() 
-                self.resposta = None
-                self.scrollbar = None
-            else:
-                return
+        
+        frame = Frame(self.interface.janelaMandaSinal, bg=self.interface.cinzaOliva)
+        frame.pack(pady=5, fill="both", expand=True)
+        
+        self.scrollbar = Scrollbar(frame)
+        self.scrollbar.pack(side="right", fill="y")
+        
+        self.resposta = Text(frame, bg=self.interface.cinzaOlivaClaro, fg=self.interface.preto, wrap=WORD, yscrollcommand=self.scrollbar.set, height=10, width=40)
+        self.resposta.pack(side="left", fill="both", expand=True)
+
+        self.scrollbar.config(command=self.resposta.yview)
+
+        self.resposta.config(state=NORMAL)
+
+        self.resposta.insert(END, f"{'Placa Bobina' if self.placaByte == 0x03 else 'Placa Temperatura' if self.placaByte == 0x02 else 'Placa Potência'}: {self.msgEstruturada}")
+        self.resposta.config(state=DISABLED)
       
     def __leRespostaDaSerial(self):
         if self.placaByte == 1:
@@ -103,7 +92,7 @@ class MandaSinal:
         if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
             self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
             self.__editaLabel("Desconectado", [self.conectadoOuNao])
-            self.__criaTabelaComInformacoes(FALSE)
+            self.__criaTabelaComInformacoes()
             return  
         else:
             self.gravadorSerial.ser.close()
@@ -121,7 +110,7 @@ class MandaSinal:
 
             if self.lote > 255 or self.numeroVersao > 255 or self.numeroVersao2 > 255:
                 self.__editaLabel("Erro: Coloque números referentes à 2 Bytes(0 à 255)", [self.report])
-                self.__criaTabelaComInformacoes(FALSE)
+                self.__criaTabelaComInformacoes()
                 return
             
             dia, mes, ano = map(int, data.split('/'))
@@ -144,7 +133,7 @@ class MandaSinal:
                 self.placaByte = 0x03
             else:
                 self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
-                self.__criaTabelaComInformacoes(FALSE)
+                self.__criaTabelaComInformacoes()
                 return
 
             fill = [0x00] 
@@ -159,7 +148,7 @@ class MandaSinal:
 
             else:
                 self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
-                self.__criaTabelaComInformacoes(FALSE)
+                self.__criaTabelaComInformacoes()
                 
             
             
@@ -167,20 +156,20 @@ class MandaSinal:
                 self.__leRespostaDaSerial()
                 self.__editaLabel("Informações gravadas com sucesso✔", [self.report])
                 self.__editaLabel("Conectado", [self.conectadoOuNao])
-                self.__criaTabelaComInformacoes(TRUE)
+                self.__criaTabelaComInformacoes()
             else:
                 self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
-                self.__criaTabelaComInformacoes(FALSE)
+                self.__criaTabelaComInformacoes()
                 
         except serial.SerialException:
             self.__editaLabel("Impossível de gravar: serial desconectada✘", [self.report])
-            self.__criaTabelaComInformacoes(FALSE)
+            self.__criaTabelaComInformacoes()
 
     def __leOqueTemDentroDaSerial(self):
         if not self.gravadorSerial.ser or not self.gravadorSerial.ser.is_open:
             self.__editaLabel("Impossível de ler: serial desconectada✘", [self.report])
             self.__editaLabel("Desconectado", [self.conectadoOuNao])
-            self.__criaTabelaComInformacoes(FALSE)
+            self.__criaTabelaComInformacoes()
             return  
         else:
             self.gravadorSerial.ser.close()
@@ -202,7 +191,7 @@ class MandaSinal:
                     if self.gravadorSerial.ser.is_open:
                         if not self.gravadorSerial.portasUSB:
                             self.__editaLabel("Impossível de ler: serial desconectada✘", [self.report])
-                            self.__criaTabelaComInformacoes(FALSE)
+                            self.__criaTabelaComInformacoes()
                             raise serial.SerialException
                         elif len(self.gravadorSerial.msg) != 0 and self.gravadorSerial.portasUSB != []:
                             if i == 1:
@@ -215,20 +204,20 @@ class MandaSinal:
                             self.__nomeDaPlaca(self.placaNome)
                             self.__editaLabel("Placa identificada com sucesso✔", [self.report])
                             self.__editaLabel("Conectado", [self.conectadoOuNao])
-                            self.__criaTabelaComInformacoes(TRUE)
+                            self.__criaTabelaComInformacoes()
                             break
                         else:
                             self.__editaLabel("Impossível de ler: serial desconectada✘", [self.report])
-                            self.__criaTabelaComInformacoes(FALSE)
+                            self.__criaTabelaComInformacoes()
                             raise serial.SerialException
                     else:
                         self.__editaLabel("Impossível de ler: serial desconectada✘", [self.report])
-                        self.__criaTabelaComInformacoes(FALSE)
+                        self.__criaTabelaComInformacoes()
                         raise serial.SerialException
                 except serial.SerialException as e:
                     self.__editaLabel(f"Impossível de ler: serial desconectada✘", [self.report])
                     self.__editaLabel("Desconectado", [self.conectadoOuNao])
-                    self.__criaTabelaComInformacoes(FALSE)
+                    self.__criaTabelaComInformacoes()
 
             self.placaByte += 1
         self.__leRespostaDaSerial()      
